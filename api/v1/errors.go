@@ -10,4 +10,5 @@ var (
 
 	// more biz errors
 	ErrEmailAlreadyUse = newError(1001, "The email is already in use.")
+	ErrPhoneAlreadyUse = newError(1002, "The phone is already in use.")
 )

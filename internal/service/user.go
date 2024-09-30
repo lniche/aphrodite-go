@@ -33,12 +33,12 @@ type userService struct {
 
 func (s *userService) Register(ctx context.Context, req *v1.RegisterRequest) error {
 	// check username
-	user, err := s.userRepo.GetByEmail(ctx, req.Email)
+	user, err := s.userRepo.GetByPhone(ctx, req.Phone)
 	if err != nil {
 		return v1.ErrInternalServerError
 	}
 	if err == nil && user != nil {
-		return v1.ErrEmailAlreadyUse
+		return v1.ErrPhoneAlreadyUse
 	}
 
 	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(req.Password), bcrypt.DefaultCost)
@@ -46,13 +46,17 @@ func (s *userService) Register(ctx context.Context, req *v1.RegisterRequest) err
 		return err
 	}
 	// Generate user ID
-	userId, err := s.sid.GenString()
+	userCode, err := s.sid.GenString()
 	if err != nil {
 		return err
 	}
 	user = &model.User{
-		UserId:   userId,
+		UserCode: userCode,
+		UserNo:   1,
+		Username: req.UserName,
+		Nickname: req.Nickname,
 		Email:    req.Email,
+		Phone:    req.Phone,
 		Password: string(hashedPassword),
 	}
 	// Transaction demo
