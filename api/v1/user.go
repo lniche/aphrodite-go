@@ -1,15 +1,19 @@
 package v1
 
+type SendVerifyCodeRequest struct {
+	Phone string `json:"phone" binding:"required" example:"13288888888"`
+}
+
 type RegisterRequest struct {
-	UserName string `json:"username" example:"hack"`
-	Nickname string `json:"nickname" example:"petter"`
-	Email    string `json:"email" binding:"email" example:"1234@gmail.com"`
-	Password string `json:"password" binding:"required" example:"123456"`
-	Phone    string `json:"phone" binding:"required" example:"123456"`
+	Nickname   string `json:"nickname" example:"banana"`
+	Email      string `json:"email" binding:"email" example:"1234@gmail.com"`
+	Password   string `json:"password" binding:"required" example:"123456"`
+	Phone      string `json:"phone" binding:"required" example:"123456"`
+	VerifyCode string `json:"verifyCode"  example:"1234"`
 }
 
 type LoginRequest struct {
-	Email    string `json:"email" binding:"required,email" example:"1234@gmail.com"`
+	Phone    string `json:"phone" binding:"required" example:"13288888888"`
 	Password string `json:"password" binding:"required" example:"123456"`
 }
 type LoginResponseData struct {
@@ -21,12 +25,20 @@ type LoginResponse struct {
 }
 
 type UpdateProfileRequest struct {
-	Nickname string `json:"nickname" example:"alan"`
-	Email    string `json:"email" binding:"required,email" example:"1234@gmail.com"`
+	Nickname    string `json:"nickname" example:"banana"`
+	Email       string `json:"email" binding:"email" example:"1234@gmail.com"`
+	OldPassword string `json:"oldPassword" example:"banana"`
+	NewPassword string `json:"newPassword" example:"banana"`
+	OldPhone    string `json:"oldPhone"  example:"13288888888"`
+	NewPhone    string `json:"newPhone"  example:"13288888888"`
+	VerifyCode  string `json:"verifyCode"  example:"1234"`
 }
 type GetProfileResponseData struct {
-	UserId   string `json:"userId"`
-	Nickname string `json:"nickname" example:"alan"`
+	UserNo   string `json:"userNo"`
+	UserCode string `json:"userCode"`
+	Nickname string `json:"nickname" example:"banana"`
+	Email    string `json:"email" binding:"email" example:"1234@gmail.com"`
+	Phone    string `json:"phone" binding:"required" example:"13288888888"`
 }
 type GetProfileResponse struct {
 	Response

@@ -156,17 +156,17 @@ func TestUserService_GetProfile(t *testing.T) {
 	userService := service.NewUserService(srv, mockUserRepo)
 
 	ctx := context.Background()
-	userId := "123"
+	userCode := "123"
 
-	mockUserRepo.EXPECT().GetByID(ctx, userId).Return(&model.User{
-		UserId: userId,
-		Email:  "test@example.com",
+	mockUserRepo.EXPECT().GetByID(ctx, userCode).Return(&model.User{
+		UserCode: userCode,
+		Email:    "test@example.com",
 	}, nil)
 
-	user, err := userService.GetProfile(ctx, userId)
+	user, err := userService.GetProfile(ctx, userCode)
 
 	assert.NoError(t, err)
-	assert.Equal(t, userId, user.UserId)
+	assert.Equal(t, userCode, user.UserCode)
 }
 
 func TestUserService_UpdateProfile(t *testing.T) {
@@ -179,19 +179,19 @@ func TestUserService_UpdateProfile(t *testing.T) {
 	userService := service.NewUserService(srv, mockUserRepo)
 
 	ctx := context.Background()
-	userId := "123"
+	userCode := "123"
 	req := &v1.UpdateProfileRequest{
 		Nickname: "testuser",
 		Email:    "test@example.com",
 	}
 
-	mockUserRepo.EXPECT().GetByID(ctx, userId).Return(&model.User{
-		UserId: userId,
-		Email:  "old@example.com",
+	mockUserRepo.EXPECT().GetByID(ctx, userCode).Return(&model.User{
+		UserCode: userCode,
+		Email:    "old@example.com",
 	}, nil)
 	mockUserRepo.EXPECT().Update(ctx, gomock.Any()).Return(nil)
 
-	err := userService.UpdateProfile(ctx, userId, req)
+	err := userService.UpdateProfile(ctx, userCode, req)
 
 	assert.NoError(t, err)
 }
@@ -206,15 +206,15 @@ func TestUserService_UpdateProfile_UserNotFound(t *testing.T) {
 	userService := service.NewUserService(srv, mockUserRepo)
 
 	ctx := context.Background()
-	userId := "123"
+	userCode := "123"
 	req := &v1.UpdateProfileRequest{
 		Nickname: "testuser",
 		Email:    "test@example.com",
 	}
 
-	mockUserRepo.EXPECT().GetByID(ctx, userId).Return(nil, errors.New("user not found"))
+	mockUserRepo.EXPECT().GetByID(ctx, userCode).Return(nil, errors.New("user not found"))
 
-	err := userService.UpdateProfile(ctx, userId, req)
+	err := userService.UpdateProfile(ctx, userCode, req)
 
 	assert.Error(t, err)
 }
