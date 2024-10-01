@@ -23,6 +23,7 @@ func RequestLogMiddleware(logger *log.Logger) gin.HandlerFunc {
 		logger.WithValue(ctx, zap.String("request_method", ctx.Request.Method))
 		logger.WithValue(ctx, zap.Any("request_headers", ctx.Request.Header))
 		logger.WithValue(ctx, zap.String("request_url", ctx.Request.URL.String()))
+		logger.WithValue(ctx, zap.String("client_ip", ctx.ClientIP()))
 		if ctx.Request.Body != nil {
 			bodyBytes, _ := ctx.GetRawData()
 			ctx.Request.Body = io.NopCloser(bytes.NewBuffer(bodyBytes)) // 关键点

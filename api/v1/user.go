@@ -10,6 +10,7 @@ type RegisterRequest struct {
 	Password   string `json:"password" binding:"required" example:"123456"`
 	Phone      string `json:"phone" binding:"required" example:"123456"`
 	VerifyCode string `json:"verifyCode"  example:"1234"`
+	ClientIp   string `json:"clientIp" example:"127.0.0.1"`
 }
 
 type LoginRequest struct {

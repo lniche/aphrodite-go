@@ -73,6 +73,7 @@ func (s *userService) Register(ctx context.Context, req *v1.RegisterRequest) err
 		Nickname: req.Nickname,
 		Email:    req.Email,
 		Phone:    req.Phone,
+		ClientIp: req.ClientIp,
 	}
 	if req.Password != "" {
 		hashedPassword, err := bcrypt.GenerateFromPassword([]byte(req.Password), bcrypt.DefaultCost)
@@ -108,6 +109,10 @@ func (s *userService) Login(ctx context.Context, req *v1.LoginRequest) (string, 
 		return "", err
 	}
 
+	user.LastLoginAt = time.Now()
+	if err = s.userRepo.Update(ctx, user); err != nil {
+		return "", err
+	}
 	return token, nil
 }
 

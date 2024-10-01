@@ -62,7 +62,7 @@ func (h *UserHandler) Register(ctx *gin.Context) {
 		v1.HandleError(ctx, http.StatusBadRequest, v1.ErrBadRequest, nil)
 		return
 	}
-
+	req.ClientIp = ctx.ClientIP()
 	if err := h.userService.Register(ctx, req); err != nil {
 		h.logger.WithContext(ctx).Error("userService.Register error", zap.Error(err))
 		v1.HandleError(ctx, http.StatusInternalServerError, err, nil)
@@ -88,7 +88,6 @@ func (h *UserHandler) Login(ctx *gin.Context) {
 		v1.HandleError(ctx, http.StatusBadRequest, v1.ErrBadRequest, nil)
 		return
 	}
-
 	token, err := h.userService.Login(ctx, &req)
 	if err != nil {
 		v1.HandleError(ctx, http.StatusUnauthorized, v1.ErrUnauthorized, nil)
