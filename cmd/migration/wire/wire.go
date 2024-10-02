@@ -17,6 +17,7 @@ var repositorySet = wire.NewSet(
 	repository.NewRedis,
 	repository.NewRepository,
 	repository.NewUserRepository,
+	repository.NewUserFeedbackRepository,
 )
 var serverSet = wire.NewSet(
 	server.NewMigrate,
@@ -28,7 +29,7 @@ func newApp(
 ) *app.App {
 	return app.NewApp(
 		app.WithServer(migrate),
-		app.WithName("demo-migrate"),
+		app.WithName("aphrodite-migrate"),
 	)
 }
 

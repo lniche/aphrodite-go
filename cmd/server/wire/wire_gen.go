@@ -34,7 +34,10 @@ func NewWire(viperViper *viper.Viper, logger *log.Logger) (*app.App, func(), err
 	userRepository := repository.NewUserRepository(repositoryRepository)
 	userService := service.NewUserService(serviceService, userRepository)
 	userHandler := handler.NewUserHandler(handlerHandler, userService)
-	httpServer := server.NewHTTPServer(logger, viperViper, jwtJWT, userHandler)
+	userFeedbackRepository := repository.NewUserFeedbackRepository(repositoryRepository)
+	userFeedbackService := service.NewUserFeedbackService(serviceService, userFeedbackRepository, userRepository)
+	userFeedbackHandler := handler.NewUserFeedbackHandler(handlerHandler, userFeedbackService)
+	httpServer := server.NewHTTPServer(logger, viperViper, jwtJWT, userHandler, userFeedbackHandler)
 	job := server.NewJob(logger)
 	appApp := newApp(httpServer, job)
 	return appApp, func() {
@@ -43,11 +46,11 @@ func NewWire(viperViper *viper.Viper, logger *log.Logger) (*app.App, func(), err
 
 // wire.go:
 
-var repositorySet = wire.NewSet(repository.NewDB, repository.NewRedis, repository.NewRepository, repository.NewTransaction, repository.NewUserRepository)
+var repositorySet = wire.NewSet(repository.NewDB, repository.NewRedis, repository.NewRepository, repository.NewTransaction, repository.NewUserRepository, repository.NewUserFeedbackRepository)
 
-var serviceSet = wire.NewSet(service.NewService, service.NewUserService)
+var serviceSet = wire.NewSet(service.NewService, service.NewUserService, service.NewUserFeedbackService)
 
-var handlerSet = wire.NewSet(handler.NewHandler, handler.NewUserHandler)
+var handlerSet = wire.NewSet(handler.NewHandler, handler.NewUserHandler, handler.NewUserFeedbackHandler)
 
 var serverSet = wire.NewSet(server.NewHTTPServer, server.NewJob)
 
@@ -57,5 +60,5 @@ func newApp(
 	job *server.Job,
 
 ) *app.App {
-	return app.NewApp(app.WithServer(httpServer, job), app.WithName("demo-server"))
+	return app.NewApp(app.WithServer(httpServer, job), app.WithName("aphrodite-server"))
 }
