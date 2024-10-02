@@ -1,60 +1,97 @@
 definitions:
-  github_com_go-nunu_nunu-layout-advanced_api_v1.GetProfileResponse:
+  aphrodite-go_api_v1.AddUserFeedbackRequest:
+    properties:
+      feedback:
+        example: banana
+        type: string
+    required:
+      - feedback
+    type: object
+  aphrodite-go_api_v1.GetProfileResponse:
     properties:
       code:
         type: integer
       data:
-        $ref: '#/definitions/github_com_go-nunu_nunu-layout-advanced_api_v1.GetProfileResponseData'
+        $ref: '#/definitions/aphrodite-go_api_v1.GetProfileResponseData'
       message:
         type: string
     type: object
-  github_com_go-nunu_nunu-layout-advanced_api_v1.GetProfileResponseData:
-    properties:
-      nickname:
-        example: alan
-        type: string
-      userId:
-        type: string
-    type: object
-  github_com_go-nunu_nunu-layout-advanced_api_v1.LoginRequest:
+  aphrodite-go_api_v1.GetProfileResponseData:
     properties:
       email:
         example: 1234@gmail.com
         type: string
+      nickname:
+        example: banana
+        type: string
+      phone:
+        example: "13288888888"
+        type: string
+      userCode:
+        type: string
+      userNo:
+        type: string
+    required:
+      - phone
+    type: object
+  aphrodite-go_api_v1.LoginRequest:
+    properties:
       password:
         example: "123456"
         type: string
+      phone:
+        example: "13288888888"
+        type: string
+      verifyCode:
+        example: "1234"
+        type: string
     required:
-      - email
-      - password
+      - phone
     type: object
-  github_com_go-nunu_nunu-layout-advanced_api_v1.LoginResponse:
+  aphrodite-go_api_v1.LoginResponse:
     properties:
       code:
         type: integer
       data:
-        $ref: '#/definitions/github_com_go-nunu_nunu-layout-advanced_api_v1.LoginResponseData'
+        $ref: '#/definitions/aphrodite-go_api_v1.LoginResponseData'
       message:
         type: string
     type: object
-  github_com_go-nunu_nunu-layout-advanced_api_v1.LoginResponseData:
+  aphrodite-go_api_v1.LoginResponseData:
     properties:
       accessToken:
         type: string
     type: object
-  github_com_go-nunu_nunu-layout-advanced_api_v1.RegisterRequest:
+  aphrodite-go_api_v1.RegisterRequest:
     properties:
+      OpenId:
+        example: "123456"
+        type: string
+      UnionId:
+        example: "123456"
+        type: string
+      clientIp:
+        example: 127.0.0.1
+        type: string
       email:
         example: 1234@gmail.com
+        type: string
+      nickname:
+        example: banana
         type: string
       password:
         example: "123456"
         type: string
+      phone:
+        example: "123456"
+        type: string
+      verifyCode:
+        example: "1234"
+        type: string
     required:
-      - email
-      - password
+      - phone
     type: object
-  github_com_go-nunu_nunu-layout-advanced_api_v1.Response:
+  aphrodite-go_api_v1.Response:
     properties:
       code:
         type: integer
@@ -62,16 +99,37 @@ definitions:
       message:
         type: string
     type: object
-  github_com_go-nunu_nunu-layout-advanced_api_v1.UpdateProfileRequest:
+  aphrodite-go_api_v1.SendVerifyCodeRequest:
+    properties:
+      phone:
+        example: "13288888888"
+        type: string
+    required:
+      - phone
+    type: object
+  aphrodite-go_api_v1.UpdateProfileRequest:
     properties:
       email:
         example: 1234@gmail.com
         type: string
-      nickname:
-        example: alan
+      newPassword:
+        example: banana
         type: string
-    required:
-      - email
+      newPhone:
+        example: "13288888888"
+        type: string
+      nickname:
+        example: banana
+        type: string
+      oldPassword:
+        example: banana
+        type: string
+      oldPhone:
+        example: "13288888888"
+        type: string
+      verifyCode:
+        example: "1234"
+        type: string
     type: object
 host: localhost:8000
 info:
@@ -97,14 +155,14 @@ paths:
           name: request
           required: true
           schema:
-            $ref: '#/definitions/github_com_go-nunu_nunu-layout-advanced_api_v1.LoginRequest'
+            $ref: '#/definitions/aphrodite-go_api_v1.LoginRequest'
       produces:
         - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/github_com_go-nunu_nunu-layout-advanced_api_v1.LoginResponse'
+            $ref: '#/definitions/aphrodite-go_api_v1.LoginResponse'
       summary: 账号登录
       tags:
         - 用户模块
@@ -119,14 +177,14 @@ paths:
           name: request
           required: true
           schema:
-            $ref: '#/definitions/github_com_go-nunu_nunu-layout-advanced_api_v1.RegisterRequest'
+            $ref: '#/definitions/aphrodite-go_api_v1.RegisterRequest'
       produces:
         - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/github_com_go-nunu_nunu-layout-advanced_api_v1.Response'
+            $ref: '#/definitions/aphrodite-go_api_v1.Response'
       summary: 用户注册
       tags:
         - 用户模块
@@ -140,7 +198,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/github_com_go-nunu_nunu-layout-advanced_api_v1.GetProfileResponse'
+            $ref: '#/definitions/aphrodite-go_api_v1.GetProfileResponse'
       security:
         - Bearer: [ ]
       summary: 获取用户信息
@@ -155,19 +213,42 @@ paths:
           name: request
           required: true
           schema:
-            $ref: '#/definitions/github_com_go-nunu_nunu-layout-advanced_api_v1.UpdateProfileRequest'
+            $ref: '#/definitions/aphrodite-go_api_v1.UpdateProfileRequest'
       produces:
         - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/github_com_go-nunu_nunu-layout-advanced_api_v1.Response'
+            $ref: '#/definitions/aphrodite-go_api_v1.Response'
       security:
         - Bearer: [ ]
       summary: 修改用户信息
       tags:
         - 用户模块
+  /user/feedback/add:
+    post:
+      consumes:
+        - application/json
+      parameters:
+        - description: params
+          in: body
+          name: request
+          required: true
+          schema:
+            $ref: '#/definitions/aphrodite-go_api_v1.AddUserFeedbackRequest'
+      produces:
+        - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/aphrodite-go_api_v1.Response'
+      security:
+        - Bearer: [ ]
+      summary: 新增用户反馈
+      tags:
+        - 用户反馈模块
 securityDefinitions:
   Bearer:
     in: header

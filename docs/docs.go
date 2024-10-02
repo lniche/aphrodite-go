@@ -43,7 +43,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/github_com_go-nunu_nunu-layout-advanced_api_v1.LoginRequest"
+                            "$ref": "#/definitions/aphrodite-go_api_v1.LoginRequest"
                         }
                     }
                 ],
@@ -51,7 +51,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/github_com_go-nunu_nunu-layout-advanced_api_v1.LoginResponse"
+                            "$ref": "#/definitions/aphrodite-go_api_v1.LoginResponse"
                         }
                     }
                 }
@@ -77,7 +77,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/github_com_go-nunu_nunu-layout-advanced_api_v1.RegisterRequest"
+                            "$ref": "#/definitions/aphrodite-go_api_v1.RegisterRequest"
                         }
                     }
                 ],
@@ -85,7 +85,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/github_com_go-nunu_nunu-layout-advanced_api_v1.Response"
+                            "$ref": "#/definitions/aphrodite-go_api_v1.Response"
                         }
                     }
                 }
@@ -112,7 +112,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/github_com_go-nunu_nunu-layout-advanced_api_v1.GetProfileResponse"
+                            "$ref": "#/definitions/aphrodite-go_api_v1.GetProfileResponse"
                         }
                     }
                 }
@@ -140,7 +140,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/github_com_go-nunu_nunu-layout-advanced_api_v1.UpdateProfileRequest"
+                            "$ref": "#/definitions/aphrodite-go_api_v1.UpdateProfileRequest"
                         }
                     }
                 ],
@@ -148,7 +148,45 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/github_com_go-nunu_nunu-layout-advanced_api_v1.Response"
+                            "$ref": "#/definitions/aphrodite-go_api_v1.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/user/feedback/add": {
+            "post": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "用户反馈模块"
+                ],
+                "summary": "新增用户反馈",
+                "parameters": [
+                    {
+                        "description": "params",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/aphrodite-go_api_v1.AddUserFeedbackRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/aphrodite-go_api_v1.Response"
                         }
                     }
                 }
@@ -156,64 +194,93 @@ const docTemplate = `{
         }
     },
     "definitions": {
-        "github_com_go-nunu_nunu-layout-advanced_api_v1.GetProfileResponse": {
+        "aphrodite-go_api_v1.AddUserFeedbackRequest": {
+            "type": "object",
+            "required": [
+                "feedback"
+            ],
+            "properties": {
+                "feedback": {
+                    "type": "string",
+                    "example": "banana"
+                }
+            }
+        },
+        "aphrodite-go_api_v1.GetProfileResponse": {
             "type": "object",
             "properties": {
                 "code": {
                     "type": "integer"
                 },
                 "data": {
-                    "$ref": "#/definitions/github_com_go-nunu_nunu-layout-advanced_api_v1.GetProfileResponseData"
+                    "$ref": "#/definitions/aphrodite-go_api_v1.GetProfileResponseData"
                 },
                 "message": {
                     "type": "string"
                 }
             }
         },
-        "github_com_go-nunu_nunu-layout-advanced_api_v1.GetProfileResponseData": {
-            "type": "object",
-            "properties": {
-                "nickname": {
-                    "type": "string",
-                    "example": "alan"
-                },
-                "userId": {
-                    "type": "string"
-                }
-            }
-        },
-        "github_com_go-nunu_nunu-layout-advanced_api_v1.LoginRequest": {
+        "aphrodite-go_api_v1.GetProfileResponseData": {
             "type": "object",
             "required": [
-                "email",
-                "password"
+                "phone"
             ],
             "properties": {
                 "email": {
                     "type": "string",
                     "example": "1234@gmail.com"
                 },
-                "password": {
+                "nickname": {
                     "type": "string",
-                    "example": "123456"
+                    "example": "banana"
+                },
+                "phone": {
+                    "type": "string",
+                    "example": "13288888888"
+                },
+                "userCode": {
+                    "type": "string"
+                },
+                "userNo": {
+                    "type": "string"
                 }
             }
         },
-        "github_com_go-nunu_nunu-layout-advanced_api_v1.LoginResponse": {
+        "aphrodite-go_api_v1.LoginRequest": {
+            "type": "object",
+            "required": [
+                "phone"
+            ],
+            "properties": {
+                "password": {
+                    "type": "string",
+                    "example": "123456"
+                },
+                "phone": {
+                    "type": "string",
+                    "example": "13288888888"
+                },
+                "verifyCode": {
+                    "type": "string",
+                    "example": "1234"
+                }
+            }
+        },
+        "aphrodite-go_api_v1.LoginResponse": {
             "type": "object",
             "properties": {
                 "code": {
                     "type": "integer"
                 },
                 "data": {
-                    "$ref": "#/definitions/github_com_go-nunu_nunu-layout-advanced_api_v1.LoginResponseData"
+                    "$ref": "#/definitions/aphrodite-go_api_v1.LoginResponseData"
                 },
                 "message": {
                     "type": "string"
                 }
             }
         },
-        "github_com_go-nunu_nunu-layout-advanced_api_v1.LoginResponseData": {
+        "aphrodite-go_api_v1.LoginResponseData": {
             "type": "object",
             "properties": {
                 "accessToken": {
@@ -221,24 +288,47 @@ const docTemplate = `{
                 }
             }
         },
-        "github_com_go-nunu_nunu-layout-advanced_api_v1.RegisterRequest": {
+        "aphrodite-go_api_v1.RegisterRequest": {
             "type": "object",
             "required": [
-                "email",
-                "password"
+                "phone"
             ],
             "properties": {
+                "OpenId": {
+                    "type": "string",
+                    "example": "123456"
+                },
+                "UnionId": {
+                    "type": "string",
+                    "example": "123456"
+                },
+                "clientIp": {
+                    "type": "string",
+                    "example": "127.0.0.1"
+                },
                 "email": {
                     "type": "string",
                     "example": "1234@gmail.com"
                 },
+                "nickname": {
+                    "type": "string",
+                    "example": "banana"
+                },
                 "password": {
                     "type": "string",
                     "example": "123456"
+                },
+                "phone": {
+                    "type": "string",
+                    "example": "123456"
+                },
+                "verifyCode": {
+                    "type": "string",
+                    "example": "1234"
                 }
             }
         },
-        "github_com_go-nunu_nunu-layout-advanced_api_v1.Response": {
+        "aphrodite-go_api_v1.Response": {
             "type": "object",
             "properties": {
                 "code": {
@@ -250,19 +340,48 @@ const docTemplate = `{
                 }
             }
         },
-        "github_com_go-nunu_nunu-layout-advanced_api_v1.UpdateProfileRequest": {
+        "aphrodite-go_api_v1.SendVerifyCodeRequest": {
             "type": "object",
             "required": [
-                "email"
+                "phone"
             ],
+            "properties": {
+                "phone": {
+                    "type": "string",
+                    "example": "13288888888"
+                }
+            }
+        },
+        "aphrodite-go_api_v1.UpdateProfileRequest": {
+            "type": "object",
             "properties": {
                 "email": {
                     "type": "string",
                     "example": "1234@gmail.com"
                 },
+                "newPassword": {
+                    "type": "string",
+                    "example": "banana"
+                },
+                "newPhone": {
+                    "type": "string",
+                    "example": "13288888888"
+                },
                 "nickname": {
                     "type": "string",
-                    "example": "alan"
+                    "example": "banana"
+                },
+                "oldPassword": {
+                    "type": "string",
+                    "example": "banana"
+                },
+                "oldPhone": {
+                    "type": "string",
+                    "example": "13288888888"
+                },
+                "verifyCode": {
+                    "type": "string",
+                    "example": "1234"
                 }
             }
         }
