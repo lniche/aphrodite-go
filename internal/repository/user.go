@@ -19,6 +19,7 @@ type UserRepository interface {
 	GetByCodeWithCache(ctx context.Context, userCode string) (*model.User, error)
 	GetByEmail(ctx context.Context, email string) (*model.User, error)
 	GetByPhone(ctx context.Context, phone string) (*model.User, error)
+	GetByOpenId(ctx context.Context, openId string) (*model.User, error)
 	GenerateUserNo(ctx context.Context) (int64, error)
 	CacheVerifyCode(ctx context.Context, phone string, code string) error
 	GetVerifyCode(ctx context.Context, phone string) (string, error)
@@ -123,12 +124,23 @@ func (r *userRepository) GetByPhone(ctx context.Context, phone string) (*model.U
 	return &user, nil
 }
 
+func (r *userRepository) GetByOpenId(ctx context.Context, openId string) (*model.User, error) {
+	var user model.User
+	if err := r.DB(ctx).Where("openId = ?", openId).First(&user).Error; err != nil {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			return nil, nil
+		}
+		return nil, err
+	}
+	return &user, nil
+}
+
 func (r *userRepository) GenerateUserNo(ctx context.Context) (int64, error) {
 	return r.rdb.Incr(ctx, constant.NEXTIDUNO).Result()
 }
 
 func (r *userRepository) CacheVerifyCode(ctx context.Context, phone string, code string) error {
-	return r.rdb.Set(ctx, phone, code, 1*time.Minute).Err()
+	return r.rdb.Set(ctx, phone, code, 90*time.Second).Err()
 }
 
 func (r *userRepository) GetVerifyCode(ctx context.Context, phone string) (string, error) {

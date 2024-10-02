@@ -6,6 +6,7 @@ import (
 	"aphrodite-go/internal/repository"
 	"context"
 	"fmt"
+	"go.uber.org/zap"
 	"golang.org/x/crypto/bcrypt"
 	"math/rand"
 	"regexp"
@@ -14,8 +15,7 @@ import (
 )
 
 type UserService interface {
-	Register(ctx context.Context, req *v1.RegisterRequest) (string, error)
-	Login(ctx context.Context, req *v1.LoginRequest) (string, error)
+	Login(ctx context.Context, clientIp string, req *v1.LoginRequest) (string, error)
 	GetProfile(ctx context.Context, userCode string) (*v1.GetProfileResponseData, error)
 	UpdateProfile(ctx context.Context, userCode string, req *v1.UpdateProfileRequest) error
 	SendVerifyCode(ctx context.Context, req *v1.SendVerifyCodeRequest) error
@@ -36,102 +36,70 @@ type userService struct {
 	*Service
 }
 
-func (s *userService) Register(ctx context.Context, req *v1.RegisterRequest) (string, error) {
+func (s *userService) Login(ctx context.Context, clientIp string, req *v1.LoginRequest) (string, error) {
 	// check phone
 	user, err := s.userRepo.GetByPhone(ctx, req.Phone)
 	if err != nil {
 		return "", v1.ErrInternalServerError
 	}
-	if err == nil && user != nil {
-		return "", v1.ErrPhoneAlreadyUse
-	}
-	// check verify code
-	storedCode, err := s.userRepo.GetVerifyCode(ctx, req.Phone)
-	if err != nil {
-		return "", err
-	}
-	if storedCode != req.VerifyCode {
-		return "", fmt.Errorf("verify code check fail")
-	}
-
-	// Generate user code and no
-	userCode, err := s.sid.GenString()
-	if err != nil {
-		return "", err
-	}
-	userNo, err := s.userRepo.GenerateUserNo(ctx)
-	if err != nil {
-		return "", err
-	}
-	// set default if nickname is blank
-	if len(req.Nickname) == 0 {
-		req.Nickname = "SUGAR" + req.Phone[len(req.Phone)-4:]
-	}
-	user = &model.User{
-		UserCode:    userCode,
-		UserNo:      100000 + userNo,
-		Nickname:    req.Nickname,
-		Email:       req.Email,
-		Phone:       req.Phone,
-		ClientIp:    req.ClientIp,
-		OpenId:      req.OpenId,
-		UnionId:     req.UnionId,
-		LastLoginAt: time.Now(),
-	}
-	if req.Password != "" {
-		hashedPassword, err := bcrypt.GenerateFromPassword([]byte(req.Password), bcrypt.DefaultCost)
+	if user == nil && req.OpenId != "" {
+		user, err = s.userRepo.GetByOpenId(ctx, req.OpenId)
 		if err != nil {
+			return "", v1.ErrInternalServerError
+		}
+	}
+	if user != nil {
+		user.LastLoginAt = time.Now()
+		if user.OpenId == "" {
+			user.OpenId = req.OpenId
+		}
+		if user.Phone == "" {
+			user.Phone = req.Phone
+		}
+		if err = s.userRepo.Update(ctx, user); err != nil {
 			return "", err
 		}
-		user.Password = string(hashedPassword)
-	}
-	// Transaction demo
-	err = s.tm.Transaction(ctx, func(ctx context.Context) error {
-		// Create a user
-		if err = s.userRepo.Create(ctx, user); err != nil {
-			return err
-		}
-		// TODO: other repo
-		return nil
-	})
-
-	token, err := s.jwt.GenToken(user.UserCode, time.Now().Add(time.Hour*24*90))
-	if err != nil {
-		return "", err
-	}
-
-	return token, nil
-}
-
-func (s *userService) Login(ctx context.Context, req *v1.LoginRequest) (string, error) {
-	user, err := s.userRepo.GetByPhone(ctx, req.Phone)
-	if err != nil || user == nil {
-		return "", v1.ErrUnauthorized
-	}
-	if req.Password != "" {
-		err = bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(req.Password))
-		if err != nil {
-			return "", err
-		}
-	}
-	if req.VerifyCode != "" {
+	} else {
+		// check verify code
 		storedCode, err := s.userRepo.GetVerifyCode(ctx, req.Phone)
 		if err != nil {
-			return "", err
+			return "", fmt.Errorf("cache code not exist")
 		}
 		if storedCode != req.VerifyCode {
 			return "", fmt.Errorf("verify code check fail")
 		}
+		// Generate user code and no
+		userCode, err := s.sid.GenUint64()
+		if err != nil {
+			return "", err
+		}
+		userNo, err := s.userRepo.GenerateUserNo(ctx)
+		if err != nil {
+			return "", err
+		}
+		user = &model.User{
+			Nickname:    "SUGAR" + req.Phone[len(req.Phone)-4:],
+			UserCode:    strconv.FormatUint(userCode, 10),
+			UserNo:      100000 + userNo,
+			Phone:       req.Phone,
+			ClientIp:    clientIp,
+			OpenId:      req.OpenId,
+			LastLoginAt: time.Now(),
+		}
+		// Transaction demo
+		err = s.tm.Transaction(ctx, func(ctx context.Context) error {
+			// Create a user
+			if err = s.userRepo.Create(ctx, user); err != nil {
+				return err
+			}
+			return nil
+		})
 	}
 	token, err := s.jwt.GenToken(user.UserCode, time.Now().Add(time.Hour*24*90))
 	if err != nil {
 		return "", err
 	}
 
-	user.LastLoginAt = time.Now()
-	if err = s.userRepo.Update(ctx, user); err != nil {
-		return "", err
-	}
 	return token, nil
 }
 
@@ -194,10 +162,8 @@ func (s *userService) UpdateProfile(ctx context.Context, userCode string, req *v
 }
 func (s *userService) SendVerifyCode(ctx context.Context, req *v1.SendVerifyCodeRequest) error {
 	code := generateVerificationCode()
+	s.logger.Info("send verify code", zap.String("code", code))
 	storedCode, err := s.userRepo.GetVerifyCode(ctx, req.Phone)
-	if err != nil {
-		return err
-	}
 	if storedCode != "" {
 		return fmt.Errorf("verify code already sent, please wait 1 minute")
 	}

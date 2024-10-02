@@ -36,50 +36,7 @@ definitions:
     type: object
   aphrodite-go_api_v1.LoginRequest:
     properties:
-      password:
-        example: "123456"
-        type: string
-      phone:
-        example: "13288888888"
-        type: string
-      verifyCode:
-        example: "1234"
-        type: string
-    required:
-      - phone
-    type: object
-  aphrodite-go_api_v1.LoginResponse:
-    properties:
-      code:
-        type: integer
-      data:
-        $ref: '#/definitions/aphrodite-go_api_v1.LoginResponseData'
-      message:
-        type: string
-    type: object
-  aphrodite-go_api_v1.LoginResponseData:
-    properties:
-      accessToken:
-        type: string
-    type: object
-  aphrodite-go_api_v1.RegisterRequest:
-    properties:
-      OpenId:
-        example: "123456"
-        type: string
-      UnionId:
-        example: "123456"
-        type: string
-      clientIp:
-        example: 127.0.0.1
-        type: string
-      email:
-        example: 1234@gmail.com
-        type: string
-      nickname:
-        example: banana
-        type: string
-      password:
+      openId:
         example: "123456"
         type: string
       phone:
@@ -88,8 +45,6 @@ definitions:
       verifyCode:
         example: "1234"
         type: string
-    required:
-      - phone
     type: object
   aphrodite-go_api_v1.Response:
     properties:
@@ -162,22 +117,21 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/aphrodite-go_api_v1.LoginResponse'
-      summary: 账号登录
+            $ref: '#/definitions/aphrodite-go_api_v1.Response'
+      summary: 用户登录注册
       tags:
         - 用户模块
-  /register:
+  /send-code:
     post:
       consumes:
         - application/json
-      description: 目前只支持邮箱登录
       parameters:
         - description: params
           in: body
           name: request
           required: true
           schema:
-            $ref: '#/definitions/aphrodite-go_api_v1.RegisterRequest'
+            $ref: '#/definitions/aphrodite-go_api_v1.SendVerifyCodeRequest'
       produces:
         - application/json
       responses:
@@ -185,7 +139,7 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/aphrodite-go_api_v1.Response'
-      summary: 用户注册
+      summary: 发送验证码
       tags:
         - 用户模块
   /user:

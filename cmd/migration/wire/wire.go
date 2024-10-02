@@ -18,6 +18,7 @@ var repositorySet = wire.NewSet(
 	repository.NewRepository,
 	repository.NewUserRepository,
 	repository.NewUserFeedbackRepository,
+	repository.NewUserAddressRepository,
 )
 var serverSet = wire.NewSet(
 	server.NewMigrate,

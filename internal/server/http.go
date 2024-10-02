@@ -56,7 +56,6 @@ func NewHTTPServer(
 		// No route group has permission
 		noAuthRouter := v1.Group("/")
 		{
-			noAuthRouter.POST("/register", userHandler.Register)
 			noAuthRouter.POST("/login", userHandler.Login)
 			noAuthRouter.POST("/send-code", userHandler.SendVerifyCode)
 		}

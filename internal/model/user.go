@@ -14,7 +14,6 @@ type User struct {
 	Email       string    `gorm:"default:null;comment:邮箱"`
 	Phone       string    `gorm:"index;not null;comment:电话"`
 	OpenId      string    `gorm:"default:null;comment:微信OpenID"`
-	UnionId     string    `gorm:"default:null;comment:微信UnionID"`
 	ClientIp    string    `gorm:"default:null;comment:客户端IP"`
 	LastLoginAt time.Time `gorm:"default:null;comment:最后登录时间"`
 	BaseModel

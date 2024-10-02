@@ -28,8 +28,8 @@ func NewRepository(
 	rdb *redis.Client,
 ) *Repository {
 	return &Repository{
-		db: db,
-		//rdb:    rdb,
+		db:     db,
+		rdb:    rdb,
 		logger: logger,
 	}
 }

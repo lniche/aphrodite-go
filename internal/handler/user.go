@@ -29,7 +29,7 @@ func NewUserHandler(handler *Handler, userService service.UserService) *UserHand
 // @Produce json
 // @Param request body v1.SendVerifyCodeRequest true "params"
 // @Success 200 {object} v1.Response
-// @Router /register [post]
+// @Router /send-code [post]
 func (h *UserHandler) SendVerifyCode(ctx *gin.Context) {
 	req := new(v1.SendVerifyCodeRequest)
 	if err := ctx.ShouldBindJSON(req); err != nil {
@@ -46,24 +46,23 @@ func (h *UserHandler) SendVerifyCode(ctx *gin.Context) {
 	v1.HandleSuccess(ctx, nil)
 }
 
-// Register godoc
-// @Summary 用户注册
+// Login godoc
+// @Summary 用户登录注册
 // @Schemes
-// @Description 目前只支持邮箱登录
+// @Description
 // @Tags 用户模块
 // @Accept json
 // @Produce json
-// @Param request body v1.RegisterRequest true "params"
+// @Param request body v1.LoginRequest true "params"
 // @Success 200 {object} v1.Response
-// @Router /register [post]
-func (h *UserHandler) Register(ctx *gin.Context) {
-	var req v1.RegisterRequest
+// @Router /login [post]
+func (h *UserHandler) Login(ctx *gin.Context) {
+	var req = new(v1.LoginRequest)
 	if err := ctx.ShouldBindJSON(req); err != nil {
 		v1.HandleError(ctx, http.StatusBadRequest, v1.ErrBadRequest, nil)
 		return
 	}
-	req.ClientIp = ctx.ClientIP()
-	token, err := h.userService.Register(ctx, &req)
+	token, err := h.userService.Login(ctx, ctx.ClientIP(), req)
 
 	if err != nil {
 		h.logger.WithContext(ctx).Error("userService.Register error", zap.Error(err))
@@ -71,32 +70,6 @@ func (h *UserHandler) Register(ctx *gin.Context) {
 		return
 	}
 
-	v1.HandleSuccess(ctx, v1.LoginResponseData{
-		AccessToken: token,
-	})
-}
-
-// Login godoc
-// @Summary 账号登录
-// @Schemes
-// @Description
-// @Tags 用户模块
-// @Accept json
-// @Produce json
-// @Param request body v1.LoginRequest true "params"
-// @Success 200 {object} v1.LoginResponse
-// @Router /login [post]
-func (h *UserHandler) Login(ctx *gin.Context) {
-	var req v1.LoginRequest
-	if err := ctx.ShouldBindJSON(&req); err != nil {
-		v1.HandleError(ctx, http.StatusBadRequest, v1.ErrBadRequest, nil)
-		return
-	}
-	token, err := h.userService.Login(ctx, &req)
-	if err != nil {
-		v1.HandleError(ctx, http.StatusUnauthorized, v1.ErrUnauthorized, nil)
-		return
-	}
 	v1.HandleSuccess(ctx, v1.LoginResponseData{
 		AccessToken: token,
 	})
@@ -142,13 +115,13 @@ func (h *UserHandler) GetProfile(ctx *gin.Context) {
 func (h *UserHandler) UpdateProfile(ctx *gin.Context) {
 	userCode := GetUserCodeFromCtx(ctx)
 
-	var req v1.UpdateProfileRequest
-	if err := ctx.ShouldBindJSON(&req); err != nil {
+	var req = new(v1.UpdateProfileRequest)
+	if err := ctx.ShouldBindJSON(req); err != nil {
 		v1.HandleError(ctx, http.StatusBadRequest, v1.ErrBadRequest, nil)
 		return
 	}
 
-	if err := h.userService.UpdateProfile(ctx, userCode, &req); err != nil {
+	if err := h.userService.UpdateProfile(ctx, userCode, req); err != nil {
 		v1.HandleError(ctx, http.StatusInternalServerError, v1.ErrInternalServerError, nil)
 		return
 	}

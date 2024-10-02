@@ -1,7 +1,7 @@
 package model
 
 type UserFeedback struct {
-	UserCode string `gorm:"unique;not null;comment:用户编码"`
+	UserCode string `gorm:"index;not null;comment:用户编码"`
 	Feedback string `gorm:"not null;type:text;comment:反馈"`
 	BaseModel
 }

@@ -35,7 +35,7 @@ const docTemplate = `{
                 "tags": [
                     "用户模块"
                 ],
-                "summary": "账号登录",
+                "summary": "用户登录注册",
                 "parameters": [
                     {
                         "description": "params",
@@ -51,15 +51,14 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/aphrodite-go_api_v1.LoginResponse"
+                            "$ref": "#/definitions/aphrodite-go_api_v1.Response"
                         }
                     }
                 }
             }
         },
-        "/register": {
+        "/send-code": {
             "post": {
-                "description": "目前只支持邮箱登录",
                 "consumes": [
                     "application/json"
                 ],
@@ -69,7 +68,7 @@ const docTemplate = `{
                 "tags": [
                     "用户模块"
                 ],
-                "summary": "用户注册",
+                "summary": "发送验证码",
                 "parameters": [
                     {
                         "description": "params",
@@ -77,7 +76,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/aphrodite-go_api_v1.RegisterRequest"
+                            "$ref": "#/definitions/aphrodite-go_api_v1.SendVerifyCodeRequest"
                         }
                     }
                 ],
@@ -248,73 +247,8 @@ const docTemplate = `{
         },
         "aphrodite-go_api_v1.LoginRequest": {
             "type": "object",
-            "required": [
-                "phone"
-            ],
             "properties": {
-                "password": {
-                    "type": "string",
-                    "example": "123456"
-                },
-                "phone": {
-                    "type": "string",
-                    "example": "13288888888"
-                },
-                "verifyCode": {
-                    "type": "string",
-                    "example": "1234"
-                }
-            }
-        },
-        "aphrodite-go_api_v1.LoginResponse": {
-            "type": "object",
-            "properties": {
-                "code": {
-                    "type": "integer"
-                },
-                "data": {
-                    "$ref": "#/definitions/aphrodite-go_api_v1.LoginResponseData"
-                },
-                "message": {
-                    "type": "string"
-                }
-            }
-        },
-        "aphrodite-go_api_v1.LoginResponseData": {
-            "type": "object",
-            "properties": {
-                "accessToken": {
-                    "type": "string"
-                }
-            }
-        },
-        "aphrodite-go_api_v1.RegisterRequest": {
-            "type": "object",
-            "required": [
-                "phone"
-            ],
-            "properties": {
-                "OpenId": {
-                    "type": "string",
-                    "example": "123456"
-                },
-                "UnionId": {
-                    "type": "string",
-                    "example": "123456"
-                },
-                "clientIp": {
-                    "type": "string",
-                    "example": "127.0.0.1"
-                },
-                "email": {
-                    "type": "string",
-                    "example": "1234@gmail.com"
-                },
-                "nickname": {
-                    "type": "string",
-                    "example": "banana"
-                },
-                "password": {
+                "openId": {
                     "type": "string",
                     "example": "123456"
                 },
