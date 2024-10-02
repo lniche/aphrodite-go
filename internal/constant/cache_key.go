@@ -1,5 +1,6 @@
 package constant
 
 const (
-	NEXTIDUNO = "next:uno"
+	NEXTIDUNO = "next:uno:"
+	USER      = "next:uno:"
 )

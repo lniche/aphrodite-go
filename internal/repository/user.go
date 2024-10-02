@@ -5,6 +5,7 @@ import (
 	"aphrodite-go/internal/constant"
 	"aphrodite-go/internal/model"
 	"context"
+	"encoding/json"
 	"errors"
 	"gorm.io/gorm"
 	"time"
@@ -15,6 +16,7 @@ type UserRepository interface {
 	Update(ctx context.Context, user *model.User) error
 	GetByID(ctx context.Context, id string) (*model.User, error)
 	GetByCode(ctx context.Context, userCode string) (*model.User, error)
+	GetByCodeWithCache(ctx context.Context, userCode string) (*model.User, error)
 	GetByEmail(ctx context.Context, email string) (*model.User, error)
 	GetByPhone(ctx context.Context, phone string) (*model.User, error)
 	GenerateUserNo(ctx context.Context) (int64, error)
@@ -67,6 +69,35 @@ func (r *userRepository) GetByCode(ctx context.Context, userCode string) (*model
 		}
 		return nil, err
 	}
+	return &user, nil
+}
+
+func (r *userRepository) GetByCodeWithCache(ctx context.Context, userCode string) (*model.User, error) {
+	cacheData, err := r.rdb.Get(ctx, constant.USER+userCode).Result()
+	if err == nil {
+		var user model.User
+		if err := json.Unmarshal([]byte(cacheData), &user); err != nil {
+			return nil, err
+		}
+		return &user, nil
+	}
+
+	var user model.User
+	if err := r.DB(ctx).Where("user_code = ?", userCode).First(&user).Error; err != nil {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			return nil, v1.ErrNotFound
+		}
+		return nil, err
+	}
+
+	userJSON, err := json.Marshal(user)
+	if err != nil {
+		return nil, err
+	}
+	if err := r.rdb.Set(ctx, constant.USER+userCode, userJSON, 0).Err(); err != nil {
+		return nil, err
+	}
+
 	return &user, nil
 }
 

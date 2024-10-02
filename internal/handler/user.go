@@ -57,19 +57,23 @@ func (h *UserHandler) SendVerifyCode(ctx *gin.Context) {
 // @Success 200 {object} v1.Response
 // @Router /register [post]
 func (h *UserHandler) Register(ctx *gin.Context) {
-	req := new(v1.RegisterRequest)
+	var req v1.RegisterRequest
 	if err := ctx.ShouldBindJSON(req); err != nil {
 		v1.HandleError(ctx, http.StatusBadRequest, v1.ErrBadRequest, nil)
 		return
 	}
 	req.ClientIp = ctx.ClientIP()
-	if err := h.userService.Register(ctx, req); err != nil {
+	token, err := h.userService.Register(ctx, &req)
+
+	if err != nil {
 		h.logger.WithContext(ctx).Error("userService.Register error", zap.Error(err))
 		v1.HandleError(ctx, http.StatusInternalServerError, err, nil)
 		return
 	}
 
-	v1.HandleSuccess(ctx, nil)
+	v1.HandleSuccess(ctx, v1.LoginResponseData{
+		AccessToken: token,
+	})
 }
 
 // Login godoc

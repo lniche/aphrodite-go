@@ -7,15 +7,18 @@ type SendVerifyCodeRequest struct {
 type RegisterRequest struct {
 	Nickname   string `json:"nickname" example:"banana"`
 	Email      string `json:"email" binding:"email" example:"1234@gmail.com"`
-	Password   string `json:"password" binding:"required" example:"123456"`
+	Password   string `json:"password" example:"123456"`
 	Phone      string `json:"phone" binding:"required" example:"123456"`
 	VerifyCode string `json:"verifyCode"  example:"1234"`
 	ClientIp   string `json:"clientIp" example:"127.0.0.1"`
+	OpenId     string `json:"OpenId" example:"123456"`
+	UnionId    string `json:"UnionId" example:"123456"`
 }
 
 type LoginRequest struct {
-	Phone    string `json:"phone" binding:"required" example:"13288888888"`
-	Password string `json:"password" binding:"required" example:"123456"`
+	Phone      string `json:"phone" binding:"required" example:"13288888888"`
+	Password   string `json:"password"  example:"123456"`
+	VerifyCode string `json:"verifyCode"  example:"1234"`
 }
 type LoginResponseData struct {
 	AccessToken string `json:"accessToken"`

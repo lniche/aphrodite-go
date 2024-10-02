@@ -14,7 +14,7 @@ import (
 )
 
 type UserService interface {
-	Register(ctx context.Context, req *v1.RegisterRequest) error
+	Register(ctx context.Context, req *v1.RegisterRequest) (string, error)
 	Login(ctx context.Context, req *v1.LoginRequest) (string, error)
 	GetProfile(ctx context.Context, userCode string) (*v1.GetProfileResponseData, error)
 	UpdateProfile(ctx context.Context, userCode string, req *v1.UpdateProfileRequest) error
@@ -36,49 +36,52 @@ type userService struct {
 	*Service
 }
 
-func (s *userService) Register(ctx context.Context, req *v1.RegisterRequest) error {
+func (s *userService) Register(ctx context.Context, req *v1.RegisterRequest) (string, error) {
 	// check phone
 	user, err := s.userRepo.GetByPhone(ctx, req.Phone)
 	if err != nil {
-		return v1.ErrInternalServerError
+		return "", v1.ErrInternalServerError
 	}
 	if err == nil && user != nil {
-		return v1.ErrPhoneAlreadyUse
+		return "", v1.ErrPhoneAlreadyUse
 	}
 	// check verify code
 	storedCode, err := s.userRepo.GetVerifyCode(ctx, req.Phone)
 	if err != nil {
-		return err
+		return "", err
 	}
 	if storedCode != req.VerifyCode {
-		return fmt.Errorf("verify code check fail")
+		return "", fmt.Errorf("verify code check fail")
 	}
 
 	// Generate user code and no
 	userCode, err := s.sid.GenString()
 	if err != nil {
-		return err
+		return "", err
 	}
 	userNo, err := s.userRepo.GenerateUserNo(ctx)
 	if err != nil {
-		return err
+		return "", err
 	}
 	// set default if nickname is blank
 	if len(req.Nickname) == 0 {
 		req.Nickname = "SUGAR" + req.Phone[len(req.Phone)-4:]
 	}
 	user = &model.User{
-		UserCode: userCode,
-		UserNo:   userNo,
-		Nickname: req.Nickname,
-		Email:    req.Email,
-		Phone:    req.Phone,
-		ClientIp: req.ClientIp,
+		UserCode:    userCode,
+		UserNo:      100000 + userNo,
+		Nickname:    req.Nickname,
+		Email:       req.Email,
+		Phone:       req.Phone,
+		ClientIp:    req.ClientIp,
+		OpenId:      req.OpenId,
+		UnionId:     req.UnionId,
+		LastLoginAt: time.Now(),
 	}
 	if req.Password != "" {
 		hashedPassword, err := bcrypt.GenerateFromPassword([]byte(req.Password), bcrypt.DefaultCost)
 		if err != nil {
-			return err
+			return "", err
 		}
 		user.Password = string(hashedPassword)
 	}
@@ -91,7 +94,13 @@ func (s *userService) Register(ctx context.Context, req *v1.RegisterRequest) err
 		// TODO: other repo
 		return nil
 	})
-	return err
+
+	token, err := s.jwt.GenToken(user.UserCode, time.Now().Add(time.Hour*24*90))
+	if err != nil {
+		return "", err
+	}
+
+	return token, nil
 }
 
 func (s *userService) Login(ctx context.Context, req *v1.LoginRequest) (string, error) {
@@ -99,10 +108,20 @@ func (s *userService) Login(ctx context.Context, req *v1.LoginRequest) (string, 
 	if err != nil || user == nil {
 		return "", v1.ErrUnauthorized
 	}
-
-	err = bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(req.Password))
-	if err != nil {
-		return "", err
+	if req.Password != "" {
+		err = bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(req.Password))
+		if err != nil {
+			return "", err
+		}
+	}
+	if req.VerifyCode != "" {
+		storedCode, err := s.userRepo.GetVerifyCode(ctx, req.Phone)
+		if err != nil {
+			return "", err
+		}
+		if storedCode != req.VerifyCode {
+			return "", fmt.Errorf("verify code check fail")
+		}
 	}
 	token, err := s.jwt.GenToken(user.UserCode, time.Now().Add(time.Hour*24*90))
 	if err != nil {
@@ -117,7 +136,7 @@ func (s *userService) Login(ctx context.Context, req *v1.LoginRequest) (string, 
 }
 
 func (s *userService) GetProfile(ctx context.Context, userCode string) (*v1.GetProfileResponseData, error) {
-	user, err := s.userRepo.GetByCode(ctx, userCode)
+	user, err := s.userRepo.GetByCodeWithCache(ctx, userCode)
 	if err != nil {
 		return nil, err
 	}
