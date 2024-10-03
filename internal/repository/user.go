@@ -12,9 +12,8 @@ import (
 )
 
 type UserRepository interface {
-	Create(ctx context.Context, user *model.User) error
-	Update(ctx context.Context, user *model.User) error
-	GetByID(ctx context.Context, id string) (*model.User, error)
+	CreateProfile(ctx context.Context, user *model.User) error
+	UpdateProfile(ctx context.Context, user *model.User) error
 	GetByCode(ctx context.Context, userCode string) (*model.User, error)
 	GetByCodeWithCache(ctx context.Context, userCode string) (*model.User, error)
 	GetByEmail(ctx context.Context, email string) (*model.User, error)
@@ -37,29 +36,18 @@ type userRepository struct {
 	*Repository
 }
 
-func (r *userRepository) Create(ctx context.Context, user *model.User) error {
+func (r *userRepository) CreateProfile(ctx context.Context, user *model.User) error {
 	if err := r.DB(ctx).Create(user).Error; err != nil {
 		return err
 	}
 	return nil
 }
 
-func (r *userRepository) Update(ctx context.Context, user *model.User) error {
+func (r *userRepository) UpdateProfile(ctx context.Context, user *model.User) error {
 	if err := r.DB(ctx).Save(user).Error; err != nil {
 		return err
 	}
 	return nil
-}
-
-func (r *userRepository) GetByID(ctx context.Context, userId string) (*model.User, error) {
-	var user model.User
-	if err := r.DB(ctx).Where("user_id = ?", userId).First(&user).Error; err != nil {
-		if errors.Is(err, gorm.ErrRecordNotFound) {
-			return nil, v1.ErrNotFound
-		}
-		return nil, err
-	}
-	return &user, nil
 }
 
 func (r *userRepository) GetByCode(ctx context.Context, userCode string) (*model.User, error) {

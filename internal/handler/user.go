@@ -94,7 +94,7 @@ func (h *UserHandler) GetProfile(ctx *gin.Context) {
 
 	user, err := h.userService.GetProfile(ctx, userCode)
 	if err != nil {
-		v1.HandleError(ctx, http.StatusBadRequest, v1.ErrBadRequest, nil)
+		v1.HandleError(ctx, http.StatusInternalServerError, err, nil)
 		return
 	}
 

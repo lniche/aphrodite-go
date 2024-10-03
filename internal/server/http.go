@@ -20,6 +20,7 @@ func NewHTTPServer(
 	jwt *jwt.JWT,
 	userHandler *handler.UserHandler,
 	userFeedbackHandler *handler.UserFeedbackHandler,
+	userAddressHandler *handler.UserAddressHandler,
 ) *http.Server {
 	gin.SetMode(gin.DebugMode)
 	s := http.NewServer(
@@ -47,7 +48,7 @@ func NewHTTPServer(
 	s.GET("/", func(ctx *gin.Context) {
 		logger.WithContext(ctx).Info("hello")
 		apiV1.HandleSuccess(ctx, map[string]interface{}{
-			":)": "Thank you for using nunu!",
+			":)": "Thank you for using aphrodite!",
 		})
 	})
 
@@ -69,7 +70,12 @@ func NewHTTPServer(
 		strictAuthRouter := v1.Group("/").Use(middleware.StrictAuth(jwt, logger))
 		{
 			strictAuthRouter.PUT("/user", userHandler.UpdateProfile)
-			strictAuthRouter.POST("/user/feedback/add", userFeedbackHandler.AddUserFeedback)
+			strictAuthRouter.POST("/user/feedback", userFeedbackHandler.CreateUserFeedback)
+			strictAuthRouter.GET("/user/address/:id", userAddressHandler.GetUserAddress)
+			strictAuthRouter.GET("/user/address", userAddressHandler.GetUserAddresses)
+			strictAuthRouter.POST("/user/address", userAddressHandler.CreateUserAddress)
+			strictAuthRouter.PUT("/user/address", userAddressHandler.UpdateUserAddress)
+			strictAuthRouter.DELETE("/user/address/:id", userAddressHandler.DeleteUserAddress)
 		}
 	}
 

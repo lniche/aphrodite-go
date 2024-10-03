@@ -1,5 +1,5 @@
 package v1
 
-type AddUserFeedbackRequest struct {
+type CreateUserFeedbackRequest struct {
 	Feedback string `json:"feedback" binding:"required" example:"banana"`
 }

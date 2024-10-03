@@ -38,7 +38,7 @@ func (m *MockUserRepository) EXPECT() *MockUserRepositoryMockRecorder {
 // Create mocks base method.
 func (m *MockUserRepository) Create(ctx context.Context, user *model.User) error {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Create", ctx, user)
+	ret := m.ctrl.Call(m, "CreateProfile", ctx, user)
 	ret0, _ := ret[0].(error)
 	return ret0
 }
@@ -46,7 +46,7 @@ func (m *MockUserRepository) Create(ctx context.Context, user *model.User) error
 // Create indicates an expected call of Create.
 func (mr *MockUserRepositoryMockRecorder) Create(ctx, user interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Create", reflect.TypeOf((*MockUserRepository)(nil).Create), ctx, user)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateProfile", reflect.TypeOf((*MockUserRepository)(nil).Create), ctx, user)
 }
 
 // GetByEmail mocks base method.
@@ -82,7 +82,7 @@ func (mr *MockUserRepositoryMockRecorder) GetByID(ctx, id interface{}) *gomock.C
 // Update mocks base method.
 func (m *MockUserRepository) Update(ctx context.Context, user *model.User) error {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Update", ctx, user)
+	ret := m.ctrl.Call(m, "UpdateProfile", ctx, user)
 	ret0, _ := ret[0].(error)
 	return ret0
 }
@@ -90,5 +90,5 @@ func (m *MockUserRepository) Update(ctx context.Context, user *model.User) error
 // Update indicates an expected call of Update.
 func (mr *MockUserRepositoryMockRecorder) Update(ctx, user interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Update", reflect.TypeOf((*MockUserRepository)(nil).Update), ctx, user)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateProfile", reflect.TypeOf((*MockUserRepository)(nil).Update), ctx, user)
 }

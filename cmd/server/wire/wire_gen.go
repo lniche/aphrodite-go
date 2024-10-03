@@ -37,7 +37,10 @@ func NewWire(viperViper *viper.Viper, logger *log.Logger) (*app.App, func(), err
 	userFeedbackRepository := repository.NewUserFeedbackRepository(repositoryRepository)
 	userFeedbackService := service.NewUserFeedbackService(serviceService, userFeedbackRepository, userRepository)
 	userFeedbackHandler := handler.NewUserFeedbackHandler(handlerHandler, userFeedbackService)
-	httpServer := server.NewHTTPServer(logger, viperViper, jwtJWT, userHandler, userFeedbackHandler)
+	userAddressRepository := repository.NewUserAddressRepository(repositoryRepository)
+	userAddressService := service.NewUserAddressService(serviceService, userAddressRepository, userRepository)
+	userAddressHandler := handler.NewUserAddressHandler(handlerHandler, userAddressService)
+	httpServer := server.NewHTTPServer(logger, viperViper, jwtJWT, userHandler, userFeedbackHandler, userAddressHandler)
 	job := server.NewJob(logger)
 	appApp := newApp(httpServer, job)
 	return appApp, func() {

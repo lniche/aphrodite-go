@@ -1,5 +1,21 @@
 definitions:
-  aphrodite-go_api_v1.AddUserFeedbackRequest:
+  aphrodite-go_api_v1.CreateUserAddressRequest:
+    properties:
+      default:
+        type: boolean
+      recipientAddress:
+        type: string
+      recipientName:
+        type: string
+      recipientPhone:
+        type: string
+    required:
+      - default
+      - recipientAddress
+      - recipientName
+      - recipientPhone
+    type: object
+  aphrodite-go_api_v1.CreateUserFeedbackRequest:
     properties:
       feedback:
         example: banana
@@ -33,6 +49,37 @@ definitions:
         type: string
     required:
       - phone
+    type: object
+  aphrodite-go_api_v1.GetUserAddressResponse:
+    properties:
+      code:
+        type: integer
+      data:
+        $ref: '#/definitions/aphrodite-go_api_v1.GetUserAddressResponseData'
+      message:
+        type: string
+    type: object
+  aphrodite-go_api_v1.GetUserAddressResponseData:
+    properties:
+      default:
+        type: boolean
+      recipientAddress:
+        type: string
+      recipientName:
+        type: string
+      recipientPhone:
+        type: string
+    type: object
+  aphrodite-go_api_v1.GetUserAddressesResponse:
+    properties:
+      code:
+        type: integer
+      data:
+        items:
+          $ref: '#/definitions/aphrodite-go_api_v1.GetUserAddressResponseData'
+        type: array
+      message:
+        type: string
     type: object
   aphrodite-go_api_v1.LoginRequest:
     properties:
@@ -85,6 +132,25 @@ definitions:
       verifyCode:
         example: "1234"
         type: string
+    type: object
+  aphrodite-go_api_v1.UpdateUserAddressRequest:
+    properties:
+      addressId:
+        type: string
+      default:
+        type: boolean
+      recipientAddress:
+        type: string
+      recipientName:
+        type: string
+      recipientPhone:
+        type: string
+    required:
+      - addressId
+      - default
+      - recipientAddress
+      - recipientName
+      - recipientPhone
     type: object
 host: localhost:8000
 info:
@@ -180,7 +246,22 @@ paths:
       summary: 修改用户信息
       tags:
         - 用户模块
-  /user/feedback/add:
+  /user/address:
+    get:
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/aphrodite-go_api_v1.GetUserAddressesResponse'
+      security:
+        - Bearer: [ ]
+      summary: 获取所有地址
+      tags:
+        - 用户地址模块
     post:
       consumes:
         - application/json
@@ -190,7 +271,95 @@ paths:
           name: request
           required: true
           schema:
-            $ref: '#/definitions/aphrodite-go_api_v1.AddUserFeedbackRequest'
+            $ref: '#/definitions/aphrodite-go_api_v1.CreateUserAddressRequest'
+      produces:
+        - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/aphrodite-go_api_v1.Response'
+      security:
+        - Bearer: [ ]
+      summary: 新增用户地址
+      tags:
+        - 用户地址模块
+    put:
+      consumes:
+        - application/json
+      parameters:
+        - description: params
+          in: body
+          name: request
+          required: true
+          schema:
+            $ref: '#/definitions/aphrodite-go_api_v1.UpdateUserAddressRequest'
+      produces:
+        - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/aphrodite-go_api_v1.Response'
+      security:
+        - Bearer: [ ]
+      summary: 修改用户地址
+      tags:
+        - 用户地址模块
+  /user/address/{id}:
+    delete:
+      consumes:
+        - application/json
+      parameters:
+        - description: 地址ID
+          in: path
+          name: id
+          required: true
+          type: string
+      produces:
+        - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/aphrodite-go_api_v1.Response'
+      security:
+        - Bearer: [ ]
+      summary: 修改用户地址
+      tags:
+        - 用户地址模块
+    get:
+      consumes:
+        - application/json
+      parameters:
+        - description: 地址ID
+          in: path
+          name: id
+          required: true
+          type: string
+      produces:
+        - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/aphrodite-go_api_v1.GetUserAddressResponse'
+      security:
+        - Bearer: [ ]
+      summary: 获取地址详情
+      tags:
+        - 用户地址模块
+  /user/feedback:
+    post:
+      consumes:
+        - application/json
+      parameters:
+        - description: params
+          in: body
+          name: request
+          required: true
+          schema:
+            $ref: '#/definitions/aphrodite-go_api_v1.CreateUserFeedbackRequest'
       produces:
         - application/json
       responses:

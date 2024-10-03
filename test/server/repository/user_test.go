@@ -58,7 +58,7 @@ func TestUserRepository_Create(t *testing.T) {
 		WillReturnResult(sqlmock.NewResult(1, 1))
 	mock.ExpectCommit()
 
-	err := userRepo.Create(ctx, user)
+	err := userRepo.CreateProfile(ctx, user)
 	assert.NoError(t, err)
 
 	assert.NoError(t, mock.ExpectationsWereMet())
@@ -82,7 +82,7 @@ func TestUserRepository_Update(t *testing.T) {
 	mock.ExpectExec("UPDATE `users`").WillReturnResult(sqlmock.NewResult(1, 1))
 	mock.ExpectCommit()
 
-	err := userRepo.Update(ctx, user)
+	err := userRepo.UpdateProfile(ctx, user)
 	assert.NoError(t, err)
 
 	assert.NoError(t, mock.ExpectationsWereMet())

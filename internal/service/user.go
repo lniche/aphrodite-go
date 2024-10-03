@@ -56,7 +56,7 @@ func (s *userService) Login(ctx context.Context, clientIp string, req *v1.LoginR
 		if user.Phone == "" {
 			user.Phone = req.Phone
 		}
-		if err = s.userRepo.Update(ctx, user); err != nil {
+		if err = s.userRepo.UpdateProfile(ctx, user); err != nil {
 			return "", err
 		}
 	} else {
@@ -88,14 +88,14 @@ func (s *userService) Login(ctx context.Context, clientIp string, req *v1.LoginR
 		}
 		// Transaction demo
 		err = s.tm.Transaction(ctx, func(ctx context.Context) error {
-			// Create a user
-			if err = s.userRepo.Create(ctx, user); err != nil {
+			// CreateProfile a user
+			if err = s.userRepo.CreateProfile(ctx, user); err != nil {
 				return err
 			}
 			return nil
 		})
 	}
-	token, err := s.jwt.GenToken(user.UserCode, time.Now().Add(time.Hour*24*90))
+	token, err := s.jwt.GenToken(user.UserCode, time.Now().Add(time.Hour*24*30))
 	if err != nil {
 		return "", err
 	}
@@ -154,7 +154,7 @@ func (s *userService) UpdateProfile(ctx context.Context, userCode string, req *v
 		user.Phone = req.NewPhone
 	}
 
-	if err = s.userRepo.Update(ctx, user); err != nil {
+	if err = s.userRepo.UpdateProfile(ctx, user); err != nil {
 		return err
 	}
 

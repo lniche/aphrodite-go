@@ -7,7 +7,7 @@ import (
 
 type UserFeedbackRepository interface {
 	GetUserFeedback(ctx context.Context, id int64) (*model.UserFeedback, error)
-	Create(ctx context.Context, userFeedback *model.UserFeedback) error
+	CreateUserFeedback(ctx context.Context, userFeedback *model.UserFeedback) error
 }
 
 func NewUserFeedbackRepository(
@@ -28,7 +28,7 @@ func (r *userFeedbackRepository) GetUserFeedback(ctx context.Context, id int64) 
 	return &userFeedback, nil
 }
 
-func (r *userFeedbackRepository) Create(ctx context.Context, userFeedback *model.UserFeedback) error {
+func (r *userFeedbackRepository) CreateUserFeedback(ctx context.Context, userFeedback *model.UserFeedback) error {
 	if err := r.DB(ctx).Create(userFeedback).Error; err != nil {
 		return err
 	}

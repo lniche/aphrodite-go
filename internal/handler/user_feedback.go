@@ -22,7 +22,7 @@ func NewUserFeedbackHandler(
 	}
 }
 
-// AddUserFeedback godoc
+// CreateUserFeedback godoc
 // @Summary 新增用户反馈
 // @Schemes
 // @Description
@@ -30,19 +30,19 @@ func NewUserFeedbackHandler(
 // @Accept json
 // @Produce json
 // @Security Bearer
-// @Param request body v1.AddUserFeedbackRequest true "params"
+// @Param request body v1.CreateUserFeedbackRequest true "params"
 // @Success 200 {object} v1.Response
-// @Router /user/feedback/add [post]
-func (h *UserFeedbackHandler) AddUserFeedback(ctx *gin.Context) {
+// @Router /user/feedback [post]
+func (h *UserFeedbackHandler) CreateUserFeedback(ctx *gin.Context) {
 	userCode := GetUserCodeFromCtx(ctx)
 
-	var req v1.AddUserFeedbackRequest
+	var req v1.CreateUserFeedbackRequest
 	if err := ctx.ShouldBindJSON(&req); err != nil {
 		v1.HandleError(ctx, http.StatusBadRequest, v1.ErrBadRequest, nil)
 		return
 	}
 
-	if err := h.userFeedbackService.AddUserFeedback(ctx, userCode, &req); err != nil {
+	if err := h.userFeedbackService.CreateUserFeedback(ctx, userCode, &req); err != nil {
 		v1.HandleError(ctx, http.StatusInternalServerError, v1.ErrInternalServerError, nil)
 		return
 	}

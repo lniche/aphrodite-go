@@ -9,7 +9,7 @@ import (
 
 type UserFeedbackService interface {
 	GetUserFeedback(ctx context.Context, id int64) (*model.UserFeedback, error)
-	AddUserFeedback(ctx context.Context, userCode string, req *v1.AddUserFeedbackRequest) error
+	CreateUserFeedback(ctx context.Context, userCode string, req *v1.CreateUserFeedbackRequest) error
 }
 
 func NewUserFeedbackService(
@@ -34,7 +34,7 @@ func (s *userFeedbackService) GetUserFeedback(ctx context.Context, id int64) (*m
 	return s.userFeedbackRepository.GetUserFeedback(ctx, id)
 }
 
-func (s *userFeedbackService) AddUserFeedback(ctx context.Context, userCode string, req *v1.AddUserFeedbackRequest) error {
+func (s *userFeedbackService) CreateUserFeedback(ctx context.Context, userCode string, req *v1.CreateUserFeedbackRequest) error {
 	_, err := s.userRepo.GetByCode(ctx, userCode)
 	if err != nil {
 		return err
@@ -44,7 +44,7 @@ func (s *userFeedbackService) AddUserFeedback(ctx context.Context, userCode stri
 		Feedback: req.Feedback,
 	}
 	err = s.tm.Transaction(ctx, func(ctx context.Context) error {
-		if err = s.userFeedbackRepository.Create(ctx, userFeedback); err != nil {
+		if err = s.userFeedbackRepository.CreateUserFeedback(ctx, userFeedback); err != nil {
 			return err
 		}
 		return nil
