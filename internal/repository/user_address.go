@@ -9,12 +9,12 @@ import (
 )
 
 type UserAddressRepository interface {
-	GetUserAddress(ctx context.Context, userCode string, id uint) (*model.UserAddress, error)
+	GetUserAddress(ctx context.Context, userCode string, id uint64) (*model.UserAddress, error)
 	GetUserAddresses(ctx context.Context, userCode string) (*[]model.UserAddress, error)
 	CreateUserAddress(ctx context.Context, userAddress *model.UserAddress) error
 	UpdateUserAddress(ctx context.Context, userAddress *model.UserAddress) error
-	UpdateUserAddressDefault(ctx context.Context, userCode string, id uint) error
-	DeleteUserAddress(ctx context.Context, userCode string, id uint) error
+	UpdateUserAddressDefault(ctx context.Context, userCode string, id uint64) error
+	DeleteUserAddress(ctx context.Context, userCode string, id uint64) error
 }
 
 func NewUserAddressRepository(
@@ -29,7 +29,7 @@ type userAddressRepository struct {
 	*Repository
 }
 
-func (r userAddressRepository) GetUserAddress(ctx context.Context, userCode string, id uint) (*model.UserAddress, error) {
+func (r userAddressRepository) GetUserAddress(ctx context.Context, userCode string, id uint64) (*model.UserAddress, error) {
 	var userAddress model.UserAddress
 	if err := r.DB(ctx).Where("user_code = ? and id = ?", userCode, id).First(&userAddress).Error; err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
@@ -65,14 +65,14 @@ func (r userAddressRepository) UpdateUserAddress(ctx context.Context, userAddres
 	return nil
 }
 
-func (r userAddressRepository) UpdateUserAddressDefault(ctx context.Context, userCode string, id uint) error {
+func (r userAddressRepository) UpdateUserAddressDefault(ctx context.Context, userCode string, id uint64) error {
 	if err := r.DB(ctx).Model(&model.UserAddress{}).Where("user_code = ? and id!=", userCode, id).Update("is_default", false).Error; err != nil {
 		return err
 	}
 	return nil
 }
 
-func (r userAddressRepository) DeleteUserAddress(ctx context.Context, userCode string, id uint) error {
+func (r userAddressRepository) DeleteUserAddress(ctx context.Context, userCode string, id uint64) error {
 	if err := r.DB(ctx).Where("user_code = ?", userCode).Delete(&model.UserAddress{}, id).Error; err != nil {
 		return err
 	}

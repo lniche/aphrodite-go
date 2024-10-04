@@ -8,7 +8,7 @@ type CreateUserAddressRequest struct {
 }
 
 type UpdateUserAddressRequest struct {
-	ID               uint   `json:"addressId" binding:"required"`
+	ID               uint64 `json:"addressId" binding:"required"`
 	RecipientName    string `json:"recipientName" binding:"required"`
 	RecipientPhone   string `json:"recipientPhone" binding:"required"`
 	RecipientAddress string `json:"recipientAddress" binding:"required"`

@@ -50,7 +50,7 @@ func (h *UserAddressHandler) GetUserAddress(ctx *gin.Context) {
 		ctx.JSON(http.StatusBadRequest, gin.H{"error": "Invalid ID"})
 		return
 	}
-	userAddress, err := h.userAddressService.GetUserAddress(ctx, userCode, uint(id))
+	userAddress, err := h.userAddressService.GetUserAddress(ctx, userCode, id)
 	if err != nil {
 		v1.HandleError(ctx, http.StatusInternalServerError, err, nil)
 		return
@@ -165,7 +165,7 @@ func (h *UserAddressHandler) DeleteUserAddress(ctx *gin.Context) {
 		ctx.JSON(http.StatusBadRequest, gin.H{"error": "Invalid ID"})
 		return
 	}
-	if err := h.userAddressService.DeleteUserAddress(ctx, userCode, uint(id)); err != nil {
+	if err := h.userAddressService.DeleteUserAddress(ctx, userCode, id); err != nil {
 		v1.HandleError(ctx, http.StatusInternalServerError, v1.ErrInternalServerError, nil)
 		return
 	}

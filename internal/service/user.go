@@ -49,7 +49,7 @@ func (s *userService) Login(ctx context.Context, clientIp string, req *v1.LoginR
 		}
 	}
 	if user != nil {
-		user.LastLoginAt = time.Now()
+		user.LoginAt = time.Now()
 		if user.OpenId == "" {
 			user.OpenId = req.OpenId
 		}
@@ -78,13 +78,13 @@ func (s *userService) Login(ctx context.Context, clientIp string, req *v1.LoginR
 			return "", err
 		}
 		user = &model.User{
-			Nickname:    "SUGAR" + req.Phone[len(req.Phone)-4:],
-			UserCode:    strconv.FormatUint(userCode, 10),
-			UserNo:      100000 + userNo,
-			Phone:       req.Phone,
-			ClientIp:    clientIp,
-			OpenId:      req.OpenId,
-			LastLoginAt: time.Now(),
+			Nickname: "SUGAR" + req.Phone[len(req.Phone)-4:],
+			UserCode: strconv.FormatUint(userCode, 10),
+			UserNo:   uint64(100000 + userNo),
+			Phone:    req.Phone,
+			ClientIp: clientIp,
+			OpenId:   req.OpenId,
+			LoginAt:  time.Now(),
 		}
 		// Transaction demo
 		err = s.tm.Transaction(ctx, func(ctx context.Context) error {
@@ -110,7 +110,7 @@ func (s *userService) GetProfile(ctx context.Context, userCode string) (*v1.GetP
 	}
 
 	return &v1.GetProfileResponseData{
-		UserNo:   strconv.FormatInt(user.UserNo, 10),
+		UserNo:   strconv.FormatUint(user.UserNo, 10),
 		UserCode: user.UserCode,
 		Nickname: user.Nickname,
 		Email:    desensitizeEmail(user.Email),

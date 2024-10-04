@@ -8,11 +8,11 @@ import (
 )
 
 type UserAddressService interface {
-	GetUserAddress(ctx context.Context, userCode string, id uint) (*v1.GetUserAddressResponseData, error)
+	GetUserAddress(ctx context.Context, userCode string, id uint64) (*v1.GetUserAddressResponseData, error)
 	GetUserAddresses(ctx context.Context, userCode string) (*[]v1.GetUserAddressResponseData, error)
 	CreateUserAddress(ctx context.Context, userCode string, req *v1.CreateUserAddressRequest) error
 	UpdateUserAddress(ctx context.Context, userCode string, req *v1.UpdateUserAddressRequest) error
-	DeleteUserAddress(ctx context.Context, userCode string, id uint) error
+	DeleteUserAddress(ctx context.Context, userCode string, id uint64) error
 }
 
 func NewUserAddressService(
@@ -33,7 +33,7 @@ type userAddressService struct {
 	userRepo              repository.UserRepository
 }
 
-func (s userAddressService) GetUserAddress(ctx context.Context, userCode string, id uint) (*v1.GetUserAddressResponseData, error) {
+func (s userAddressService) GetUserAddress(ctx context.Context, userCode string, id uint64) (*v1.GetUserAddressResponseData, error) {
 	userAddress, err := s.userAddressRepository.GetUserAddress(ctx, userCode, id)
 	if err != nil {
 		return nil, err
@@ -82,7 +82,11 @@ func (s userAddressService) CreateUserAddress(ctx context.Context, userCode stri
 		if err = s.userAddressRepository.CreateUserAddress(ctx, userAddress); err != nil {
 			return err
 		}
-		err = s.userAddressRepository.UpdateUserAddressDefault(ctx, userCode, userAddress.ID)
+		if req.Default {
+			if err = s.userAddressRepository.UpdateUserAddressDefault(ctx, userCode, userAddress.ID); err != nil {
+				return err
+			}
+		}
 		return nil
 	})
 	return nil
@@ -104,10 +108,15 @@ func (s userAddressService) UpdateUserAddress(ctx context.Context, userCode stri
 	if err = s.userAddressRepository.UpdateUserAddress(ctx, userAddress); err != nil {
 		return err
 	}
+	if req.Default {
+		if err = s.userAddressRepository.UpdateUserAddressDefault(ctx, userCode, userAddress.ID); err != nil {
+			return err
+		}
+	}
 	return nil
 }
 
-func (s userAddressService) DeleteUserAddress(ctx context.Context, userCode string, id uint) error {
+func (s userAddressService) DeleteUserAddress(ctx context.Context, userCode string, id uint64) error {
 	user, err := s.userRepo.GetByCode(ctx, userCode)
 	if err != nil {
 		return err
