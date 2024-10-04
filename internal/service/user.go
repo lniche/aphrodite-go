@@ -19,31 +19,32 @@ type UserService interface {
 	GetProfile(ctx context.Context, userCode string) (*v1.GetProfileResponseData, error)
 	UpdateProfile(ctx context.Context, userCode string, req *v1.UpdateProfileRequest) error
 	SendVerifyCode(ctx context.Context, req *v1.SendVerifyCodeRequest) error
+	Logout(ctx context.Context, userCode string) error
 }
 
 func NewUserService(
 	service *Service,
-	userRepo repository.UserRepository,
+	userRepository repository.UserRepository,
 ) UserService {
 	return &userService{
-		userRepo: userRepo,
-		Service:  service,
+		userRepository: userRepository,
+		Service:        service,
 	}
 }
 
 type userService struct {
-	userRepo repository.UserRepository
+	userRepository repository.UserRepository
 	*Service
 }
 
 func (s *userService) Login(ctx context.Context, clientIp string, req *v1.LoginRequest) (string, error) {
 	// check phone
-	user, err := s.userRepo.GetByPhone(ctx, req.Phone)
+	user, err := s.userRepository.GetByPhone(ctx, req.Phone)
 	if err != nil {
 		return "", v1.ErrInternalServerError
 	}
 	if user == nil && req.OpenId != "" {
-		user, err = s.userRepo.GetByOpenId(ctx, req.OpenId)
+		user, err = s.userRepository.GetByOpenId(ctx, req.OpenId)
 		if err != nil {
 			return "", v1.ErrInternalServerError
 		}
@@ -56,12 +57,12 @@ func (s *userService) Login(ctx context.Context, clientIp string, req *v1.LoginR
 		if user.Phone == "" {
 			user.Phone = req.Phone
 		}
-		if err = s.userRepo.UpdateProfile(ctx, user); err != nil {
+		if err = s.userRepository.UpdateProfile(ctx, user); err != nil {
 			return "", err
 		}
 	} else {
 		// check verify code
-		storedCode, err := s.userRepo.GetVerifyCode(ctx, req.Phone)
+		storedCode, err := s.userRepository.GetVerifyCode(ctx, req.Phone)
 		if err != nil {
 			return "", fmt.Errorf("cache code not exist")
 		}
@@ -73,7 +74,7 @@ func (s *userService) Login(ctx context.Context, clientIp string, req *v1.LoginR
 		if err != nil {
 			return "", err
 		}
-		userNo, err := s.userRepo.GenerateUserNo(ctx)
+		userNo, err := s.userRepository.GenerateUserNo(ctx)
 		if err != nil {
 			return "", err
 		}
@@ -89,7 +90,7 @@ func (s *userService) Login(ctx context.Context, clientIp string, req *v1.LoginR
 		// Transaction demo
 		err = s.tm.Transaction(ctx, func(ctx context.Context) error {
 			// CreateProfile a user
-			if err = s.userRepo.CreateProfile(ctx, user); err != nil {
+			if err = s.userRepository.CreateProfile(ctx, user); err != nil {
 				return err
 			}
 			return nil
@@ -104,7 +105,7 @@ func (s *userService) Login(ctx context.Context, clientIp string, req *v1.LoginR
 }
 
 func (s *userService) GetProfile(ctx context.Context, userCode string) (*v1.GetProfileResponseData, error) {
-	user, err := s.userRepo.GetByCodeWithCache(ctx, userCode)
+	user, err := s.userRepository.GetByCodeWithCache(ctx, userCode)
 	if err != nil {
 		return nil, err
 	}
@@ -119,7 +120,7 @@ func (s *userService) GetProfile(ctx context.Context, userCode string) (*v1.GetP
 }
 
 func (s *userService) UpdateProfile(ctx context.Context, userCode string, req *v1.UpdateProfileRequest) error {
-	user, err := s.userRepo.GetByCode(ctx, userCode)
+	user, err := s.userRepository.GetByCode(ctx, userCode)
 	if err != nil {
 		return err
 	}
@@ -144,7 +145,7 @@ func (s *userService) UpdateProfile(ctx context.Context, userCode string, req *v
 		}
 	}
 	if req.VerifyCode != "" && req.OldPhone != "" && req.NewPhone != "" {
-		storedCode, err := s.userRepo.GetVerifyCode(ctx, req.OldPhone)
+		storedCode, err := s.userRepository.GetVerifyCode(ctx, req.OldPhone)
 		if err != nil {
 			return err
 		}
@@ -154,21 +155,22 @@ func (s *userService) UpdateProfile(ctx context.Context, userCode string, req *v
 		user.Phone = req.NewPhone
 	}
 
-	if err = s.userRepo.UpdateProfile(ctx, user); err != nil {
+	if err = s.userRepository.UpdateProfile(ctx, user); err != nil {
 		return err
 	}
 
 	return nil
 }
+
 func (s *userService) SendVerifyCode(ctx context.Context, req *v1.SendVerifyCodeRequest) error {
 	code := generateVerificationCode()
 	s.logger.Info("send verify code", zap.String("code", code))
-	storedCode, err := s.userRepo.GetVerifyCode(ctx, req.Phone)
+	storedCode, err := s.userRepository.GetVerifyCode(ctx, req.Phone)
 	if storedCode != "" {
 		return fmt.Errorf("verify code already sent, please wait 1 minute")
 	}
 	// TODO real send msg
-	err = s.userRepo.CacheVerifyCode(ctx, req.Phone, code)
+	err = s.userRepository.CacheVerifyCode(ctx, req.Phone, code)
 	if err != nil {
 		return err
 	}
@@ -189,4 +191,17 @@ func desensitizePhone(phone string) string {
 func desensitizeEmail(email string) string {
 	re := regexp.MustCompile(`(\w{3})[\w.-]+@([\w.]+)`)
 	return re.ReplaceAllString(email, "$1***@$2")
+}
+
+func (s *userService) Logout(ctx context.Context, userCode string) error {
+	err := s.tm.Transaction(ctx, func(ctx context.Context) error {
+		if err := s.userRepository.Logout(ctx, userCode); err != nil {
+			return err
+		}
+		return nil
+	})
+	if err != nil {
+		return err
+	}
+	return nil
 }

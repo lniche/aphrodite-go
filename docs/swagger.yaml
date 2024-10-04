@@ -136,7 +136,7 @@ definitions:
   aphrodite-go_api_v1.UpdateUserAddressRequest:
     properties:
       addressId:
-        type: string
+        type: integer
       default:
         type: boolean
       recipientAddress:
@@ -166,7 +166,7 @@ info:
   title: Nunu Example API
   version: 1.0.0
 paths:
-  /login:
+  /auth/login:
     post:
       consumes:
         - application/json
@@ -184,10 +184,24 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/aphrodite-go_api_v1.Response'
-      summary: 用户登录注册
+      summary: 登录注册
       tags:
-        - 用户模块
-  /send-code:
+        - 认证模块
+  /auth/logout:
+    post:
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/aphrodite-go_api_v1.Response'
+      summary: 注销
+      tags:
+        - 认证模块
+  /auth/send-code:
     post:
       consumes:
         - application/json
@@ -207,7 +221,7 @@ paths:
             $ref: '#/definitions/aphrodite-go_api_v1.Response'
       summary: 发送验证码
       tags:
-        - 用户模块
+        - 认证模块
   /user:
     get:
       consumes:

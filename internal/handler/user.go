@@ -4,7 +4,6 @@ import (
 	"aphrodite-go/api/v1"
 	"aphrodite-go/internal/service"
 	"github.com/gin-gonic/gin"
-	"go.uber.org/zap"
 	"net/http"
 )
 
@@ -18,61 +17,6 @@ func NewUserHandler(handler *Handler, userService service.UserService) *UserHand
 		Handler:     handler,
 		userService: userService,
 	}
-}
-
-// SendVerifyCode godoc
-// @Summary 发送验证码
-// @Schemes
-// @Description
-// @Tags 用户模块
-// @Accept json
-// @Produce json
-// @Param request body v1.SendVerifyCodeRequest true "params"
-// @Success 200 {object} v1.Response
-// @Router /send-code [post]
-func (h *UserHandler) SendVerifyCode(ctx *gin.Context) {
-	req := new(v1.SendVerifyCodeRequest)
-	if err := ctx.ShouldBindJSON(req); err != nil {
-		v1.HandleError(ctx, http.StatusBadRequest, v1.ErrBadRequest, nil)
-		return
-	}
-
-	if err := h.userService.SendVerifyCode(ctx, req); err != nil {
-		h.logger.WithContext(ctx).Error("userService.SendVerificationCode error", zap.Error(err))
-		v1.HandleError(ctx, http.StatusInternalServerError, err, nil)
-		return
-	}
-
-	v1.HandleSuccess(ctx, nil)
-}
-
-// Login godoc
-// @Summary 用户登录注册
-// @Schemes
-// @Description
-// @Tags 用户模块
-// @Accept json
-// @Produce json
-// @Param request body v1.LoginRequest true "params"
-// @Success 200 {object} v1.Response
-// @Router /login [post]
-func (h *UserHandler) Login(ctx *gin.Context) {
-	var req = new(v1.LoginRequest)
-	if err := ctx.ShouldBindJSON(req); err != nil {
-		v1.HandleError(ctx, http.StatusBadRequest, v1.ErrBadRequest, nil)
-		return
-	}
-	token, err := h.userService.Login(ctx, ctx.ClientIP(), req)
-
-	if err != nil {
-		h.logger.WithContext(ctx).Error("userService.Register error", zap.Error(err))
-		v1.HandleError(ctx, http.StatusInternalServerError, err, nil)
-		return
-	}
-
-	v1.HandleSuccess(ctx, v1.LoginResponseData{
-		AccessToken: token,
-	})
 }
 
 // GetProfile godoc

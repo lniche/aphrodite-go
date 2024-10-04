@@ -22,13 +22,14 @@ type UserRepository interface {
 	GenerateUserNo(ctx context.Context) (int64, error)
 	CacheVerifyCode(ctx context.Context, phone string, code string) error
 	GetVerifyCode(ctx context.Context, phone string) (string, error)
+	Logout(ctx context.Context, userCode string) error
 }
 
 func NewUserRepository(
-	r *Repository,
+	repository *Repository,
 ) UserRepository {
 	return &userRepository{
-		Repository: r,
+		Repository: repository,
 	}
 }
 
@@ -137,4 +138,19 @@ func (r *userRepository) GetVerifyCode(ctx context.Context, phone string) (strin
 		return "", err
 	}
 	return storedCode, nil
+}
+
+func (r *userRepository) Logout(ctx context.Context, userCode string) error {
+	user, err := r.GetByCode(ctx, userCode)
+	if err != nil {
+		return err
+	}
+	if err = r.DB(ctx).Model(&model.UserAddress{}).Where("user_code = ?", userCode).Update("login_token", "").Error; err != nil {
+		return err
+	}
+	expiration := 30 * 24 * time.Hour
+	if err = r.rdb.Set(ctx, user.LoginToken, constant.JWT_BLACKLIST, expiration).Err(); err != nil {
+		return err
+	}
+	return nil
 }

@@ -36,6 +36,7 @@ var serviceSet = wire.NewSet(
 
 var handlerSet = wire.NewSet(
 	handler.NewHandler,
+	handler.NewAuthHandler,
 	handler.NewUserHandler,
 	handler.NewUserFeedbackHandler,
 	handler.NewUserAddressHandler,

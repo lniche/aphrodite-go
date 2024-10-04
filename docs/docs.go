@@ -24,7 +24,7 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
-        "/login": {
+        "/auth/login": {
             "post": {
                 "consumes": [
                     "application/json"
@@ -33,9 +33,9 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "用户模块"
+                    "认证模块"
                 ],
-                "summary": "用户登录注册",
+                "summary": "登录注册",
                 "parameters": [
                     {
                         "description": "params",
@@ -57,7 +57,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/send-code": {
+        "/auth/logout": {
             "post": {
                 "consumes": [
                     "application/json"
@@ -66,7 +66,29 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "用户模块"
+                    "认证模块"
+                ],
+                "summary": "注销",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/aphrodite-go_api_v1.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/auth/send-code": {
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "认证模块"
                 ],
                 "summary": "发送验证码",
                 "parameters": [
@@ -570,7 +592,7 @@ const docTemplate = `{
             ],
             "properties": {
                 "addressId": {
-                    "type": "string"
+                    "type": "integer"
                 },
                 "default": {
                     "type": "boolean"

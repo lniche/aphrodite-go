@@ -11,10 +11,10 @@ type UserFeedbackRepository interface {
 }
 
 func NewUserFeedbackRepository(
-	r *Repository,
+	repository *Repository,
 ) UserFeedbackRepository {
 	return &userFeedbackRepository{
-		Repository: r,
+		Repository: repository,
 	}
 }
 

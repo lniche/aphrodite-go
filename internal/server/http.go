@@ -9,6 +9,7 @@ import (
 	"aphrodite-go/pkg/log"
 	"aphrodite-go/pkg/server/http"
 	"github.com/gin-gonic/gin"
+	"github.com/redis/go-redis/v9"
 	"github.com/spf13/viper"
 	swaggerfiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
@@ -18,9 +19,11 @@ func NewHTTPServer(
 	logger *log.Logger,
 	conf *viper.Viper,
 	jwt *jwt.JWT,
+	authHandler *handler.AuthHandler,
 	userHandler *handler.UserHandler,
 	userFeedbackHandler *handler.UserFeedbackHandler,
 	userAddressHandler *handler.UserAddressHandler,
+	redis *redis.Client,
 ) *http.Server {
 	gin.SetMode(gin.DebugMode)
 	s := http.NewServer(
@@ -57,11 +60,11 @@ func NewHTTPServer(
 		// No route group has permission
 		noAuthRouter := v1.Group("/")
 		{
-			noAuthRouter.POST("/login", userHandler.Login)
-			noAuthRouter.POST("/send-code", userHandler.SendVerifyCode)
+			noAuthRouter.POST("/auth/login", authHandler.Login)
+			noAuthRouter.POST("/auth/send-code", authHandler.SendVerifyCode)
 		}
 		// Non-strict permission routing group
-		noStrictAuthRouter := v1.Group("/").Use(middleware.NoStrictAuth(jwt, logger))
+		noStrictAuthRouter := v1.Group("/").Use(middleware.NoStrictAuth(jwt, logger, redis))
 		{
 			noStrictAuthRouter.GET("/user", userHandler.GetProfile)
 			noStrictAuthRouter.GET("/user/address/:id", userAddressHandler.GetUserAddress)
@@ -69,7 +72,7 @@ func NewHTTPServer(
 		}
 
 		// Strict permission routing group
-		strictAuthRouter := v1.Group("/").Use(middleware.StrictAuth(jwt, logger))
+		strictAuthRouter := v1.Group("/").Use(middleware.StrictAuth(jwt, logger, redis))
 		{
 			strictAuthRouter.PUT("/user", userHandler.UpdateProfile)
 			strictAuthRouter.POST("/user/feedback", userFeedbackHandler.CreateUserFeedback)

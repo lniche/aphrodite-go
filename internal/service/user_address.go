@@ -18,19 +18,19 @@ type UserAddressService interface {
 func NewUserAddressService(
 	service *Service,
 	userAddressRepository repository.UserAddressRepository,
-	userRepo repository.UserRepository,
+	userRepository repository.UserRepository,
 ) UserAddressService {
 	return &userAddressService{
 		Service:               service,
 		userAddressRepository: userAddressRepository,
-		userRepo:              userRepo,
+		userRepository:        userRepository,
 	}
 }
 
 type userAddressService struct {
 	*Service
 	userAddressRepository repository.UserAddressRepository
-	userRepo              repository.UserRepository
+	userRepository        repository.UserRepository
 }
 
 func (s userAddressService) GetUserAddress(ctx context.Context, userCode string, id uint64) (*v1.GetUserAddressResponseData, error) {
@@ -67,7 +67,7 @@ func (s userAddressService) GetUserAddresses(ctx context.Context, userCode strin
 }
 
 func (s userAddressService) CreateUserAddress(ctx context.Context, userCode string, req *v1.CreateUserAddressRequest) error {
-	user, err := s.userRepo.GetByCode(ctx, userCode)
+	user, err := s.userRepository.GetByCode(ctx, userCode)
 	if err != nil {
 		return err
 	}
@@ -93,7 +93,7 @@ func (s userAddressService) CreateUserAddress(ctx context.Context, userCode stri
 }
 
 func (s userAddressService) UpdateUserAddress(ctx context.Context, userCode string, req *v1.UpdateUserAddressRequest) error {
-	_, err := s.userRepo.GetByCode(ctx, userCode)
+	_, err := s.userRepository.GetByCode(ctx, userCode)
 	if err != nil {
 		return err
 	}
@@ -117,7 +117,7 @@ func (s userAddressService) UpdateUserAddress(ctx context.Context, userCode stri
 }
 
 func (s userAddressService) DeleteUserAddress(ctx context.Context, userCode string, id uint64) error {
-	user, err := s.userRepo.GetByCode(ctx, userCode)
+	user, err := s.userRepository.GetByCode(ctx, userCode)
 	if err != nil {
 		return err
 	}

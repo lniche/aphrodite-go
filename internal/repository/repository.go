@@ -119,3 +119,44 @@ func NewRedis(conf *viper.Viper) *redis.Client {
 
 	return rdb
 }
+
+type RedisLock struct {
+	key        string
+	expiration time.Duration
+}
+
+func NewRedisLock(key string, expiration time.Duration) *RedisLock {
+	return &RedisLock{
+		key:        key,
+		expiration: expiration,
+	}
+}
+
+func (r *Repository) Lock(ctx context.Context, lock *RedisLock) (bool, error) {
+	// 使用 SETNX 命令尝试获取锁
+	success, err := r.rdb.SetNX(ctx, lock.key, "locked", lock.expiration).Result()
+	if err != nil {
+		return false, err
+	}
+	return success, nil
+}
+
+func (r *Repository) Unlock(ctx context.Context, lock *RedisLock) error {
+	// 使用 DEL 命令删除锁
+	_, err := r.rdb.Del(ctx, lock.key).Result()
+	return err
+}
+
+func (r *Repository) RetryLock(ctx context.Context, lock *RedisLock, maxRetries int, retryInterval time.Duration) (bool, error) {
+	for i := 0; i < maxRetries; i++ {
+		success, err := r.Lock(ctx, lock)
+		if err != nil {
+			return false, err
+		}
+		if success {
+			return true, nil
+		}
+		time.Sleep(retryInterval)
+	}
+	return false, nil
+}

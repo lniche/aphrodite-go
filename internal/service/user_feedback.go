@@ -15,19 +15,19 @@ type UserFeedbackService interface {
 func NewUserFeedbackService(
 	service *Service,
 	userFeedbackRepository repository.UserFeedbackRepository,
-	userRepo repository.UserRepository,
+	userRepository repository.UserRepository,
 ) UserFeedbackService {
 	return &userFeedbackService{
 		Service:                service,
 		userFeedbackRepository: userFeedbackRepository,
-		userRepo:               userRepo,
+		userRepository:         userRepository,
 	}
 }
 
 type userFeedbackService struct {
 	*Service
 	userFeedbackRepository repository.UserFeedbackRepository
-	userRepo               repository.UserRepository
+	userRepository         repository.UserRepository
 }
 
 func (s *userFeedbackService) GetUserFeedback(ctx context.Context, id int64) (*model.UserFeedback, error) {
@@ -35,7 +35,7 @@ func (s *userFeedbackService) GetUserFeedback(ctx context.Context, id int64) (*m
 }
 
 func (s *userFeedbackService) CreateUserFeedback(ctx context.Context, userCode string, req *v1.CreateUserFeedbackRequest) error {
-	_, err := s.userRepo.GetByCode(ctx, userCode)
+	_, err := s.userRepository.GetByCode(ctx, userCode)
 	if err != nil {
 		return err
 	}
