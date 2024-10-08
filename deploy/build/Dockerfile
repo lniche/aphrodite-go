@@ -4,7 +4,7 @@ RUN set -eux && sed -i 's/dl-cdn.alpinelinux.org/mirrors.ustc.edu.cn/g' /etc/apk
 
 ARG APP_RELATIVE_PATH
 
-COPY .. /data/app
+COPY . /data/app
 WORKDIR /data/app
 
 RUN rm -rf /data/app/bin/
@@ -30,5 +30,5 @@ COPY --from=builder /data/app/bin /data/app
 EXPOSE 8000
 ENTRYPOINT [ "./server" ]
 
-#docker build -t  1.1.1.1:5000/demo-api:v1 --build-arg APP_CONF=config/prod.yml --build-arg  APP_RELATIVE_PATH=./cmd/server/...  .
+#docker build -t  1.1.1.1:5000/demo-api:v1 --build-arg APP_CONF=config/local.yml --build-arg  APP_RELATIVE_PATH=./cmd/server   -f ./deploy/build/Dockerfile  .
 #docker run -it --rm --entrypoint=ash 1.1.1.1:5000/demo-api:v1
