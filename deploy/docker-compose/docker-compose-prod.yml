@@ -1,40 +1,38 @@
 version: '3'
 
 services:
-  db:
+  user-db:
     image: mysql:8
-    hostname: db
-    container_name: db
+    hostname: user-db
+    container_name: user-db
     ports:
-      - 3306:3306
+      - 3380:3306
     environment:
       - MYSQL_ROOT_PASSWORD=123123
       - MYSQL_ROOT_HOST=%
-      - MYSQL_DATABASE=test
+      - MYSQL_DATABASE=user
       - MYSQL_PASSWORD=123123
       - TZ=Asia/Shanghai
     volumes:
       - ./data/mysql/user:/var/lib/mysql
       - ./conf/mysql/conf.d:/etc/mysql/conf.d
-      # - ./init.sql:/docker-entrypoint-initdb.d/init.sql
     networks:
       - app-network
     restart: unless-stopped
     healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "test", "-p123123"]
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p123123"]
       interval: 10s
       timeout: 5s
       retries: 5
 
-  cache:
+  cache-redis:
     image: redis:6-alpine
-    hostname: cache
-    container_name: cache
+    hostname: cache-redis
     volumes:
-      - ./data/cache/:/data
-      - ./conf/cache/redis.conf:/etc/redis/redis.conf
+      - ./data/redis/cache/:/data
+      - ./conf/redis/cache/redis.conf:/etc/redis/redis.conf
     ports:
-      - 6379:6379
+      - 6350:6379
     command: [ "redis-server", "/etc/redis/redis.conf" ]
     networks:
       - app-network
@@ -45,17 +43,15 @@ services:
       timeout: 5s
       retries: 5
 
-  web:
+  aphrodite-go:
     image: registry.cn-hangzhou.aliyuncs.com/threshold/aphrodite-go:v1
-    hostname: web
-    container_name: web
     ports:
       - 8000:8000
     depends_on:
-      - cache
-      - db
+      - cache-redis
+      - user-db
     volumes:
-      - ./logs:/data/app/storage/logs
+      - ./logs/aphrodite-go:/data/app/storage/logs
     networks:
       - app-network
     restart: unless-stopped
@@ -81,13 +77,4 @@ networks:
   app-network:
     driver: bridge
 
-#docker-compose up -d
-#docker-compose stop
-#docker-compose restart
-#docker-compose down
-#docker-compose ps
-#docker-compose logs
-#docker-compose exec
-#docker-compose exec -it web /bin/sh
-#docker-compose exec -it db /bin/sh
-#docker-compose exec -it cache /bin/sh
+#docker-compose  -f ./deploy/docker-compose/docker-compose.yml up

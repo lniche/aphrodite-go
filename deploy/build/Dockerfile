@@ -30,5 +30,6 @@ COPY --from=builder /data/app/bin /data/app
 EXPOSE 8000
 ENTRYPOINT [ "./server" ]
 
-#docker build -t  1.1.1.1:5000/demo-api:v1 --build-arg APP_CONF=config/local.yml --build-arg  APP_RELATIVE_PATH=./cmd/server   -f ./deploy/build/Dockerfile  .
-#docker run -it --rm --entrypoint=ash 1.1.1.1:5000/demo-api:v1
+#docker build -t registry.cn-hangzhou.aliyuncs.com/threshold/aphrodite-go:v1 --build-arg APP_CONF=config/local.yml --build-arg  APP_RELATIVE_PATH=./cmd/server   -f ./deploy/build/Dockerfile  .
+#docker run -it registry.cn-hangzhou.aliyuncs.com/threshold/aphrodite-go:v1
+#docker push registry.cn-hangzhou.aliyuncs.com/threshold/aphrodite-go:v1
