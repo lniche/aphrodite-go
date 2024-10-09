@@ -3,7 +3,6 @@ version: '3'
 services:
   user-db:
     image: mysql:8
-    hostname: user-db
     container_name: user-db
     ports:
       - 3380:3306
@@ -13,6 +12,12 @@ services:
       - MYSQL_DATABASE=test
       - MYSQL_PASSWORD=123123
       - TZ=Asia/Shanghai
+      - LANG=en_US.UTF-8
+    logging:
+      driver: 'json-file'
+      options:
+        max-size: '5g'
+    privileged: true
     volumes:
       - ./data/mysql/user:/var/lib/mysql
       - ./conf/mysql/conf.d:/etc/mysql/conf.d
@@ -28,7 +33,6 @@ services:
 
   user-cache:
     image: redis:6-alpine
-    hostname: user-cache
     container_name: user-cache
     volumes:
       - ./data/cache/:/data
@@ -47,13 +51,14 @@ services:
 
   user-web:
     image: registry.cn-hangzhou.aliyuncs.com/threshold/aphrodite-go:v3
-    hostname: user-web
     container_name: user-web
     ports:
       - 8000:8000
     depends_on:
-      - user-cache
-      - user-db
+      user-cache:
+        condition: service_healthy
+      user-db:
+        condition: service_healthy
     volumes:
       - ./logs:/data/app/storage/logs
       - ./config:/data/app/config
@@ -65,8 +70,6 @@ services:
       interval: 30s
       timeout: 10s
       retries: 3
-    environment:
-      APP_CONF: /data/app/config/dev.yml
 
   # nginx:
   #   image: nginx:alpine
