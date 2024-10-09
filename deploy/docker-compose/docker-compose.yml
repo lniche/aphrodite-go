@@ -70,6 +70,7 @@ services:
 
   nginx:
     image: nginx:alpine
+    container_name: nginx
     ports:
       - 80:80
       - 443:443
