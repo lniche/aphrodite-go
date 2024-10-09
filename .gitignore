@@ -2,4 +2,5 @@ storage/logs
 .idea
 *.log
 deploy/docker-compose/data
+deploy/docker-compose/logs
 config/prod.yml

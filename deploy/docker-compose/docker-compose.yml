@@ -13,10 +13,6 @@ services:
       - MYSQL_PASSWORD=123123
       - TZ=Asia/Shanghai
       - LANG=en_US.UTF-8
-    logging:
-      driver: 'json-file'
-      options:
-        max-size: '5g'
     privileged: true
     volumes:
       - ./data/mysql/user:/var/lib/mysql
@@ -34,6 +30,7 @@ services:
   user-cache:
     image: redis:6-alpine
     container_name: user-cache
+    privileged: true
     volumes:
       - ./data/cache/:/data
       - ./conf/cache/redis.conf:/etc/redis/redis.conf
