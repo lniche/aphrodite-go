@@ -20,7 +20,6 @@ RUN apk add tzdata && cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime \
     && echo "Asia/Shanghai" > /etc/timezone \
     && apk del tzdata
 
-
 ARG APP_ENV
 ENV APP_ENV=${APP_ENV}
 
@@ -30,6 +29,6 @@ COPY --from=builder /data/app/bin /data/app
 EXPOSE 8000
 ENTRYPOINT [ "./server" ]
 
-#docker build -t registry.cn-hangzhou.aliyuncs.com/threshold/aphrodite-go:v1 --build-arg APP_CONF=config/local.yml --build-arg  APP_RELATIVE_PATH=./cmd/server   -f ./deploy/build/Dockerfile  .
+#docker build -t registry.cn-hangzhou.aliyuncs.com/threshold/aphrodite-go:v1 --build-arg APP_RELATIVE_PATH=./cmd/server -f ./deploy/build/Dockerfile .
 #docker run -it registry.cn-hangzhou.aliyuncs.com/threshold/aphrodite-go:v1
 #docker push registry.cn-hangzhou.aliyuncs.com/threshold/aphrodite-go:v1
