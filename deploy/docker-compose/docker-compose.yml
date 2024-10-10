@@ -13,7 +13,6 @@ services:
       - MYSQL_PASSWORD=123123
       - TZ=Asia/Shanghai
       - LANG=en_US.UTF-8
-    privileged: true
     volumes:
       - ./data/mysql/user:/var/lib/mysql
       - ./conf/mysql/conf.d:/etc/mysql/conf.d
@@ -30,7 +29,6 @@ services:
   aphrodite-cache:
     image: redis:6-alpine
     container_name: aphrodite-cache
-    privileged: true
     volumes:
       - ./data/cache/:/data
       - ./conf/cache/redis.conf:/etc/redis/redis.conf
