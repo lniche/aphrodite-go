@@ -1,27 +1,49 @@
 version: '3'
 
 services:
+  # aphrodite-db:
+  #   image: mysql:8
+  #   container_name: aphrodite-db
+  #   ports:
+  #     - 3380:3306
+  #   environment:
+  #     - MYSQL_ROOT_PASSWORD=123123
+  #     - MYSQL_ROOT_HOST=%
+  #     - MYSQL_DATABASE=test
+  #     - MYSQL_PASSWORD=123123
+  #     - TZ=Asia/Shanghai
+  #     - LANG=en_US.UTF-8
+  #   volumes:
+  #     - ./data/mysql/user:/var/lib/mysql
+  #     - ./conf/mysql/conf.d:/etc/mysql/conf.d
+  #     # - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+  #   networks:
+  #     - aphrodite-network
+  #   restart: unless-stopped
+  #   healthcheck:
+  #     test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p123123"]
+  #     interval: 10s
+  #     timeout: 5s
+  #     retries: 5
   aphrodite-db:
-    image: mysql:8
+    image: postgres:14
     container_name: aphrodite-db
     ports:
-      - 3380:3306
+      - 5432:5432
     environment:
-      - MYSQL_ROOT_PASSWORD=123123
-      - MYSQL_ROOT_HOST=%
-      - MYSQL_DATABASE=test
-      - MYSQL_PASSWORD=123123
+      - POSTGRES_DB=aphrodite
+      - POSTGRES_USER=aphrodite
+      - POSTGRES_PASSWORD=123123
       - TZ=Asia/Shanghai
       - LANG=en_US.UTF-8
     volumes:
-      - ./data/mysql/user:/var/lib/mysql
-      - ./conf/mysql/conf.d:/etc/mysql/conf.d
-      # - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+      - ./data/postgres:/var/lib/postgresql/data
+      - ./conf/postgres/conf.d:/etc/postgresql/conf.d
     networks:
       - aphrodite-network
     restart: unless-stopped
     healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p123123"]
+      test: ["CMD", "pg_isready", "-U", "aphrodite"]
       interval: 10s
       timeout: 5s
       retries: 5

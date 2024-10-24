@@ -1,21 +1,18 @@
-# Nunu — A CLI tool for building Go applications.
+# Aphrodite
 
-Nunu is a scaffolding tool for building Go applications. Its name comes from a game character in League of Legends, a
-little boy riding on the shoulders of a Yeti. Just like Nunu, this project stands on the shoulders of giants, as it is
-built upon a combination of popular libraries from the Go ecosystem. This combination allows you to quickly build
-efficient and reliable applications.
+Aphrodite 是一个用 Go 语言开发的 [项目描述，例如：Web 应用、CLI 工具等]，旨在 [项目目标，例如：简化某个任务、提供特定服务等]。
 
-[简体中文介绍](https://github.com/go-nunu/nunu/blob/main/README_zh.md)
+## 特性
 
-![Nunu](https://github.com/go-nunu/nunu/blob/main/.github/assets/banner.png)
+- [特性1：描述]
+- [特性2：描述]
+- [特性3：描述]
 
-## Documentation
+## 安装
 
-* [User Guide](https://github.com/go-nunu/nunu/blob/main/docs/en/guide.md)
-* [Architecture](https://github.com/go-nunu/nunu/blob/main/docs/en/architecture.md)
-* [Getting Started Tutorial](https://github.com/go-nunu/nunu/blob/main/docs/en/tutorial.md)
-* [Unit Testing](https://github.com/go-nunu/nunu/blob/main/docs/en/unit_testing.md)
+首先，确保你已经安装了 Go 语言环境。然后，可以通过以下步骤安装 Aphrodite：
 
-## License
-
-Nunu is released under the MIT License. For more information, see the [LICENSE](LICENSE) file.
+```bash
+git clone https://github.com/你的用户名/aphrodite.git
+cd aphrodite
+go mod tidy
