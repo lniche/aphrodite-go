@@ -43,6 +43,7 @@ func NewHTTPServer(
 
 	s.Use(
 		middleware.CORSMiddleware(),
+		middleware.RequestIDMiddleware(),
 		middleware.ResponseLogMiddleware(logger),
 		middleware.RequestLogMiddleware(logger),
 		//middleware.SignMiddleware(log),
