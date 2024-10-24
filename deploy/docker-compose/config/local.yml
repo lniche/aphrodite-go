@@ -18,7 +18,7 @@ data:
     #   dsn: root:123123@tcp(aphrodite-db:3306)/test?charset=utf8mb4&parseTime=True&loc=Local
     user:
       driver: postgres
-      dsn: host=localhost user=postgres password=123123 dbname=aphrodite port=5432 sslmode=disable TimeZone=Asia/Shanghai
+      dsn: host=localhost user=postgres password=123123 dbname=test port=5432 sslmode=disable TimeZone=Asia/Shanghai
   redis:
     addr: aphrodite-cache:6379
     password: ""
