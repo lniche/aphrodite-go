@@ -49,9 +49,10 @@ func NewHTTPServer(
 	)
 	s.GET("/", func(ctx *gin.Context) {
 		logger.WithContext(ctx).Info("hello")
-		apiV1.HandleSuccess(ctx, map[string]interface{}{
-			":)": "Thank you for using aphrodite!",
-		})
+		apiV1.HandleSuccess(ctx, "Thank you for using aphrodite!")
+	})
+	s.GET("/ping", func(ctx *gin.Context) {
+		apiV1.HandleSuccess(ctx, "pong")
 	})
 
 	v1 := s.Group("/v1")
