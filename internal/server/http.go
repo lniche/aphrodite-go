@@ -34,7 +34,7 @@ func NewHTTPServer(
 
 	// swagger doc
 	docs.SwaggerInfo.BasePath = "/v1"
-	s.GET("/swagger/*any", ginSwagger.WrapHandler(
+	s.GET("/swagger-ui/*any", ginSwagger.WrapHandler(
 		swaggerfiles.Handler,
 		//ginSwagger.URL(fmt.Sprintf("http://localhost:%d/swagger/doc.json", conf.GetInt("app.http.port"))),
 		ginSwagger.DefaultModelsExpandDepth(-1),
@@ -49,7 +49,7 @@ func NewHTTPServer(
 	)
 	s.GET("/", func(ctx *gin.Context) {
 		logger.WithContext(ctx).Info("hello")
-		apiV1.HandleSuccess(ctx, "Thank you for using aphrodite!")
+		apiV1.HandleSuccess(ctx, "Thank you for using Aphrodite!")
 	})
 	s.GET("/ping", func(ctx *gin.Context) {
 		apiV1.HandleSuccess(ctx, "pong")
@@ -60,8 +60,9 @@ func NewHTTPServer(
 		// No route group has permission
 		noAuthRouter := v1.Group("/")
 		{
-			noAuthRouter.POST("/auth/login", authHandler.Login)
-			noAuthRouter.POST("/auth/send-code", authHandler.SendVerifyCode)
+			noAuthRouter.POST("/login", authHandler.Login)
+			noAuthRouter.POST("/logout", authHandler.Logout)
+			noAuthRouter.POST("/send-code", authHandler.SendVerifyCode)
 		}
 		// Non-strict permission routing group
 		noStrictAuthRouter := v1.Group("/").Use(middleware.NoStrictAuth(jwt, logger, redis))
