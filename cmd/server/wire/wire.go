@@ -13,6 +13,7 @@ import (
 	"aphrodite-go/pkg/log"
 	"aphrodite-go/pkg/server/http"
 	"aphrodite-go/pkg/sid"
+
 	"github.com/google/wire"
 	"github.com/spf13/viper"
 )
@@ -23,23 +24,17 @@ var repositorySet = wire.NewSet(
 	repository.NewRepository,
 	repository.NewTransaction,
 	repository.NewUserRepository,
-	repository.NewUserFeedbackRepository,
-	repository.NewUserAddressRepository,
 )
 
 var serviceSet = wire.NewSet(
 	service.NewService,
 	service.NewUserService,
-	service.NewUserFeedbackService,
-	service.NewUserAddressService,
 )
 
 var handlerSet = wire.NewSet(
 	handler.NewHandler,
 	handler.NewAuthHandler,
 	handler.NewUserHandler,
-	handler.NewUserFeedbackHandler,
-	handler.NewUserAddressHandler,
 )
 
 var serverSet = wire.NewSet(

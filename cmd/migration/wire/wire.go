@@ -8,6 +8,7 @@ import (
 	"aphrodite-go/internal/server"
 	"aphrodite-go/pkg/app"
 	"aphrodite-go/pkg/log"
+
 	"github.com/google/wire"
 	"github.com/spf13/viper"
 )
@@ -17,8 +18,6 @@ var repositorySet = wire.NewSet(
 	repository.NewRedis,
 	repository.NewRepository,
 	repository.NewUserRepository,
-	repository.NewUserFeedbackRepository,
-	repository.NewUserAddressRepository,
 )
 var serverSet = wire.NewSet(
 	server.NewMigrate,

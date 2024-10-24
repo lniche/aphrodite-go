@@ -7,8 +7,9 @@ import (
 	"context"
 	"encoding/json"
 	"errors"
-	"gorm.io/gorm"
 	"time"
+
+	"gorm.io/gorm"
 )
 
 type UserRepository interface {
@@ -145,7 +146,7 @@ func (r *userRepository) Logout(ctx context.Context, userCode string) error {
 	if err != nil {
 		return err
 	}
-	if err = r.DB(ctx).Model(&model.UserAddress{}).Where("user_code = ?", userCode).Update("login_token", "").Error; err != nil {
+	if err = r.DB(ctx).Model(&model.User{}).Where("user_code = ?", userCode).Update("login_token", "").Error; err != nil {
 		return err
 	}
 	expiration := 30 * 24 * time.Hour

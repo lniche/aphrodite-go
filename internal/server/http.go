@@ -8,6 +8,7 @@ import (
 	"aphrodite-go/pkg/jwt"
 	"aphrodite-go/pkg/log"
 	"aphrodite-go/pkg/server/http"
+
 	"github.com/gin-gonic/gin"
 	"github.com/redis/go-redis/v9"
 	"github.com/spf13/viper"
@@ -21,8 +22,6 @@ func NewHTTPServer(
 	jwt *jwt.JWT,
 	authHandler *handler.AuthHandler,
 	userHandler *handler.UserHandler,
-	userFeedbackHandler *handler.UserFeedbackHandler,
-	userAddressHandler *handler.UserAddressHandler,
 	redis *redis.Client,
 ) *http.Server {
 	gin.SetMode(gin.DebugMode)
@@ -67,18 +66,12 @@ func NewHTTPServer(
 		noStrictAuthRouter := v1.Group("/").Use(middleware.NoStrictAuth(jwt, logger, redis))
 		{
 			noStrictAuthRouter.GET("/user", userHandler.GetProfile)
-			noStrictAuthRouter.GET("/user/address/:id", userAddressHandler.GetUserAddress)
-			noStrictAuthRouter.GET("/user/address", userAddressHandler.GetUserAddresses)
 		}
 
 		// Strict permission routing group
 		strictAuthRouter := v1.Group("/").Use(middleware.StrictAuth(jwt, logger, redis))
 		{
 			strictAuthRouter.PUT("/user", userHandler.UpdateProfile)
-			strictAuthRouter.POST("/user/feedback", userFeedbackHandler.CreateUserFeedback)
-			strictAuthRouter.POST("/user/address", userAddressHandler.CreateUserAddress)
-			strictAuthRouter.PUT("/user/address", userAddressHandler.UpdateUserAddress)
-			strictAuthRouter.DELETE("/user/address/:id", userAddressHandler.DeleteUserAddress)
 		}
 	}
 

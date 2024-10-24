@@ -35,13 +35,7 @@ func NewWire(viperViper *viper.Viper, logger *log.Logger) (*app.App, func(), err
 	userService := service.NewUserService(serviceService, userRepository)
 	authHandler := handler.NewAuthHandler(handlerHandler, userService)
 	userHandler := handler.NewUserHandler(handlerHandler, userService)
-	userFeedbackRepository := repository.NewUserFeedbackRepository(repositoryRepository)
-	userFeedbackService := service.NewUserFeedbackService(serviceService, userFeedbackRepository, userRepository)
-	userFeedbackHandler := handler.NewUserFeedbackHandler(handlerHandler, userFeedbackService)
-	userAddressRepository := repository.NewUserAddressRepository(repositoryRepository)
-	userAddressService := service.NewUserAddressService(serviceService, userAddressRepository, userRepository)
-	userAddressHandler := handler.NewUserAddressHandler(handlerHandler, userAddressService)
-	httpServer := server.NewHTTPServer(logger, viperViper, jwtJWT, authHandler, userHandler, userFeedbackHandler, userAddressHandler, client)
+	httpServer := server.NewHTTPServer(logger, viperViper, jwtJWT, authHandler, userHandler,client)
 	job := server.NewJob(logger)
 	appApp := newApp(httpServer, job)
 	return appApp, func() {
@@ -50,11 +44,11 @@ func NewWire(viperViper *viper.Viper, logger *log.Logger) (*app.App, func(), err
 
 // wire.go:
 
-var repositorySet = wire.NewSet(repository.NewDB, repository.NewRedis, repository.NewRepository, repository.NewTransaction, repository.NewUserRepository, repository.NewUserFeedbackRepository, repository.NewUserAddressRepository)
+var repositorySet = wire.NewSet(repository.NewDB, repository.NewRedis, repository.NewRepository, repository.NewTransaction, repository.NewUserRepository)
 
-var serviceSet = wire.NewSet(service.NewService, service.NewUserService, service.NewUserFeedbackService, service.NewUserAddressService)
+var serviceSet = wire.NewSet(service.NewService, service.NewUserService )
 
-var handlerSet = wire.NewSet(handler.NewHandler, handler.NewAuthHandler, handler.NewUserHandler, handler.NewUserFeedbackHandler, handler.NewUserAddressHandler)
+var handlerSet = wire.NewSet(handler.NewHandler, handler.NewAuthHandler, handler.NewUserHandler)
 
 var serverSet = wire.NewSet(server.NewHTTPServer, server.NewJob)
 
