@@ -28,7 +28,7 @@ func NewUserHandler(handler *Handler, userService service.UserService) *UserHand
 // @Accept json
 // @Produce json
 // @Security Bearer
-// @Success 200 {object} v1.GetProfileResponse
+// @Success 200 {object} v1.GetUserResponse
 // @Router /user [get]
 func (h *UserHandler) GetUser(ctx *gin.Context) {
 	userCode := GetUserCodeFromCtx(ctx)
@@ -54,7 +54,7 @@ func (h *UserHandler) GetUser(ctx *gin.Context) {
 // @Accept json
 // @Produce json
 // @Security Bearer
-// @Param request body v1.UpdateProfileRequest true "params"
+// @Param request body v1.UpdateUserRequest true "params"
 // @Success 200 {object} v1.Response
 // @Router /user [put]
 func (h *UserHandler) UpdateUser(ctx *gin.Context) {

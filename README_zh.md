@@ -60,6 +60,17 @@ Aphrodite 是一个基于 [nunu](https://github.com/go-nunu/nunu) 开发的模�
 首先，确保你已经安装了 Go 语言环境。然后，可以通过以下步骤安装 Aphrodite：
 
 ```bash
+# 数据库
+deploy/db.sql
+
 git clone https://github.com/lniche/aphrodite-go.git
 cd aphrodite
 go mod tidy
+
+# 配置文件
+config/local.yml
+mv config.yml.example config.yml
+
+# 启动服务
+nunu run
+```

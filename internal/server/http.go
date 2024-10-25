@@ -33,7 +33,7 @@ func NewHTTPServer(
 	)
 
 	// swagger doc
-	docs.SwaggerInfo.BasePath = "/"
+	docs.SwaggerInfo.BasePath = "/v1"
 	s.GET("/swagger-ui/*any", ginSwagger.WrapHandler(
 		swaggerfiles.Handler,
 		//ginSwagger.URL(fmt.Sprintf("http://localhost:%d/swagger/doc.json", conf.GetInt("app.http.port"))),

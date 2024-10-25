@@ -1,14 +1,14 @@
 definitions:
-  aphrodite-go_api_v1.GetProfileResponse:
+  aphrodite-go_api_v1.GetUserResponse:
     properties:
       code:
         type: integer
       data:
-        $ref: '#/definitions/aphrodite-go_api_v1.GetProfileResponseData'
+        $ref: '#/definitions/aphrodite-go_api_v1.GetUserResponseData'
       message:
         type: string
     type: object
-  aphrodite-go_api_v1.GetProfileResponseData:
+  aphrodite-go_api_v1.GetUserResponseData:
     properties:
       email:
         example: 1234@gmail.com
@@ -17,7 +17,7 @@ definitions:
         example: banana
         type: string
       phone:
-        example: "13288888888"
+        example: "13800138000"
         type: string
       userCode:
         type: string
@@ -32,11 +32,13 @@ definitions:
         example: "123456"
         type: string
       phone:
-        example: "123456"
+        example: "13800138000"
         type: string
       verifyCode:
         example: "1234"
         type: string
+    required:
+    - phone
     type: object
   aphrodite-go_api_v1.Response:
     properties:
@@ -49,12 +51,12 @@ definitions:
   aphrodite-go_api_v1.SendVerifyCodeRequest:
     properties:
       phone:
-        example: "13288888888"
+        example: "13800138000"
         type: string
     required:
     - phone
     type: object
-  aphrodite-go_api_v1.UpdateProfileRequest:
+  aphrodite-go_api_v1.UpdateUserRequest:
     properties:
       email:
         example: 1234@gmail.com
@@ -63,7 +65,7 @@ definitions:
         example: banana
         type: string
       newPhone:
-        example: "13288888888"
+        example: "13800138000"
         type: string
       nickname:
         example: banana
@@ -72,7 +74,7 @@ definitions:
         example: banana
         type: string
       oldPhone:
-        example: "13288888888"
+        example: "13800138000"
         type: string
       verifyCode:
         example: "1234"
@@ -84,7 +86,7 @@ info:
   title: Aphrodite API
   version: 1.0.0
 paths:
-  /auth/login:
+  /login:
     post:
       consumes:
       - application/json
@@ -105,7 +107,7 @@ paths:
       summary: 登录注册
       tags:
       - 认证模块
-  /auth/logout:
+  /logout:
     post:
       consumes:
       - application/json
@@ -121,7 +123,7 @@ paths:
       summary: 注销
       tags:
       - 认证模块
-  /auth/send-code:
+  /send-code:
     post:
       consumes:
       - application/json
@@ -167,7 +169,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/aphrodite-go_api_v1.GetProfileResponse'
+            $ref: '#/definitions/aphrodite-go_api_v1.GetUserResponse'
       security:
       - Bearer: []
       summary: 获取用户信息
@@ -182,7 +184,7 @@ paths:
         name: request
         required: true
         schema:
-          $ref: '#/definitions/aphrodite-go_api_v1.UpdateProfileRequest'
+          $ref: '#/definitions/aphrodite-go_api_v1.UpdateUserRequest'
       produces:
       - application/json
       responses:

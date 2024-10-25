@@ -15,7 +15,7 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
-        "/auth/login": {
+        "/login": {
             "post": {
                 "consumes": [
                     "application/json"
@@ -48,7 +48,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/auth/logout": {
+        "/logout": {
             "post": {
                 "security": [
                     {
@@ -75,7 +75,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/auth/send-code": {
+        "/send-code": {
             "post": {
                 "consumes": [
                     "application/json"
@@ -129,7 +129,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/aphrodite-go_api_v1.GetProfileResponse"
+                            "$ref": "#/definitions/aphrodite-go_api_v1.GetUserResponse"
                         }
                     }
                 }
@@ -157,7 +157,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/aphrodite-go_api_v1.UpdateProfileRequest"
+                            "$ref": "#/definitions/aphrodite-go_api_v1.UpdateUserRequest"
                         }
                     }
                 ],
@@ -198,21 +198,21 @@ const docTemplate = `{
         }
     },
     "definitions": {
-        "aphrodite-go_api_v1.GetProfileResponse": {
+        "aphrodite-go_api_v1.GetUserResponse": {
             "type": "object",
             "properties": {
                 "code": {
                     "type": "integer"
                 },
                 "data": {
-                    "$ref": "#/definitions/aphrodite-go_api_v1.GetProfileResponseData"
+                    "$ref": "#/definitions/aphrodite-go_api_v1.GetUserResponseData"
                 },
                 "message": {
                     "type": "string"
                 }
             }
         },
-        "aphrodite-go_api_v1.GetProfileResponseData": {
+        "aphrodite-go_api_v1.GetUserResponseData": {
             "type": "object",
             "required": [
                 "phone"
@@ -228,7 +228,7 @@ const docTemplate = `{
                 },
                 "phone": {
                     "type": "string",
-                    "example": "13288888888"
+                    "example": "13800138000"
                 },
                 "userCode": {
                     "type": "string"
@@ -240,6 +240,9 @@ const docTemplate = `{
         },
         "aphrodite-go_api_v1.LoginRequest": {
             "type": "object",
+            "required": [
+                "phone"
+            ],
             "properties": {
                 "openId": {
                     "type": "string",
@@ -247,7 +250,7 @@ const docTemplate = `{
                 },
                 "phone": {
                     "type": "string",
-                    "example": "123456"
+                    "example": "13800138000"
                 },
                 "verifyCode": {
                     "type": "string",
@@ -275,11 +278,11 @@ const docTemplate = `{
             "properties": {
                 "phone": {
                     "type": "string",
-                    "example": "13288888888"
+                    "example": "13800138000"
                 }
             }
         },
-        "aphrodite-go_api_v1.UpdateProfileRequest": {
+        "aphrodite-go_api_v1.UpdateUserRequest": {
             "type": "object",
             "properties": {
                 "email": {
@@ -292,7 +295,7 @@ const docTemplate = `{
                 },
                 "newPhone": {
                     "type": "string",
-                    "example": "13288888888"
+                    "example": "13800138000"
                 },
                 "nickname": {
                     "type": "string",
@@ -304,7 +307,7 @@ const docTemplate = `{
                 },
                 "oldPhone": {
                     "type": "string",
-                    "example": "13288888888"
+                    "example": "13800138000"
                 },
                 "verifyCode": {
                     "type": "string",

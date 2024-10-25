@@ -166,7 +166,7 @@ func (s *userService) UpdateUser(ctx context.Context, userCode string, req *v1.U
 
 func (s *userService) SendVerifyCode(ctx context.Context, req *v1.SendVerifyCodeRequest) error {
 	code := generateVerificationCode()
-	s.logger.Info("send verify code", zap.String("code", code))
+	s.logger.Info("send verify code", zap.String("code", code), zap.String("phone", req.Phone))
 	storedCode, err := s.userRepository.GetVerifyCode(ctx, req.Phone)
 	if storedCode != "" {
 		return fmt.Errorf("verify code already sent, please wait 1 minute")

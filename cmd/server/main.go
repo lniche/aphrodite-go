@@ -25,7 +25,7 @@ import (
 //     "description": "Local development server"
 // }
 func main() {
-	var envConf = flag.String("conf", "config/local.yml", "config path, eg: -conf ./config/local.yml")
+	var envConf = flag.String("conf", "config.yml", "config path, eg: -conf ./config.yml")
 	flag.Parse()
 	conf := config.NewConfig(*envConf)
 
