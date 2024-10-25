@@ -20,10 +20,10 @@ import (
 // @in header
 // @name Authorization
 
-// @servers {
-//     "url": "http://localhost:8080",
-//     "description": "Local development server"
-// }
+//	@servers {
+//	    "url": "http://localhost:8080",
+//	    "description": "Local development server"
+//	}
 func main() {
 	var envConf = flag.String("conf", "config.yml", "config path, eg: -conf ./config.yml")
 	flag.Parse()
@@ -36,6 +36,7 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
+
 	logger.Info("server start", zap.String("host", fmt.Sprintf("http://%s:%d", conf.GetString("http.host"), conf.GetInt("http.port"))))
 	logger.Info("docs addr", zap.String("addr", fmt.Sprintf("http://%s:%d/swagger-ui/index.html", conf.GetString("http.host"), conf.GetInt("http.port"))))
 	if err = app.Run(context.Background()); err != nil {
