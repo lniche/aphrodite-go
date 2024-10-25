@@ -5,7 +5,7 @@ import (
 	"aphrodite-go/internal/handler"
 	"aphrodite-go/internal/middleware"
 	jwt2 "aphrodite-go/pkg/jwt"
-	"aphrodite-go/test/mocks/service"
+	mock_service "aphrodite-go/test/mocks/service"
 	"bytes"
 	"encoding/json"
 	"flag"
@@ -19,6 +19,7 @@ import (
 
 	"aphrodite-go/pkg/config"
 	"aphrodite-go/pkg/log"
+
 	"github.com/gin-gonic/gin"
 	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/assert"
@@ -111,7 +112,7 @@ func TestUserHandler_GetProfile(t *testing.T) {
 	defer ctrl.Finish()
 
 	mockUserService := mock_service.NewMockUserService(ctrl)
-	mockUserService.EXPECT().GetProfile(gomock.Any(), userId).Return(&v1.GetProfileResponseData{
+	mockUserService.EXPECT().GetProfile(gomock.Any(), userId).Return(&v1.GetUserResponseData{
 		UserId:   userId,
 		Nickname: "xxxxx",
 	}, nil)
@@ -133,7 +134,7 @@ func TestUserHandler_UpdateProfile(t *testing.T) {
 	ctrl := gomock.NewController(t)
 	defer ctrl.Finish()
 
-	params := v1.UpdateProfileRequest{
+	params := v1.UpdateUserRequest{
 		Nickname: "alan",
 		Email:    "alan@gmail.com",
 	}

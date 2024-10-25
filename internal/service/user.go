@@ -6,20 +6,22 @@ import (
 	"aphrodite-go/internal/repository"
 	"context"
 	"fmt"
-	"go.uber.org/zap"
-	"golang.org/x/crypto/bcrypt"
 	"math/rand"
 	"regexp"
 	"strconv"
 	"time"
+
+	"go.uber.org/zap"
+	"golang.org/x/crypto/bcrypt"
 )
 
 type UserService interface {
 	Login(ctx context.Context, clientIp string, req *v1.LoginRequest) (string, error)
-	GetProfile(ctx context.Context, userCode string) (*v1.GetProfileResponseData, error)
-	UpdateProfile(ctx context.Context, userCode string, req *v1.UpdateProfileRequest) error
+	GetUser(ctx context.Context, userCode string) (*v1.GetUserResponseData, error)
+	UpdateUser(ctx context.Context, userCode string, req *v1.UpdateUserRequest) error
 	SendVerifyCode(ctx context.Context, req *v1.SendVerifyCodeRequest) error
 	Logout(ctx context.Context, userCode string) error
+	DeleteUser(ctx context.Context, userCode string) error
 }
 
 func NewUserService(
@@ -104,13 +106,13 @@ func (s *userService) Login(ctx context.Context, clientIp string, req *v1.LoginR
 	return token, nil
 }
 
-func (s *userService) GetProfile(ctx context.Context, userCode string) (*v1.GetProfileResponseData, error) {
+func (s *userService) GetUser(ctx context.Context, userCode string) (*v1.GetUserResponseData, error) {
 	user, err := s.userRepository.GetByCodeWithCache(ctx, userCode)
 	if err != nil {
 		return nil, err
 	}
 
-	return &v1.GetProfileResponseData{
+	return &v1.GetUserResponseData{
 		UserNo:   strconv.FormatUint(user.UserNo, 10),
 		UserCode: user.UserCode,
 		Nickname: user.Nickname,
@@ -119,7 +121,7 @@ func (s *userService) GetProfile(ctx context.Context, userCode string) (*v1.GetP
 	}, nil
 }
 
-func (s *userService) UpdateProfile(ctx context.Context, userCode string, req *v1.UpdateProfileRequest) error {
+func (s *userService) UpdateUser(ctx context.Context, userCode string, req *v1.UpdateUserRequest) error {
 	user, err := s.userRepository.GetByCode(ctx, userCode)
 	if err != nil {
 		return err
@@ -196,6 +198,19 @@ func desensitizeEmail(email string) string {
 func (s *userService) Logout(ctx context.Context, userCode string) error {
 	err := s.tm.Transaction(ctx, func(ctx context.Context) error {
 		if err := s.userRepository.Logout(ctx, userCode); err != nil {
+			return err
+		}
+		return nil
+	})
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (s *userService) DeleteUser(ctx context.Context, userCode string) error {
+	err := s.tm.Transaction(ctx, func(ctx context.Context) error {
+		if err := s.userRepository.DeleteUser(ctx, userCode); err != nil {
 			return err
 		}
 		return nil

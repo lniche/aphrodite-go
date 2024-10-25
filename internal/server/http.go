@@ -33,7 +33,7 @@ func NewHTTPServer(
 	)
 
 	// swagger doc
-	docs.SwaggerInfo.BasePath = "/v1"
+	docs.SwaggerInfo.BasePath = "/"
 	s.GET("/swagger-ui/*any", ginSwagger.WrapHandler(
 		swaggerfiles.Handler,
 		//ginSwagger.URL(fmt.Sprintf("http://localhost:%d/swagger/doc.json", conf.GetInt("app.http.port"))),
@@ -68,13 +68,14 @@ func NewHTTPServer(
 		// Non-strict permission routing group
 		noStrictAuthRouter := v1.Group("/").Use(middleware.NoStrictAuth(jwt, logger, redis))
 		{
-			noStrictAuthRouter.GET("/user", userHandler.GetProfile)
+			noStrictAuthRouter.GET("/user", userHandler.GetUser)
 		}
 
 		// Strict permission routing group
 		strictAuthRouter := v1.Group("/").Use(middleware.StrictAuth(jwt, logger, redis))
 		{
-			strictAuthRouter.PUT("/user", userHandler.UpdateProfile)
+			strictAuthRouter.PUT("/user", userHandler.UpdateUser)
+			strictAuthRouter.DELETE("/user", userHandler.DeleteUser)
 		}
 	}
 

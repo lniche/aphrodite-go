@@ -8,24 +8,22 @@ import (
 	"aphrodite-go/cmd/server/wire"
 	"aphrodite-go/pkg/config"
 	"aphrodite-go/pkg/log"
+
 	"go.uber.org/zap"
 )
 
-// @title           Nunu Example API
+// @title           Aphrodite API
 // @version         1.0.0
-// @description     This is a sample server celler server.
-// @termsOfService  http://swagger.io/terms/
-// @contact.name   API Support
-// @contact.url    http://www.swagger.io/support
-// @contact.email  support@swagger.io
-// @license.name  Apache 2.0
-// @license.url   http://www.apache.org/licenses/LICENSE-2.0.html
-// @host      localhost:8000
+// @description     API Description
+
 // @securityDefinitions.apiKey Bearer
 // @in header
 // @name Authorization
-// @externalDocs.description  OpenAPI
-// @externalDocs.url          https://swagger.io/resources/open-api/
+
+// @servers {
+//     "url": "http://localhost:8080",
+//     "description": "Local development server"
+// }
 func main() {
 	var envConf = flag.String("conf", "config/local.yml", "config path, eg: -conf ./config/local.yml")
 	flag.Parse()
@@ -39,7 +37,7 @@ func main() {
 		panic(err)
 	}
 	logger.Info("server start", zap.String("host", fmt.Sprintf("http://%s:%d", conf.GetString("http.host"), conf.GetInt("http.port"))))
-	logger.Info("docs addr", zap.String("addr", fmt.Sprintf("http://%s:%d/swagger/index.html", conf.GetString("http.host"), conf.GetInt("http.port"))))
+	logger.Info("docs addr", zap.String("addr", fmt.Sprintf("http://%s:%d/swagger-ui/index.html", conf.GetString("http.host"), conf.GetInt("http.port"))))
 	if err = app.Run(context.Background()); err != nil {
 		panic(err)
 	}

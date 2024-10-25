@@ -24,6 +24,7 @@ type UserRepository interface {
 	CacheVerifyCode(ctx context.Context, phone string, code string) error
 	GetVerifyCode(ctx context.Context, phone string) (string, error)
 	Logout(ctx context.Context, userCode string) error
+	DeleteUser(ctx context.Context, userCode string) error
 }
 
 func NewUserRepository(
@@ -151,6 +152,18 @@ func (r *userRepository) Logout(ctx context.Context, userCode string) error {
 	}
 	expiration := 30 * 24 * time.Hour
 	if err = r.rdb.Set(ctx, user.LoginToken, constant.JWT_BLACKLIST, expiration).Err(); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (r *userRepository) DeleteUser(ctx context.Context, userCode string) error {
+	// 获取当前时间作为deleted_at的值
+	now := time.Now()
+	if err := r.DB(ctx).Model(&model.User{}).Where("user_code =?", userCode).Updates(map[string]interface{}{
+		"deleted_at": now,
+		"is_deleted": true,
+	}).Error; err != nil {
 		return err
 	}
 	return nil

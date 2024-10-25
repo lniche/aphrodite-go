@@ -9,16 +9,7 @@ const docTemplate = `{
     "info": {
         "description": "{{escape .Description}}",
         "title": "{{.Title}}",
-        "termsOfService": "http://swagger.io/terms/",
-        "contact": {
-            "name": "API Support",
-            "url": "http://www.swagger.io/support",
-            "email": "support@swagger.io"
-        },
-        "license": {
-            "name": "Apache 2.0",
-            "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
-        },
+        "contact": {},
         "version": "{{.Version}}"
     },
     "host": "{{.Host}}",
@@ -59,6 +50,11 @@ const docTemplate = `{
         },
         "/auth/logout": {
             "post": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
                 "consumes": [
                     "application/json"
                 ],
@@ -173,141 +169,6 @@ const docTemplate = `{
                         }
                     }
                 }
-            }
-        },
-        "/user/address": {
-            "get": {
-                "security": [
-                    {
-                        "Bearer": []
-                    }
-                ],
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "用户地址模块"
-                ],
-                "summary": "获取所有地址",
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/aphrodite-go_api_v1.GetUserAddressesResponse"
-                        }
-                    }
-                }
-            },
-            "put": {
-                "security": [
-                    {
-                        "Bearer": []
-                    }
-                ],
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "用户地址模块"
-                ],
-                "summary": "修改用户地址",
-                "parameters": [
-                    {
-                        "description": "params",
-                        "name": "request",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/aphrodite-go_api_v1.UpdateUserAddressRequest"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/aphrodite-go_api_v1.Response"
-                        }
-                    }
-                }
-            },
-            "post": {
-                "security": [
-                    {
-                        "Bearer": []
-                    }
-                ],
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "用户地址模块"
-                ],
-                "summary": "新增用户地址",
-                "parameters": [
-                    {
-                        "description": "params",
-                        "name": "request",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/aphrodite-go_api_v1.CreateUserAddressRequest"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/aphrodite-go_api_v1.Response"
-                        }
-                    }
-                }
-            }
-        },
-        "/user/address/{id}": {
-            "get": {
-                "security": [
-                    {
-                        "Bearer": []
-                    }
-                ],
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "用户地址模块"
-                ],
-                "summary": "获取地址详情",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "地址ID",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/aphrodite-go_api_v1.GetUserAddressResponse"
-                        }
-                    }
-                }
             },
             "delete": {
                 "security": [
@@ -322,56 +183,9 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "用户地址模块"
+                    "用户模块"
                 ],
-                "summary": "修改用户地址",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "地址ID",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/aphrodite-go_api_v1.Response"
-                        }
-                    }
-                }
-            }
-        },
-        "/user/feedback": {
-            "post": {
-                "security": [
-                    {
-                        "Bearer": []
-                    }
-                ],
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "用户反馈模块"
-                ],
-                "summary": "新增用户反馈",
-                "parameters": [
-                    {
-                        "description": "params",
-                        "name": "request",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/aphrodite-go_api_v1.CreateUserFeedbackRequest"
-                        }
-                    }
-                ],
+                "summary": "修改用户信息",
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -384,41 +198,6 @@ const docTemplate = `{
         }
     },
     "definitions": {
-        "aphrodite-go_api_v1.CreateUserAddressRequest": {
-            "type": "object",
-            "required": [
-                "default",
-                "recipientAddress",
-                "recipientName",
-                "recipientPhone"
-            ],
-            "properties": {
-                "default": {
-                    "type": "boolean"
-                },
-                "recipientAddress": {
-                    "type": "string"
-                },
-                "recipientName": {
-                    "type": "string"
-                },
-                "recipientPhone": {
-                    "type": "string"
-                }
-            }
-        },
-        "aphrodite-go_api_v1.CreateUserFeedbackRequest": {
-            "type": "object",
-            "required": [
-                "feedback"
-            ],
-            "properties": {
-                "feedback": {
-                    "type": "string",
-                    "example": "banana"
-                }
-            }
-        },
         "aphrodite-go_api_v1.GetProfileResponse": {
             "type": "object",
             "properties": {
@@ -455,54 +234,6 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "userNo": {
-                    "type": "string"
-                }
-            }
-        },
-        "aphrodite-go_api_v1.GetUserAddressResponse": {
-            "type": "object",
-            "properties": {
-                "code": {
-                    "type": "integer"
-                },
-                "data": {
-                    "$ref": "#/definitions/aphrodite-go_api_v1.GetUserAddressResponseData"
-                },
-                "message": {
-                    "type": "string"
-                }
-            }
-        },
-        "aphrodite-go_api_v1.GetUserAddressResponseData": {
-            "type": "object",
-            "properties": {
-                "default": {
-                    "type": "boolean"
-                },
-                "recipientAddress": {
-                    "type": "string"
-                },
-                "recipientName": {
-                    "type": "string"
-                },
-                "recipientPhone": {
-                    "type": "string"
-                }
-            }
-        },
-        "aphrodite-go_api_v1.GetUserAddressesResponse": {
-            "type": "object",
-            "properties": {
-                "code": {
-                    "type": "integer"
-                },
-                "data": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/aphrodite-go_api_v1.GetUserAddressResponseData"
-                    }
-                },
-                "message": {
                     "type": "string"
                 }
             }
@@ -580,33 +311,6 @@ const docTemplate = `{
                     "example": "1234"
                 }
             }
-        },
-        "aphrodite-go_api_v1.UpdateUserAddressRequest": {
-            "type": "object",
-            "required": [
-                "addressId",
-                "default",
-                "recipientAddress",
-                "recipientName",
-                "recipientPhone"
-            ],
-            "properties": {
-                "addressId": {
-                    "type": "integer"
-                },
-                "default": {
-                    "type": "boolean"
-                },
-                "recipientAddress": {
-                    "type": "string"
-                },
-                "recipientName": {
-                    "type": "string"
-                },
-                "recipientPhone": {
-                    "type": "string"
-                }
-            }
         }
     },
     "securityDefinitions": {
@@ -621,11 +325,11 @@ const docTemplate = `{
 // SwaggerInfo holds exported Swagger Info so clients can modify it
 var SwaggerInfo = &swag.Spec{
 	Version:          "1.0.0",
-	Host:             "localhost:8000",
+	Host:             "",
 	BasePath:         "",
 	Schemes:          []string{},
-	Title:            "Nunu Example API",
-	Description:      "This is a sample server celler server.",
+	Title:            "Aphrodite API",
+	Description:      "API Description",
 	InfoInstanceName: "swagger",
 	SwaggerTemplate:  docTemplate,
 	LeftDelim:        "{{",

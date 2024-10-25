@@ -3,7 +3,7 @@ package service_test
 import (
 	v1 "aphrodite-go/api/v1"
 	"aphrodite-go/pkg/jwt"
-	"aphrodite-go/test/mocks/repository"
+	mock_repository "aphrodite-go/test/mocks/repository"
 	"context"
 	"errors"
 	"flag"
@@ -16,6 +16,7 @@ import (
 	"aphrodite-go/pkg/config"
 	"aphrodite-go/pkg/log"
 	"aphrodite-go/pkg/sid"
+
 	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/assert"
 	"golang.org/x/crypto/bcrypt"
@@ -180,7 +181,7 @@ func TestUserService_UpdateProfile(t *testing.T) {
 
 	ctx := context.Background()
 	userCode := "123"
-	req := &v1.UpdateProfileRequest{
+	req := &v1.UpdateUserRequest{
 		Nickname: "testuser",
 		Email:    "test@example.com",
 	}
@@ -207,7 +208,7 @@ func TestUserService_UpdateProfile_UserNotFound(t *testing.T) {
 
 	ctx := context.Background()
 	userCode := "123"
-	req := &v1.UpdateProfileRequest{
+	req := &v1.UpdateUserRequest{
 		Nickname: "testuser",
 		Email:    "test@example.com",
 	}

@@ -9,7 +9,7 @@ type User struct {
 	UserNo     uint64    `gorm:"unique;not null;comment:用户编号"`
 	Username   string    `gorm:"unique;default:null;comment:用户名"`
 	Nickname   string    `gorm:"default:null;comment:昵称"`
-	Password   string    `gorm:"not null;comment:密码"`
+	Password   string    `gorm:"default:null;comment:密码"`
 	Salt       string    `gorm:"default:null;comment:盐值"`
 	Email      string    `gorm:"default:null;comment:邮箱"`
 	Phone      string    `gorm:"index;not null;comment:电话"`

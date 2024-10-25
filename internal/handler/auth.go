@@ -3,9 +3,10 @@ package handler
 import (
 	v1 "aphrodite-go/api/v1"
 	"aphrodite-go/internal/service"
+	"net/http"
+
 	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"
-	"net/http"
 )
 
 type AuthHandler struct {
@@ -82,6 +83,7 @@ func (h *AuthHandler) Login(ctx *gin.Context) {
 // @Tags 认证模块
 // @Accept json
 // @Produce json
+// @Security Bearer
 // @Success 200 {object} v1.Response
 // @Router /auth/logout [post]
 func (h *AuthHandler) Logout(ctx *gin.Context) {
