@@ -30,7 +30,7 @@ func NewAuthHandler(handler *Handler, userService service.UserService) *AuthHand
 // @Produce json
 // @Param request body v1.SendVerifyCodeRequest true "params"
 // @Success 200 {object} v1.Response
-// @Router /send-code [post]
+// @Router /v1/send-code [post]
 func (h *AuthHandler) SendVerifyCode(ctx *gin.Context) {
 	req := new(v1.SendVerifyCodeRequest)
 	if err := ctx.ShouldBindJSON(req); err != nil {
@@ -56,7 +56,7 @@ func (h *AuthHandler) SendVerifyCode(ctx *gin.Context) {
 // @Produce json
 // @Param request body v1.LoginRequest true "params"
 // @Success 200 {object} v1.Response
-// @Router /login [post]
+// @Router /v1/login [post]
 func (h *AuthHandler) Login(ctx *gin.Context) {
 	var req = new(v1.LoginRequest)
 	if err := ctx.ShouldBindJSON(req); err != nil {
@@ -85,7 +85,7 @@ func (h *AuthHandler) Login(ctx *gin.Context) {
 // @Produce json
 // @Security Bearer
 // @Success 200 {object} v1.Response
-// @Router /logout [post]
+// @Router /v1/logout [post]
 func (h *AuthHandler) Logout(ctx *gin.Context) {
 	userCode := GetUserCodeFromCtx(ctx)
 	if userCode == "" {

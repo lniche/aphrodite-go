@@ -1,14 +1,18 @@
 definitions:
   aphrodite-go_api_v1.GetUserResponse:
+    description: 用户信息完整响应
     properties:
       code:
         type: integer
       data:
-        $ref: '#/definitions/aphrodite-go_api_v1.GetUserResponseData'
+        allOf:
+        - $ref: '#/definitions/aphrodite-go_api_v1.GetUserResponseData'
+        description: 用户信息数据
       message:
         type: string
     type: object
   aphrodite-go_api_v1.GetUserResponseData:
+    description: 用户信息响应数据
     properties:
       email:
         example: 1234@gmail.com
@@ -27,6 +31,7 @@ definitions:
     - phone
     type: object
   aphrodite-go_api_v1.LoginRequest:
+    description: 用户登录请求数据
     properties:
       openId:
         example: "123456"
@@ -49,6 +54,7 @@ definitions:
         type: string
     type: object
   aphrodite-go_api_v1.SendVerifyCodeRequest:
+    description: 发送验证码请求数据
     properties:
       phone:
         example: "13800138000"
@@ -57,6 +63,7 @@ definitions:
     - phone
     type: object
   aphrodite-go_api_v1.UpdateUserRequest:
+    description: 用户更新信息请求
     properties:
       email:
         example: 1234@gmail.com
@@ -86,64 +93,6 @@ info:
   title: Aphrodite API
   version: 1.0.0
 paths:
-  /login:
-    post:
-      consumes:
-      - application/json
-      parameters:
-      - description: params
-        in: body
-        name: request
-        required: true
-        schema:
-          $ref: '#/definitions/aphrodite-go_api_v1.LoginRequest'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/aphrodite-go_api_v1.Response'
-      summary: 登录注册
-      tags:
-      - 认证模块
-  /logout:
-    post:
-      consumes:
-      - application/json
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/aphrodite-go_api_v1.Response'
-      security:
-      - Bearer: []
-      summary: 注销
-      tags:
-      - 认证模块
-  /send-code:
-    post:
-      consumes:
-      - application/json
-      parameters:
-      - description: params
-        in: body
-        name: request
-        required: true
-        schema:
-          $ref: '#/definitions/aphrodite-go_api_v1.SendVerifyCodeRequest'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/aphrodite-go_api_v1.Response'
-      summary: 发送验证码
-      tags:
-      - 认证模块
   /user:
     delete:
       consumes:
@@ -157,7 +106,7 @@ paths:
             $ref: '#/definitions/aphrodite-go_api_v1.Response'
       security:
       - Bearer: []
-      summary: 修改用户信息
+      summary: 删除用户信息
       tags:
       - 用户模块
     get:
@@ -197,6 +146,64 @@ paths:
       summary: 修改用户信息
       tags:
       - 用户模块
+  /v1/login:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: params
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/aphrodite-go_api_v1.LoginRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/aphrodite-go_api_v1.Response'
+      summary: 登录注册
+      tags:
+      - 认证模块
+  /v1/logout:
+    post:
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/aphrodite-go_api_v1.Response'
+      security:
+      - Bearer: []
+      summary: 注销
+      tags:
+      - 认证模块
+  /v1/send-code:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: params
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/aphrodite-go_api_v1.SendVerifyCodeRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/aphrodite-go_api_v1.Response'
+      summary: 发送验证码
+      tags:
+      - 认证模块
 securityDefinitions:
   Bearer:
     in: header

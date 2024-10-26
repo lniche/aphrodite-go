@@ -19,11 +19,6 @@ import (
 // @securityDefinitions.apiKey Bearer
 // @in header
 // @name Authorization
-
-//	@servers {
-//	    "url": "http://localhost:8080",
-//	    "description": "Local development server"
-//	}
 func main() {
 	var envConf = flag.String("conf", "config.yml", "config path, eg: -conf ./config.yml")
 	flag.Parse()

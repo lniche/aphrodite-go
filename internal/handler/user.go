@@ -75,7 +75,7 @@ func (h *UserHandler) UpdateUser(ctx *gin.Context) {
 }
 
 // DeleteUser godoc
-// @Summary 修改用户信息
+// @Summary 删除用户信息
 // @Schemes
 // @Description
 // @Tags 用户模块

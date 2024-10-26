@@ -15,99 +15,6 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
-        "/login": {
-            "post": {
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "认证模块"
-                ],
-                "summary": "登录注册",
-                "parameters": [
-                    {
-                        "description": "params",
-                        "name": "request",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/aphrodite-go_api_v1.LoginRequest"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/aphrodite-go_api_v1.Response"
-                        }
-                    }
-                }
-            }
-        },
-        "/logout": {
-            "post": {
-                "security": [
-                    {
-                        "Bearer": []
-                    }
-                ],
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "认证模块"
-                ],
-                "summary": "注销",
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/aphrodite-go_api_v1.Response"
-                        }
-                    }
-                }
-            }
-        },
-        "/send-code": {
-            "post": {
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "认证模块"
-                ],
-                "summary": "发送验证码",
-                "parameters": [
-                    {
-                        "description": "params",
-                        "name": "request",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/aphrodite-go_api_v1.SendVerifyCodeRequest"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/aphrodite-go_api_v1.Response"
-                        }
-                    }
-                }
-            }
-        },
         "/user": {
             "get": {
                 "security": [
@@ -185,7 +92,100 @@ const docTemplate = `{
                 "tags": [
                     "用户模块"
                 ],
-                "summary": "修改用户信息",
+                "summary": "删除用户信息",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/aphrodite-go_api_v1.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/login": {
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "认证模块"
+                ],
+                "summary": "登录注册",
+                "parameters": [
+                    {
+                        "description": "params",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/aphrodite-go_api_v1.LoginRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/aphrodite-go_api_v1.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/logout": {
+            "post": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "认证模块"
+                ],
+                "summary": "注销",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/aphrodite-go_api_v1.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/send-code": {
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "认证模块"
+                ],
+                "summary": "发送验证码",
+                "parameters": [
+                    {
+                        "description": "params",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/aphrodite-go_api_v1.SendVerifyCodeRequest"
+                        }
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -199,13 +199,19 @@ const docTemplate = `{
     },
     "definitions": {
         "aphrodite-go_api_v1.GetUserResponse": {
+            "description": "用户信息完整响应",
             "type": "object",
             "properties": {
                 "code": {
                     "type": "integer"
                 },
                 "data": {
-                    "$ref": "#/definitions/aphrodite-go_api_v1.GetUserResponseData"
+                    "description": "用户信息数据",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/aphrodite-go_api_v1.GetUserResponseData"
+                        }
+                    ]
                 },
                 "message": {
                     "type": "string"
@@ -213,6 +219,7 @@ const docTemplate = `{
             }
         },
         "aphrodite-go_api_v1.GetUserResponseData": {
+            "description": "用户信息响应数据",
             "type": "object",
             "required": [
                 "phone"
@@ -239,6 +246,7 @@ const docTemplate = `{
             }
         },
         "aphrodite-go_api_v1.LoginRequest": {
+            "description": "用户登录请求数据",
             "type": "object",
             "required": [
                 "phone"
@@ -271,6 +279,7 @@ const docTemplate = `{
             }
         },
         "aphrodite-go_api_v1.SendVerifyCodeRequest": {
+            "description": "发送验证码请求数据",
             "type": "object",
             "required": [
                 "phone"
@@ -283,6 +292,7 @@ const docTemplate = `{
             }
         },
         "aphrodite-go_api_v1.UpdateUserRequest": {
+            "description": "用户更新信息请求",
             "type": "object",
             "properties": {
                 "email": {

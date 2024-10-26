@@ -8,6 +8,7 @@ import (
 	"aphrodite-go/pkg/jwt"
 	"aphrodite-go/pkg/log"
 	"aphrodite-go/pkg/server/http"
+	"fmt"
 
 	"github.com/gin-gonic/gin"
 	"github.com/redis/go-redis/v9"
@@ -33,10 +34,10 @@ func NewHTTPServer(
 	)
 
 	// swagger doc
-	docs.SwaggerInfo.BasePath = "/v1"
+	docs.SwaggerInfo.BasePath = ""
+	docs.SwaggerInfo.Host = fmt.Sprintf("%s:%d", conf.GetString("http.host"), conf.GetInt("http.port"))
 	s.GET("/swagger-ui/*any", ginSwagger.WrapHandler(
 		swaggerfiles.Handler,
-		//ginSwagger.URL(fmt.Sprintf("http://localhost:%d/swagger/doc.json", conf.GetInt("app.http.port"))),
 		ginSwagger.DefaultModelsExpandDepth(-1),
 		ginSwagger.PersistAuthorization(true),
 	))
