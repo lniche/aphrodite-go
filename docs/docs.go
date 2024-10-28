@@ -15,94 +15,6 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
-        "/user": {
-            "get": {
-                "security": [
-                    {
-                        "Bearer": []
-                    }
-                ],
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "用户模块"
-                ],
-                "summary": "获取用户信息",
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/aphrodite-go_api_v1.GetUserResponse"
-                        }
-                    }
-                }
-            },
-            "put": {
-                "security": [
-                    {
-                        "Bearer": []
-                    }
-                ],
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "用户模块"
-                ],
-                "summary": "修改用户信息",
-                "parameters": [
-                    {
-                        "description": "params",
-                        "name": "request",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/aphrodite-go_api_v1.UpdateUserRequest"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/aphrodite-go_api_v1.Response"
-                        }
-                    }
-                }
-            },
-            "delete": {
-                "security": [
-                    {
-                        "Bearer": []
-                    }
-                ],
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "用户模块"
-                ],
-                "summary": "删除用户信息",
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/aphrodite-go_api_v1.Response"
-                        }
-                    }
-                }
-            }
-        },
         "/v1/login": {
             "post": {
                 "consumes": [
@@ -122,7 +34,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/aphrodite-go_api_v1.LoginRequest"
+                            "$ref": "#/definitions/aphrodite-go_api_v1.LoginReq"
                         }
                     }
                 ],
@@ -182,7 +94,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/aphrodite-go_api_v1.SendVerifyCodeRequest"
+                            "$ref": "#/definitions/aphrodite-go_api_v1.SendVerifyCodeReq"
                         }
                     }
                 ],
@@ -195,10 +107,98 @@ const docTemplate = `{
                     }
                 }
             }
+        },
+        "/v1/user": {
+            "get": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "用户模块"
+                ],
+                "summary": "获取用户信息",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/aphrodite-go_api_v1.GetUserResp"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "用户模块"
+                ],
+                "summary": "修改用户信息",
+                "parameters": [
+                    {
+                        "description": "params",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/aphrodite-go_api_v1.UpdateUserReq"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/aphrodite-go_api_v1.Response"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "用户模块"
+                ],
+                "summary": "删除用户信息",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/aphrodite-go_api_v1.Response"
+                        }
+                    }
+                }
+            }
         }
     },
     "definitions": {
-        "aphrodite-go_api_v1.GetUserResponse": {
+        "aphrodite-go_api_v1.GetUserResp": {
             "description": "用户信息完整响应",
             "type": "object",
             "properties": {
@@ -209,7 +209,7 @@ const docTemplate = `{
                     "description": "用户信息数据",
                     "allOf": [
                         {
-                            "$ref": "#/definitions/aphrodite-go_api_v1.GetUserResponseData"
+                            "$ref": "#/definitions/aphrodite-go_api_v1.GetUserRespData"
                         }
                     ]
                 },
@@ -218,7 +218,7 @@ const docTemplate = `{
                 }
             }
         },
-        "aphrodite-go_api_v1.GetUserResponseData": {
+        "aphrodite-go_api_v1.GetUserRespData": {
             "description": "用户信息响应数据",
             "type": "object",
             "required": [
@@ -245,7 +245,7 @@ const docTemplate = `{
                 }
             }
         },
-        "aphrodite-go_api_v1.LoginRequest": {
+        "aphrodite-go_api_v1.LoginReq": {
             "description": "用户登录请求数据",
             "type": "object",
             "required": [
@@ -278,7 +278,7 @@ const docTemplate = `{
                 }
             }
         },
-        "aphrodite-go_api_v1.SendVerifyCodeRequest": {
+        "aphrodite-go_api_v1.SendVerifyCodeReq": {
             "description": "发送验证码请求数据",
             "type": "object",
             "required": [
@@ -291,7 +291,7 @@ const docTemplate = `{
                 }
             }
         },
-        "aphrodite-go_api_v1.UpdateUserRequest": {
+        "aphrodite-go_api_v1.UpdateUserReq": {
             "description": "用户更新信息请求",
             "type": "object",
             "properties": {

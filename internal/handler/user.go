@@ -28,8 +28,8 @@ func NewUserHandler(handler *Handler, userService service.UserService) *UserHand
 // @Accept json
 // @Produce json
 // @Security Bearer
-// @Success 200 {object} v1.GetUserResponse
-// @Router /user [get]
+// @Success 200 {object} v1.GetUserResp
+// @Router /v1/user [get]
 func (h *UserHandler) GetUser(ctx *gin.Context) {
 	userCode := GetUserCodeFromCtx(ctx)
 	if userCode == "" {
@@ -54,13 +54,13 @@ func (h *UserHandler) GetUser(ctx *gin.Context) {
 // @Accept json
 // @Produce json
 // @Security Bearer
-// @Param request body v1.UpdateUserRequest true "params"
+// @Param request body v1.UpdateUserReq true "params"
 // @Success 200 {object} v1.Response
-// @Router /user [put]
+// @Router /v1/user [put]
 func (h *UserHandler) UpdateUser(ctx *gin.Context) {
 	userCode := GetUserCodeFromCtx(ctx)
 
-	var req = new(v1.UpdateUserRequest)
+	var req = new(v1.UpdateUserReq)
 	if err := ctx.ShouldBindJSON(req); err != nil {
 		v1.HandleError(ctx, http.StatusBadRequest, v1.ErrBadRequest, nil)
 		return
@@ -83,7 +83,7 @@ func (h *UserHandler) UpdateUser(ctx *gin.Context) {
 // @Produce json
 // @Security Bearer
 // @Success 200 {object} v1.Response
-// @Router /user [delete]
+// @Router /v1/user [delete]
 func (h *UserHandler) DeleteUser(ctx *gin.Context) {
 	userCode := GetUserCodeFromCtx(ctx)
 	if userCode == "" {

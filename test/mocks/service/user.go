@@ -36,10 +36,10 @@ func (m *MockUserService) EXPECT() *MockUserServiceMockRecorder {
 }
 
 // GetProfile mocks base method.
-func (m *MockUserService) GetProfile(ctx context.Context, userId string) (*v1.GetUserResponseData, error) {
+func (m *MockUserService) GetProfile(ctx context.Context, userId string) (*v1.GetUserRespData, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetProfile", ctx, userId)
-	ret0, _ := ret[0].(*v1.GetUserResponseData)
+	ret0, _ := ret[0].(*v1.GetUserRespData)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -51,7 +51,7 @@ func (mr *MockUserServiceMockRecorder) GetProfile(ctx, userId interface{}) *gomo
 }
 
 // Login mocks base method.
-func (m *MockUserService) Login(ctx context.Context, req *v1.LoginRequest) (string, error) {
+func (m *MockUserService) Login(ctx context.Context, req *v1.LoginReq) (string, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Login", ctx, req)
 	ret0, _ := ret[0].(string)
@@ -80,7 +80,7 @@ func (mr *MockUserServiceMockRecorder) Register(ctx, req interface{}) *gomock.Ca
 }
 
 // UpdateProfile mocks base method.
-func (m *MockUserService) UpdateProfile(ctx context.Context, userId string, req *v1.UpdateUserRequest) error {
+func (m *MockUserService) UpdateProfile(ctx context.Context, userId string, req *v1.UpdateUserReq) error {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "UpdateProfile", ctx, userId, req)
 	ret0, _ := ret[0].(error)

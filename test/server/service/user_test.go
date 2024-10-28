@@ -106,7 +106,7 @@ func TestUserService_Login(t *testing.T) {
 	userService := service.NewUserService(srv, mockUserRepo)
 
 	ctx := context.Background()
-	req := &v1.LoginRequest{
+	req := &v1.LoginReq{
 		Email:    "xxx@gmail.com",
 		Password: "password",
 	}
@@ -135,7 +135,7 @@ func TestUserService_Login_UserNotFound(t *testing.T) {
 	userService := service.NewUserService(srv, mockUserRepo)
 
 	ctx := context.Background()
-	req := &v1.LoginRequest{
+	req := &v1.LoginReq{
 		Email:    "xxx@gmail.com",
 		Password: "password",
 	}
@@ -181,7 +181,7 @@ func TestUserService_UpdateProfile(t *testing.T) {
 
 	ctx := context.Background()
 	userCode := "123"
-	req := &v1.UpdateUserRequest{
+	req := &v1.UpdateUserReq{
 		Nickname: "testuser",
 		Email:    "test@example.com",
 	}
@@ -208,7 +208,7 @@ func TestUserService_UpdateProfile_UserNotFound(t *testing.T) {
 
 	ctx := context.Background()
 	userCode := "123"
-	req := &v1.UpdateUserRequest{
+	req := &v1.UpdateUserReq{
 		Nickname: "testuser",
 		Email:    "test@example.com",
 	}
