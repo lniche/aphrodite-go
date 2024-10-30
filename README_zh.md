@@ -53,24 +53,32 @@ Aphrodite 是一个基于 [nunu](https://github.com/go-nunu/nunu) 开发的模�
 - script => 脚本文件，用于部署和其他自动化任务
 - storage => 存储文件，如日志文件和数据库文件
 - test => 测试代码，包含单元测试和集成测试
-- web => 前端代码，负责用户界面和交互
 
 ## 本地运行
 
-首先，确保你已经安装了 Go 语言环境。然后，可以通过以下步骤安装 Aphrodite：
-
 ```bash
-# 数据库
-deploy/db.sql
+# 1. 初始化数据库
+# 例如：将数据库脚本放在 deploy/db.sql 路径下
 
+# 2. 克隆项目代码库
 git clone https://github.com/lniche/aphrodite-go.git
-cd aphrodite
+cd aphrodite-go
+
+# 3. 处理依赖
+# 使用 go mod tidy 来清理并下载项目所需的所有依赖
 go mod tidy
 
-# 配置文件
-config/local.yml
+# 4. 配置文件
+# 将配置示例文件重命名为 config.yml
 mv config.yml.example config.yml
 
-# 启动服务
+# 5. 编辑配置文件（如有需要）
+# 使用你喜欢的文本编辑器打开 config.yml
+# 例如使用 vim：
+vim config.yml
+# 根据你的需求修改配置参数（如数据库连接、服务端口等）
+
+# 6. 启动服务
+# 确保你的环境中安装了 nunu
 nunu run
 ```

@@ -12,7 +12,6 @@ import (
 	"time"
 
 	"go.uber.org/zap"
-	"golang.org/x/crypto/bcrypt"
 )
 
 type UserService interface {
@@ -132,31 +131,6 @@ func (s *userService) UpdateUser(ctx context.Context, userCode string, req *v1.U
 	if req.Email != "" {
 		user.Email = req.Email
 	}
-	if req.OldPassword != "" {
-		err = bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(req.OldPassword))
-		if err != nil {
-			return err
-		}
-
-		if req.NewPassword != "" {
-			hashedPassword, err := bcrypt.GenerateFromPassword([]byte(req.NewPassword), bcrypt.DefaultCost)
-			if err != nil {
-				return err
-			}
-			user.Password = string(hashedPassword)
-		}
-	}
-	if req.VerifyCode != "" && req.OldPhone != "" && req.NewPhone != "" {
-		storedCode, err := s.userRepository.GetVerifyCode(ctx, req.OldPhone)
-		if err != nil {
-			return err
-		}
-		if storedCode != req.VerifyCode {
-			return fmt.Errorf("verify code check fail")
-		}
-		user.Phone = req.NewPhone
-	}
-
 	if err = s.userRepository.UpdateProfile(ctx, user); err != nil {
 		return err
 	}
