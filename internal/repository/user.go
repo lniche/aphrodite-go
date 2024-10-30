@@ -127,7 +127,19 @@ func (r *userRepository) GetByOpenId(ctx context.Context, openId string) (*model
 }
 
 func (r *userRepository) GenerateUserNo(ctx context.Context) (int64, error) {
-	return r.rdb.Incr(ctx, constant.NEXTIDUNO).Result()
+	script := `
+    local key = KEYS[1]
+    local exists = redis.call('EXISTS', key)
+    if exists == 0 then
+        redis.call('SET', key, 100000)
+    end
+    return redis.call('INCR', key)
+    `
+	result, err := r.rdb.Eval(ctx, script, []string{constant.NEXTIDUNO}).Result()
+	if err != nil {
+		return 0, err // 返回错误
+	}
+	return result.(int64), nil
 }
 
 func (r *userRepository) CacheVerifyCode(ctx context.Context, phone string, code string) error {
