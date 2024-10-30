@@ -20,7 +20,7 @@ import (
 // @in header
 // @name Authorization
 func main() {
-	var envConf = flag.String("conf", "config.yml", "config path, eg: -conf ./config.yml")
+	var envConf = flag.String("conf", "config/config.yml", "config path, eg: -conf ./config/config.yml")
 	flag.Parse()
 	conf := config.NewConfig(*envConf)
 

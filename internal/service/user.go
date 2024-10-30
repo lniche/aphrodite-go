@@ -12,14 +12,13 @@ import (
 	"time"
 
 	"go.uber.org/zap"
-	"golang.org/x/crypto/bcrypt"
 )
 
 type UserService interface {
-	Login(ctx context.Context, clientIp string, req *v1.LoginRequest) (string, error)
-	GetUser(ctx context.Context, userCode string) (*v1.GetUserResponseData, error)
-	UpdateUser(ctx context.Context, userCode string, req *v1.UpdateUserRequest) error
-	SendVerifyCode(ctx context.Context, req *v1.SendVerifyCodeRequest) error
+	Login(ctx context.Context, clientIp string, req *v1.LoginReq) (string, error)
+	GetUser(ctx context.Context, userCode string) (*v1.GetUserRespData, error)
+	UpdateUser(ctx context.Context, userCode string, req *v1.UpdateUserReq) error
+	SendVerifyCode(ctx context.Context, req *v1.SendVerifyCodeReq) error
 	Logout(ctx context.Context, userCode string) error
 	DeleteUser(ctx context.Context, userCode string) error
 }
@@ -39,7 +38,7 @@ type userService struct {
 	*Service
 }
 
-func (s *userService) Login(ctx context.Context, clientIp string, req *v1.LoginRequest) (string, error) {
+func (s *userService) Login(ctx context.Context, clientIp string, req *v1.LoginReq) (string, error) {
 	// check phone
 	user, err := s.userRepository.GetByPhone(ctx, req.Phone)
 	if err != nil {
@@ -106,13 +105,13 @@ func (s *userService) Login(ctx context.Context, clientIp string, req *v1.LoginR
 	return token, nil
 }
 
-func (s *userService) GetUser(ctx context.Context, userCode string) (*v1.GetUserResponseData, error) {
+func (s *userService) GetUser(ctx context.Context, userCode string) (*v1.GetUserRespData, error) {
 	user, err := s.userRepository.GetByCodeWithCache(ctx, userCode)
 	if err != nil {
 		return nil, err
 	}
 
-	return &v1.GetUserResponseData{
+	return &v1.GetUserRespData{
 		UserNo:   strconv.FormatUint(user.UserNo, 10),
 		UserCode: user.UserCode,
 		Nickname: user.Nickname,
@@ -121,7 +120,7 @@ func (s *userService) GetUser(ctx context.Context, userCode string) (*v1.GetUser
 	}, nil
 }
 
-func (s *userService) UpdateUser(ctx context.Context, userCode string, req *v1.UpdateUserRequest) error {
+func (s *userService) UpdateUser(ctx context.Context, userCode string, req *v1.UpdateUserReq) error {
 	user, err := s.userRepository.GetByCode(ctx, userCode)
 	if err != nil {
 		return err
@@ -132,31 +131,6 @@ func (s *userService) UpdateUser(ctx context.Context, userCode string, req *v1.U
 	if req.Email != "" {
 		user.Email = req.Email
 	}
-	if req.OldPassword != "" {
-		err = bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(req.OldPassword))
-		if err != nil {
-			return err
-		}
-
-		if req.NewPassword != "" {
-			hashedPassword, err := bcrypt.GenerateFromPassword([]byte(req.NewPassword), bcrypt.DefaultCost)
-			if err != nil {
-				return err
-			}
-			user.Password = string(hashedPassword)
-		}
-	}
-	if req.VerifyCode != "" && req.OldPhone != "" && req.NewPhone != "" {
-		storedCode, err := s.userRepository.GetVerifyCode(ctx, req.OldPhone)
-		if err != nil {
-			return err
-		}
-		if storedCode != req.VerifyCode {
-			return fmt.Errorf("verify code check fail")
-		}
-		user.Phone = req.NewPhone
-	}
-
 	if err = s.userRepository.UpdateProfile(ctx, user); err != nil {
 		return err
 	}
@@ -164,7 +138,7 @@ func (s *userService) UpdateUser(ctx context.Context, userCode string, req *v1.U
 	return nil
 }
 
-func (s *userService) SendVerifyCode(ctx context.Context, req *v1.SendVerifyCodeRequest) error {
+func (s *userService) SendVerifyCode(ctx context.Context, req *v1.SendVerifyCodeReq) error {
 	code := generateVerificationCode()
 	s.logger.Info("send verify code", zap.String("code", code), zap.String("phone", req.Phone))
 	storedCode, err := s.userRepository.GetVerifyCode(ctx, req.Phone)

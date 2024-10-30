@@ -89,7 +89,7 @@ func TestUserHandler_Login(t *testing.T) {
 	ctrl := gomock.NewController(t)
 	defer ctrl.Finish()
 
-	params := v1.LoginRequest{
+	params := v1.LoginReq{
 		Email:    "xxx@gmail.com",
 		Password: "123456",
 	}
@@ -112,7 +112,7 @@ func TestUserHandler_GetProfile(t *testing.T) {
 	defer ctrl.Finish()
 
 	mockUserService := mock_service.NewMockUserService(ctrl)
-	mockUserService.EXPECT().GetProfile(gomock.Any(), userId).Return(&v1.GetUserResponseData{
+	mockUserService.EXPECT().GetProfile(gomock.Any(), userId).Return(&v1.GetUserRespData{
 		UserId:   userId,
 		Nickname: "xxxxx",
 	}, nil)
@@ -134,7 +134,7 @@ func TestUserHandler_UpdateProfile(t *testing.T) {
 	ctrl := gomock.NewController(t)
 	defer ctrl.Finish()
 
-	params := v1.UpdateUserRequest{
+	params := v1.UpdateUserReq{
 		Nickname: "alan",
 		Email:    "alan@gmail.com",
 	}

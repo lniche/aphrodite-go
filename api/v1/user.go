@@ -1,6 +1,6 @@
 package v1
 
-// UpdateUserRequest 用户更新请求结构体
+// UpdateUserReq 用户更新请求结构体
 // @Description 用户更新信息请求
 // @Param nickname body string false "用户昵称" example("banana")
 // @Param email body string false "用户邮箱" example("1234@gmail.com")
@@ -9,24 +9,19 @@ package v1
 // @Param oldPhone body string false "旧手机号" example("13800138000")
 // @Param newPhone body string false "新手机号" example("13800138000")
 // @Param verifyCode body string false "验证码" example("1234")
-type UpdateUserRequest struct {
+type UpdateUserReq struct {
 	Nickname    string `json:"nickname" example:"banana"`
 	Email       string `json:"email" binding:"email" example:"1234@gmail.com"`
-	OldPassword string `json:"oldPassword" example:"banana"`
-	NewPassword string `json:"newPassword" example:"banana"`
-	OldPhone    string `json:"oldPhone"  example:"13800138000"`
-	NewPhone    string `json:"newPhone"  example:"13800138000"`
-	VerifyCode  string `json:"verifyCode"  example:"1234"`
 }
 
-// GetUserResponseData 用户信息响应结构体
+// GetUserRespData 用户信息响应结构体
 // @Description 用户信息响应数据
 // @Property userNo string "用户编号"
 // @Property userCode string "用户代码"
 // @Property nickname string "用户昵称" example("banana")
 // @Property email string "用户邮箱" example("1234@gmail.com")
 // @Property phone string "用户手机号" example("13800138000")
-type GetUserResponseData struct {
+type GetUserRespData struct {
 	UserNo   string `json:"userNo"`
 	UserCode string `json:"userCode"`
 	Nickname string `json:"nickname" example:"banana"`
@@ -34,12 +29,12 @@ type GetUserResponseData struct {
 	Phone    string `json:"phone" binding:"required" example:"13800138000"`
 }
 
-// GetUserResponse 用户信息完整响应结构体
+// GetUserResp 用户信息完整响应结构体
 // @Description 用户信息完整响应
 // @Property code int "响应状态码"
 // @Property message string "响应消息"
 // @Property data GetUserResponseData "用户信息数据"
-type GetUserResponse struct {
+type GetUserResp struct {
 	Response
-	Data GetUserResponseData `json:"data"` // 用户信息数据
+	Data GetUserRespData `json:"data"` // 用户信息数据
 }

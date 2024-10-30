@@ -1,17 +1,17 @@
 definitions:
-  aphrodite-go_api_v1.GetUserResponse:
+  aphrodite-go_api_v1.GetUserResp:
     description: 用户信息完整响应
     properties:
       code:
         type: integer
       data:
         allOf:
-        - $ref: '#/definitions/aphrodite-go_api_v1.GetUserResponseData'
+        - $ref: '#/definitions/aphrodite-go_api_v1.GetUserRespData'
         description: 用户信息数据
       message:
         type: string
     type: object
-  aphrodite-go_api_v1.GetUserResponseData:
+  aphrodite-go_api_v1.GetUserRespData:
     description: 用户信息响应数据
     properties:
       email:
@@ -30,7 +30,7 @@ definitions:
     required:
     - phone
     type: object
-  aphrodite-go_api_v1.LoginRequest:
+  aphrodite-go_api_v1.LoginReq:
     description: 用户登录请求数据
     properties:
       openId:
@@ -53,7 +53,7 @@ definitions:
       message:
         type: string
     type: object
-  aphrodite-go_api_v1.SendVerifyCodeRequest:
+  aphrodite-go_api_v1.SendVerifyCodeReq:
     description: 发送验证码请求数据
     properties:
       phone:
@@ -62,7 +62,7 @@ definitions:
     required:
     - phone
     type: object
-  aphrodite-go_api_v1.UpdateUserRequest:
+  aphrodite-go_api_v1.UpdateUserReq:
     description: 用户更新信息请求
     properties:
       email:
@@ -93,59 +93,6 @@ info:
   title: Aphrodite API
   version: 1.0.0
 paths:
-  /user:
-    delete:
-      consumes:
-      - application/json
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/aphrodite-go_api_v1.Response'
-      security:
-      - Bearer: []
-      summary: 删除用户信息
-      tags:
-      - 用户模块
-    get:
-      consumes:
-      - application/json
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/aphrodite-go_api_v1.GetUserResponse'
-      security:
-      - Bearer: []
-      summary: 获取用户信息
-      tags:
-      - 用户模块
-    put:
-      consumes:
-      - application/json
-      parameters:
-      - description: params
-        in: body
-        name: request
-        required: true
-        schema:
-          $ref: '#/definitions/aphrodite-go_api_v1.UpdateUserRequest'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/aphrodite-go_api_v1.Response'
-      security:
-      - Bearer: []
-      summary: 修改用户信息
-      tags:
-      - 用户模块
   /v1/login:
     post:
       consumes:
@@ -156,7 +103,7 @@ paths:
         name: request
         required: true
         schema:
-          $ref: '#/definitions/aphrodite-go_api_v1.LoginRequest'
+          $ref: '#/definitions/aphrodite-go_api_v1.LoginReq'
       produces:
       - application/json
       responses:
@@ -193,7 +140,7 @@ paths:
         name: request
         required: true
         schema:
-          $ref: '#/definitions/aphrodite-go_api_v1.SendVerifyCodeRequest'
+          $ref: '#/definitions/aphrodite-go_api_v1.SendVerifyCodeReq'
       produces:
       - application/json
       responses:
@@ -204,6 +151,59 @@ paths:
       summary: 发送验证码
       tags:
       - 认证模块
+  /v1/user:
+    delete:
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/aphrodite-go_api_v1.Response'
+      security:
+      - Bearer: []
+      summary: 删除用户信息
+      tags:
+      - 用户模块
+    get:
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/aphrodite-go_api_v1.GetUserResp'
+      security:
+      - Bearer: []
+      summary: 获取用户信息
+      tags:
+      - 用户模块
+    put:
+      consumes:
+      - application/json
+      parameters:
+      - description: params
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/aphrodite-go_api_v1.UpdateUserReq'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/aphrodite-go_api_v1.Response'
+      security:
+      - Bearer: []
+      summary: 修改用户信息
+      tags:
+      - 用户模块
 securityDefinitions:
   Bearer:
     in: header

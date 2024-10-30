@@ -28,11 +28,11 @@ func NewAuthHandler(handler *Handler, userService service.UserService) *AuthHand
 // @Tags 认证模块
 // @Accept json
 // @Produce json
-// @Param request body v1.SendVerifyCodeRequest true "params"
+// @Param request body v1.SendVerifyCodeReq true "params"
 // @Success 200 {object} v1.Response
 // @Router /v1/send-code [post]
 func (h *AuthHandler) SendVerifyCode(ctx *gin.Context) {
-	req := new(v1.SendVerifyCodeRequest)
+	req := new(v1.SendVerifyCodeReq)
 	if err := ctx.ShouldBindJSON(req); err != nil {
 		v1.HandleError(ctx, http.StatusBadRequest, v1.ErrBadRequest, nil)
 		return
@@ -54,11 +54,11 @@ func (h *AuthHandler) SendVerifyCode(ctx *gin.Context) {
 // @Tags 认证模块
 // @Accept json
 // @Produce json
-// @Param request body v1.LoginRequest true "params"
+// @Param request body v1.LoginReq true "params"
 // @Success 200 {object} v1.Response
 // @Router /v1/login [post]
 func (h *AuthHandler) Login(ctx *gin.Context) {
-	var req = new(v1.LoginRequest)
+	var req = new(v1.LoginReq)
 	if err := ctx.ShouldBindJSON(req); err != nil {
 		v1.HandleError(ctx, http.StatusBadRequest, v1.ErrBadRequest, nil)
 		return
@@ -71,7 +71,7 @@ func (h *AuthHandler) Login(ctx *gin.Context) {
 		return
 	}
 
-	v1.HandleSuccess(ctx, v1.LoginResponseData{
+	v1.HandleSuccess(ctx, v1.LoginRespData{
 		AccessToken: token,
 	})
 }
