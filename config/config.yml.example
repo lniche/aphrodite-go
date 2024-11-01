@@ -7,7 +7,7 @@ security:
     app_key: 123456
     app_security: 123456
   jwt:
-    key: QQYnRFerJTSEcrfB89fw8prOaObmrch8
+    key: 3f4e25e75c08dbf60ad6533c50167ce3
 data:
   db:
     #    user:
