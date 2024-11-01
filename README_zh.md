@@ -65,20 +65,14 @@ git clone https://github.com/lniche/aphrodite-go.git
 cd aphrodite-go
 
 # 3. 处理依赖
-# 使用 go mod tidy 来清理并下载项目所需的所有依赖
 go mod tidy
 
 # 4. 配置文件
-# 将配置示例文件重命名为 config.yml
+cd config
 mv config.yml.example config.yml
-
-# 5. 编辑配置文件（如有需要）
-# 使用你喜欢的文本编辑器打开 config.yml
-# 例如使用 vim：
-vim config.yml
-# 根据你的需求修改配置参数（如数据库连接、服务端口等）
 
 # 6. 启动服务
 # 确保你的环境中安装了 nunu
+go install github.com/go-nunu/nunu@latest
 nunu run
 ```
