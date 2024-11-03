@@ -1,4 +1,38 @@
-.git
-.idea
-deploy
-storage
+# Go build directories
+bin/
+dist/
+
+# Cache directories
+tmp/
+*.cache
+
+# Compiled binary files
+*.exe
+*.dll
+*.so
+*.dylib
+
+# Temporary and backup files
+*.log
+*.tmp
+*.temp
+*.bak
+
+# Environment and configuration files
+.env
+*.env
+.env.*
+*.toml.bk
+
+# Git-related files
+.git/
+.gitignore
+
+# IDE and editor configurations
+.vscode/
+.idea/
+*.iml
+
+# System-generated files
+Thumbs.db
+.DS_Store
