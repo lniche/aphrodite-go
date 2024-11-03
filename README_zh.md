@@ -1,6 +1,6 @@
 # Aphrodite Go API 快速开发脚手架
 
-Aphrodite 是一个基于 [nunu](https://github.com/go-nunu/nunu) 开发的模板项目，旨在帮助开发者快速上手，深入理解框架的使用流程。该项目提供了全面的示例代码和配置，涵盖了常见的开发场景，以便于学习和实践。此外，Aphrodite 还包含容器部署模板，使得项目在现代云环境中能够轻松部署与管理，助力开发者高效构建和发布应用。
+> Aphrodite 是一个基于 [nunu](https://github.com/go-nunu/nunu) 开发的模板项目，旨在帮助开发者快速上手，深入理解框架的使用流程。该项目提供了全面的示例代码和配置，涵盖了常见的开发场景，以便于学习和实践。此外，Aphrodite 还包含容器部署模板，使得项目在现代云环境中能够轻松部署与管理，助力开发者高效构建和发布应用。
 
 ## 特性
 
@@ -57,22 +57,27 @@ Aphrodite 是一个基于 [nunu](https://github.com/go-nunu/nunu) 开发的模�
 ## 本地运行
 
 ```bash
-# 1. 初始化数据库
-# 例如：将数据库脚本放在 deploy/db.sql 路径下
-
-# 2. 克隆项目代码库
+# 1. 克隆项目代码库
 git clone https://github.com/lniche/aphrodite-go.git
 cd aphrodite-go
 
-# 3. 处理依赖
-go mod tidy
-
-# 4. 配置文件
+# 2. 配置文件
 cd config
 mv config.yml.example config.yml
 
-# 6. 启动服务
+# 3. 处理依赖
+# 确保你已经安装了 Go
+go mod tidy
+
+# 4. 初始化数据库
+deploy/db.sql
+
+# 5. 启动服务
 # 确保你的环境中安装了 nunu
 go install github.com/go-nunu/nunu@latest
 nunu run
 ```
+
+## 包管理
+
+https://pkg.go.dev
