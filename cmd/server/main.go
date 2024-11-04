@@ -13,8 +13,8 @@ import (
 )
 
 // @title           Aphrodite API
-// @version         1.0.0
 // @description     API Description
+// @version         1.0.0
 
 // @securityDefinitions.apiKey Bearer
 // @in header

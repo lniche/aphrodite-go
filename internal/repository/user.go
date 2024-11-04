@@ -173,7 +173,7 @@ func (r *userRepository) DeleteUser(ctx context.Context, userCode string) error 
 	now := time.Now()
 	if err := r.DB(ctx).Model(&model.User{}).Where("user_code =?", userCode).Updates(map[string]interface{}{
 		"deleted_at": now,
-		"is_deleted": true,
+		"status": 3,
 	}).Error; err != nil {
 		return err
 	}

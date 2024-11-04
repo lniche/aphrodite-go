@@ -13,6 +13,5 @@ type BaseModel struct {
 	DeletedAt gorm.DeletedAt
 	CreatedBy string
 	UpdatedBy string
-	Version   uint32  `gorm:"default:1"`
-	Deleted   bool `gorm:"column:is_deleted;default:false"`
+	Version   uint32 `gorm:"default:1"`
 }

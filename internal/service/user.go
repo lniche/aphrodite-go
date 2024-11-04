@@ -70,7 +70,7 @@ func (s *userService) Login(ctx context.Context, clientIp string, req *v1.LoginR
 			return "", err
 		}
 		user = &model.User{
-			Nickname: "A" + req.Phone[len(req.Phone)-4:],
+			Nickname: "SUGAR_" + req.Phone[len(req.Phone)-4:],
 			UserCode: strconv.FormatUint(userCode, 10),
 			UserNo:   uint64(100000 + userNo),
 			Phone:    req.Phone,

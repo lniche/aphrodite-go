@@ -20,7 +20,7 @@ type LoginReq struct {
 // @Description Login response data
 // @Property accessToken string "Access token"
 type LoginRespData struct {
-	AccessToken string `json:"accessToken"`
+	AccessToken string `json:"accessToken" example:"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."`
 }
 
 // LoginResp Complete structure for login response
