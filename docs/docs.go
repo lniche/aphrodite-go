@@ -24,9 +24,9 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "认证模块"
+                    "Authentication Module"
                 ],
-                "summary": "登录注册",
+                "summary": "Login or register",
                 "parameters": [
                     {
                         "description": "params",
@@ -62,9 +62,9 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "认证模块"
+                    "Authentication Module"
                 ],
-                "summary": "注销",
+                "summary": "Logout",
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -84,9 +84,9 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "认证模块"
+                    "Authentication Module"
                 ],
-                "summary": "发送验证码",
+                "summary": "Send verification code",
                 "parameters": [
                     {
                         "description": "params",
@@ -122,9 +122,9 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "用户模块"
+                    "User Module"
                 ],
-                "summary": "获取用户信息",
+                "summary": "Get user information",
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -147,9 +147,9 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "用户模块"
+                    "User Module"
                 ],
-                "summary": "修改用户信息",
+                "summary": "Update user information",
                 "parameters": [
                     {
                         "description": "params",
@@ -183,9 +183,9 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "用户模块"
+                    "User Module"
                 ],
-                "summary": "删除用户信息",
+                "summary": "Delete user information",
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -199,14 +199,14 @@ const docTemplate = `{
     },
     "definitions": {
         "aphrodite-go_api_v1.GetUserResp": {
-            "description": "用户信息完整响应",
+            "description": "Complete response for user information",
             "type": "object",
             "properties": {
                 "code": {
                     "type": "integer"
                 },
                 "data": {
-                    "description": "用户信息数据",
+                    "description": "User information data",
                     "allOf": [
                         {
                             "$ref": "#/definitions/aphrodite-go_api_v1.GetUserRespData"
@@ -219,7 +219,7 @@ const docTemplate = `{
             }
         },
         "aphrodite-go_api_v1.GetUserRespData": {
-            "description": "用户信息响应数据",
+            "description": "Response data for user information",
             "type": "object",
             "required": [
                 "phone"
@@ -246,7 +246,7 @@ const docTemplate = `{
             }
         },
         "aphrodite-go_api_v1.LoginReq": {
-            "description": "用户登录请求数据",
+            "description": "User login request data",
             "type": "object",
             "required": [
                 "phone"
@@ -275,7 +275,7 @@ const docTemplate = `{
             }
         },
         "aphrodite-go_api_v1.SendVerifyCodeReq": {
-            "description": "发送验证码请求数据",
+            "description": "Request data for sending verification code",
             "type": "object",
             "required": [
                 "phone"
@@ -288,7 +288,7 @@ const docTemplate = `{
             }
         },
         "aphrodite-go_api_v1.UpdateUserReq": {
-            "description": "用户更新信息请求",
+            "description": "Request data for updating user information",
             "type": "object",
             "properties": {
                 "email": {

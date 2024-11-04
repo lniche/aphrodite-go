@@ -39,7 +39,7 @@ ehthumbs.db
 Icon?
 
 # Log files
-*.log
+*.log*
 
 # Temporary files
 *.tmp

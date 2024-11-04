@@ -22,10 +22,10 @@ func NewAuthHandler(handler *Handler, userService service.UserService) *AuthHand
 }
 
 // SendVerifyCode godoc
-// @Summary 发送验证码
+// @Summary Send verification code
 // @Schemes
 // @Description
-// @Tags 认证模块
+// @Tags Authentication Module
 // @Accept json
 // @Produce json
 // @Param request body v1.SendVerifyCodeReq true "params"
@@ -48,10 +48,10 @@ func (h *AuthHandler) SendVerifyCode(ctx *gin.Context) {
 }
 
 // Login godoc
-// @Summary 登录注册
+// @Summary Login or register
 // @Schemes
 // @Description
-// @Tags 认证模块
+// @Tags Authentication Module
 // @Accept json
 // @Produce json
 // @Param request body v1.LoginReq true "params"
@@ -77,10 +77,10 @@ func (h *AuthHandler) Login(ctx *gin.Context) {
 }
 
 // Logout godoc
-// @Summary 注销
+// @Summary Logout
 // @Schemes
 // @Description
-// @Tags 认证模块
+// @Tags Authentication Module
 // @Accept json
 // @Produce json
 // @Security Bearer

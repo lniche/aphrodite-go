@@ -133,7 +133,6 @@ func NewRedisLock(key string, expiration time.Duration) *RedisLock {
 }
 
 func (r *Repository) Lock(ctx context.Context, lock *RedisLock) (bool, error) {
-	// 使用 SETNX 命令尝试获取锁
 	success, err := r.rdb.SetNX(ctx, lock.key, "locked", lock.expiration).Result()
 	if err != nil {
 		return false, err
@@ -142,7 +141,6 @@ func (r *Repository) Lock(ctx context.Context, lock *RedisLock) (bool, error) {
 }
 
 func (r *Repository) Unlock(ctx context.Context, lock *RedisLock) error {
-	// 使用 DEL 命令删除锁
 	_, err := r.rdb.Del(ctx, lock.key).Result()
 	return err
 }

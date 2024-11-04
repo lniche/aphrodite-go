@@ -1,18 +1,18 @@
 definitions:
   aphrodite-go_api_v1.GetUserResp:
-    description: 用户信息完整响应
+    description: Complete response for user information
     properties:
       code:
         type: integer
       data:
         allOf:
         - $ref: '#/definitions/aphrodite-go_api_v1.GetUserRespData'
-        description: 用户信息数据
+        description: User information data
       message:
         type: string
     type: object
   aphrodite-go_api_v1.GetUserRespData:
-    description: 用户信息响应数据
+    description: Response data for user information
     properties:
       email:
         example: john@example.com
@@ -31,7 +31,7 @@ definitions:
     - phone
     type: object
   aphrodite-go_api_v1.LoginReq:
-    description: 用户登录请求数据
+    description: User login request data
     properties:
       phone:
         example: "13800138000"
@@ -51,7 +51,7 @@ definitions:
         type: string
     type: object
   aphrodite-go_api_v1.SendVerifyCodeReq:
-    description: 发送验证码请求数据
+    description: Request data for sending verification code
     properties:
       phone:
         example: "13800138000"
@@ -60,7 +60,7 @@ definitions:
     - phone
     type: object
   aphrodite-go_api_v1.UpdateUserReq:
-    description: 用户更新信息请求
+    description: Request data for updating user information
     properties:
       email:
         example: john@example.com
@@ -93,9 +93,9 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/aphrodite-go_api_v1.Response'
-      summary: 登录注册
+      summary: Login or register
       tags:
-      - 认证模块
+      - Authentication Module
   /v1/logout:
     post:
       consumes:
@@ -109,9 +109,9 @@ paths:
             $ref: '#/definitions/aphrodite-go_api_v1.Response'
       security:
       - Bearer: []
-      summary: 注销
+      summary: Logout
       tags:
-      - 认证模块
+      - Authentication Module
   /v1/send-code:
     post:
       consumes:
@@ -130,9 +130,9 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/aphrodite-go_api_v1.Response'
-      summary: 发送验证码
+      summary: Send verification code
       tags:
-      - 认证模块
+      - Authentication Module
   /v1/user:
     delete:
       consumes:
@@ -146,9 +146,9 @@ paths:
             $ref: '#/definitions/aphrodite-go_api_v1.Response'
       security:
       - Bearer: []
-      summary: 删除用户信息
+      summary: Delete user information
       tags:
-      - 用户模块
+      - User Module
     get:
       consumes:
       - application/json
@@ -161,9 +161,9 @@ paths:
             $ref: '#/definitions/aphrodite-go_api_v1.GetUserResp'
       security:
       - Bearer: []
-      summary: 获取用户信息
+      summary: Get user information
       tags:
-      - 用户模块
+      - User Module
     put:
       consumes:
       - application/json
@@ -183,9 +183,9 @@ paths:
             $ref: '#/definitions/aphrodite-go_api_v1.Response'
       security:
       - Bearer: []
-      summary: 修改用户信息
+      summary: Update user information
       tags:
-      - 用户模块
+      - User Module
 securityDefinitions:
   Bearer:
     in: header

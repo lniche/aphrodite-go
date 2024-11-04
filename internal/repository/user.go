@@ -137,7 +137,7 @@ func (r *userRepository) GenerateUserNo(ctx context.Context) (int64, error) {
     `
 	result, err := r.rdb.Eval(ctx, script, []string{constant.NEXTIDUNO}).Result()
 	if err != nil {
-		return 0, err // 返回错误
+		return 0, err
 	}
 	return result.(int64), nil
 }
@@ -170,7 +170,6 @@ func (r *userRepository) Logout(ctx context.Context, userCode string) error {
 }
 
 func (r *userRepository) DeleteUser(ctx context.Context, userCode string) error {
-	// 获取当前时间作为deleted_at的值
 	now := time.Now()
 	if err := r.DB(ctx).Model(&model.User{}).Where("user_code =?", userCode).Updates(map[string]interface{}{
 		"deleted_at": now,

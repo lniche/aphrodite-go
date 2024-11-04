@@ -36,7 +36,6 @@ func StrictAuth(j *jwt.JWT, logger *log.Logger, redis *redis.Client) gin.Handler
 			return
 		}
 
-		// 检查 JWT 是否在黑名单中
 		isBlacklisted, err := redis.SIsMember(ctx, constant.JWT_BLACKLIST, tokenString).Result()
 		if err != nil {
 			logger.WithContext(ctx).Error("Redis error", zap.Any("data", map[string]interface{}{

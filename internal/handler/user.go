@@ -21,10 +21,10 @@ func NewUserHandler(handler *Handler, userService service.UserService) *UserHand
 }
 
 // GetUser godoc
-// @Summary 获取用户信息
+// @Summary Get user information
 // @Schemes
 // @Description
-// @Tags 用户模块
+// @Tags User Module
 // @Accept json
 // @Produce json
 // @Security Bearer
@@ -47,10 +47,10 @@ func (h *UserHandler) GetUser(ctx *gin.Context) {
 }
 
 // UpdateUser godoc
-// @Summary 修改用户信息
+// @Summary Update user information
 // @Schemes
 // @Description
-// @Tags 用户模块
+// @Tags User Module
 // @Accept json
 // @Produce json
 // @Security Bearer
@@ -75,10 +75,10 @@ func (h *UserHandler) UpdateUser(ctx *gin.Context) {
 }
 
 // DeleteUser godoc
-// @Summary 删除用户信息
+// @Summary Delete user information
 // @Schemes
 // @Description
-// @Tags 用户模块
+// @Tags User Module
 // @Accept json
 // @Produce json
 // @Security Bearer
