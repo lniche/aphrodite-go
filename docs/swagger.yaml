@@ -15,10 +15,10 @@ definitions:
     description: 用户信息响应数据
     properties:
       email:
-        example: 1234@gmail.com
+        example: john@example.com
         type: string
       nickname:
-        example: banana
+        example: john
         type: string
       phone:
         example: "13800138000"
@@ -33,9 +33,6 @@ definitions:
   aphrodite-go_api_v1.LoginReq:
     description: 用户登录请求数据
     properties:
-      openId:
-        example: "123456"
-        type: string
       phone:
         example: "13800138000"
         type: string
@@ -66,25 +63,10 @@ definitions:
     description: 用户更新信息请求
     properties:
       email:
-        example: 1234@gmail.com
-        type: string
-      newPassword:
-        example: banana
-        type: string
-      newPhone:
-        example: "13800138000"
+        example: john@example.com
         type: string
       nickname:
-        example: banana
-        type: string
-      oldPassword:
-        example: banana
-        type: string
-      oldPhone:
-        example: "13800138000"
-        type: string
-      verifyCode:
-        example: "1234"
+        example: john
         type: string
     type: object
 info:

@@ -227,11 +227,11 @@ const docTemplate = `{
             "properties": {
                 "email": {
                     "type": "string",
-                    "example": "1234@gmail.com"
+                    "example": "john@example.com"
                 },
                 "nickname": {
                     "type": "string",
-                    "example": "banana"
+                    "example": "john"
                 },
                 "phone": {
                     "type": "string",
@@ -252,10 +252,6 @@ const docTemplate = `{
                 "phone"
             ],
             "properties": {
-                "openId": {
-                    "type": "string",
-                    "example": "123456"
-                },
                 "phone": {
                     "type": "string",
                     "example": "13800138000"
@@ -297,31 +293,11 @@ const docTemplate = `{
             "properties": {
                 "email": {
                     "type": "string",
-                    "example": "1234@gmail.com"
-                },
-                "newPassword": {
-                    "type": "string",
-                    "example": "banana"
-                },
-                "newPhone": {
-                    "type": "string",
-                    "example": "13800138000"
+                    "example": "john@example.com"
                 },
                 "nickname": {
                     "type": "string",
-                    "example": "banana"
-                },
-                "oldPassword": {
-                    "type": "string",
-                    "example": "banana"
-                },
-                "oldPhone": {
-                    "type": "string",
-                    "example": "13800138000"
-                },
-                "verifyCode": {
-                    "type": "string",
-                    "example": "1234"
+                    "example": "john"
                 }
             }
         }

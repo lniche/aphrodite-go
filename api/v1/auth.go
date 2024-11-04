@@ -11,11 +11,9 @@ type SendVerifyCodeReq struct {
 // @Description 用户登录请求数据
 // @Param phone body string true "用户手机号" example("13800138000")
 // @Param verifyCode body string false "验证码" example("1234")
-// @Param openId body string false "用户 OpenId" example("123456")
 type LoginReq struct {
 	Phone      string `json:"phone" binding:"required" example:"13800138000"`
 	VerifyCode string `json:"verifyCode" example:"1234"`
-	OpenId     string `json:"openId" example:"123456"`
 }
 
 // LoginRespData 登录响应数据结构体

@@ -44,32 +44,22 @@ func (s *userService) Login(ctx context.Context, clientIp string, req *v1.LoginR
 	if err != nil {
 		return "", v1.ErrInternalServerError
 	}
-	if user == nil && req.OpenId != "" {
-		user, err = s.userRepository.GetByOpenId(ctx, req.OpenId)
-		if err != nil {
-			return "", v1.ErrInternalServerError
-		}
+	// check verify code
+	storedCode, err := s.userRepository.GetVerifyCode(ctx, req.Phone)
+	if err != nil {
+		return "", fmt.Errorf("cache code not exist")
+	}
+	if storedCode != req.VerifyCode {
+		return "", fmt.Errorf("verify code check fail")
 	}
 	if user != nil {
 		user.LoginAt = time.Now()
-		if user.OpenId == "" {
-			user.OpenId = req.OpenId
-		}
-		if user.Phone == "" {
-			user.Phone = req.Phone
-		}
-		if err = s.userRepository.UpdateProfile(ctx, user); err != nil {
-			return "", err
+		user.ClientIp = clientIp
+		if err := s.userRepository.UpdateProfile(ctx, user); err != nil {
+			s.logger.WithContext(ctx).Error("failed to update user profile", zap.Error(err))
+			return "", fmt.Errorf("could not update profile: %w", err)
 		}
 	} else {
-		// check verify code
-		storedCode, err := s.userRepository.GetVerifyCode(ctx, req.Phone)
-		if err != nil {
-			return "", fmt.Errorf("cache code not exist")
-		}
-		if storedCode != req.VerifyCode {
-			return "", fmt.Errorf("verify code check fail")
-		}
 		// Generate user code and no
 		userCode, err := s.sid.GenUint64()
 		if err != nil {
@@ -85,7 +75,6 @@ func (s *userService) Login(ctx context.Context, clientIp string, req *v1.LoginR
 			UserNo:   uint64(100000 + userNo),
 			Phone:    req.Phone,
 			ClientIp: clientIp,
-			OpenId:   req.OpenId,
 			LoginAt:  time.Now(),
 		}
 		// Transaction demo
@@ -141,12 +130,12 @@ func (s *userService) UpdateUser(ctx context.Context, userCode string, req *v1.U
 func (s *userService) SendVerifyCode(ctx context.Context, req *v1.SendVerifyCodeReq) error {
 	code := generateVerificationCode()
 	s.logger.Info("send verify code", zap.String("code", code), zap.String("phone", req.Phone))
-	storedCode, err := s.userRepository.GetVerifyCode(ctx, req.Phone)
+	storedCode, _ := s.userRepository.GetVerifyCode(ctx, req.Phone)
 	if storedCode != "" {
 		return fmt.Errorf("verify code already sent, please wait 1 minute")
 	}
 	// TODO real send msg
-	err = s.userRepository.CacheVerifyCode(ctx, req.Phone, code)
+	err := s.userRepository.CacheVerifyCode(ctx, req.Phone, code)
 	if err != nil {
 		return err
 	}
