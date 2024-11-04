@@ -34,17 +34,17 @@ func NewAuthHandler(handler *Handler, userService service.UserService) *AuthHand
 func (h *AuthHandler) SendVerifyCode(ctx *gin.Context) {
 	req := new(v1.SendVerifyCodeReq)
 	if err := ctx.ShouldBindJSON(req); err != nil {
-		v1.HandleError(ctx, http.StatusBadRequest, v1.ErrBadRequest, nil)
+		v1.Err(ctx, http.StatusBadRequest, v1.ErrBadRequest, nil)
 		return
 	}
 
 	if err := h.userService.SendVerifyCode(ctx, req); err != nil {
 		h.logger.WithContext(ctx).Error("userService.SendVerifyCode error", zap.Error(err))
-		v1.HandleError(ctx, http.StatusInternalServerError, err, nil)
+		v1.Err(ctx, http.StatusInternalServerError, err, nil)
 		return
 	}
 
-	v1.HandleSuccess(ctx, nil)
+	v1.Ok(ctx, nil)
 }
 
 // Login godoc
@@ -60,18 +60,18 @@ func (h *AuthHandler) SendVerifyCode(ctx *gin.Context) {
 func (h *AuthHandler) Login(ctx *gin.Context) {
 	var req = new(v1.LoginReq)
 	if err := ctx.ShouldBindJSON(req); err != nil {
-		v1.HandleError(ctx, http.StatusBadRequest, v1.ErrBadRequest, nil)
+		v1.Err(ctx, http.StatusBadRequest, v1.ErrBadRequest, nil)
 		return
 	}
 	token, err := h.userService.Login(ctx, ctx.ClientIP(), req)
 
 	if err != nil {
 		h.logger.WithContext(ctx).Error("userService.Login error", zap.Error(err))
-		v1.HandleError(ctx, http.StatusInternalServerError, err, nil)
+		v1.Err(ctx, http.StatusInternalServerError, err, nil)
 		return
 	}
 
-	v1.HandleSuccess(ctx, v1.LoginRespData{
+	v1.Ok(ctx, v1.LoginRespData{
 		AccessToken: token,
 	})
 }
@@ -89,16 +89,16 @@ func (h *AuthHandler) Login(ctx *gin.Context) {
 func (h *AuthHandler) Logout(ctx *gin.Context) {
 	userCode := GetUserCodeFromCtx(ctx)
 	if userCode == "" {
-		v1.HandleError(ctx, http.StatusUnauthorized, v1.ErrUnauthorized, nil)
+		v1.Err(ctx, http.StatusUnauthorized, v1.ErrUnauthorized, nil)
 		return
 	}
 	err := h.userService.Logout(ctx, userCode)
 
 	if err != nil {
 		h.logger.WithContext(ctx).Error("userService.Logout error", zap.Error(err))
-		v1.HandleError(ctx, http.StatusInternalServerError, err, nil)
+		v1.Err(ctx, http.StatusInternalServerError, err, nil)
 		return
 	}
 
-	v1.HandleSuccess(ctx, nil)
+	v1.Ok(ctx, nil)
 }

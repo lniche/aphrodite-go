@@ -47,14 +47,14 @@ func NewHTTPServer(
 		middleware.RequestIDMiddleware(),
 		middleware.ResponseLogMiddleware(logger),
 		middleware.RequestLogMiddleware(logger),
-		//middleware.SignMiddleware(log),
+		// middleware.SignMiddleware(logger),
 	)
 	s.GET("/", func(ctx *gin.Context) {
 		logger.WithContext(ctx).Info("hello")
-		apiV1.HandleSuccess(ctx, "Thank you for using Aphrodite!")
+		apiV1.Ok(ctx, "Thank you for using Aphrodite!")
 	})
 	s.GET("/ping", func(ctx *gin.Context) {
-		apiV1.HandleSuccess(ctx, "pong")
+		apiV1.Ok(ctx, "pong")
 	})
 
 	v1 := s.Group("/v1")

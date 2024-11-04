@@ -2,8 +2,9 @@ package v1
 
 import (
 	"errors"
-	"github.com/gin-gonic/gin"
 	"net/http"
+
+	"github.com/gin-gonic/gin"
 )
 
 type Response struct {
@@ -12,7 +13,7 @@ type Response struct {
 	Data    interface{} `json:"data"`
 }
 
-func HandleSuccess(ctx *gin.Context, data interface{}) {
+func Ok(ctx *gin.Context, data interface{}) {
 	if data == nil {
 		data = map[string]interface{}{}
 	}
@@ -23,7 +24,7 @@ func HandleSuccess(ctx *gin.Context, data interface{}) {
 	ctx.JSON(http.StatusOK, resp)
 }
 
-func HandleError(ctx *gin.Context, httpCode int, err error, data interface{}) {
+func Err(ctx *gin.Context, httpCode int, err error, data interface{}) {
 	if data == nil {
 		data = map[string]string{}
 	}

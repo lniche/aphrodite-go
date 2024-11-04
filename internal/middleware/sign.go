@@ -3,12 +3,13 @@ package middleware
 import (
 	v1 "aphrodite-go/api/v1"
 	"aphrodite-go/pkg/log"
-	"github.com/duke-git/lancet/v2/cryptor"
-	"github.com/gin-gonic/gin"
-	"github.com/spf13/viper"
 	"net/http"
 	"sort"
 	"strings"
+
+	"github.com/duke-git/lancet/v2/cryptor"
+	"github.com/gin-gonic/gin"
+	"github.com/spf13/viper"
 )
 
 func SignMiddleware(logger *log.Logger, conf *viper.Viper) gin.HandlerFunc {
@@ -18,7 +19,7 @@ func SignMiddleware(logger *log.Logger, conf *viper.Viper) gin.HandlerFunc {
 		for _, header := range requiredHeaders {
 			value, ok := ctx.Request.Header[header]
 			if !ok || len(value) == 0 {
-				v1.HandleError(ctx, http.StatusBadRequest, v1.ErrBadRequest, nil)
+				v1.Err(ctx, http.StatusBadRequest, v1.ErrBadRequest, nil)
 				ctx.Abort()
 				return
 			}
@@ -44,7 +45,7 @@ func SignMiddleware(logger *log.Logger, conf *viper.Viper) gin.HandlerFunc {
 		str += conf.GetString("security.api_sign.app_security")
 
 		if ctx.Request.Header.Get("Sign") != strings.ToUpper(cryptor.Md5String(str)) {
-			v1.HandleError(ctx, http.StatusBadRequest, v1.ErrBadRequest, nil)
+			v1.Err(ctx, http.StatusBadRequest, v1.ErrBadRequest, nil)
 			ctx.Abort()
 			return
 		}

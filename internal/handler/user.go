@@ -33,17 +33,17 @@ func NewUserHandler(handler *Handler, userService service.UserService) *UserHand
 func (h *UserHandler) GetUser(ctx *gin.Context) {
 	userCode := GetUserCodeFromCtx(ctx)
 	if userCode == "" {
-		v1.HandleError(ctx, http.StatusUnauthorized, v1.ErrUnauthorized, nil)
+		v1.Err(ctx, http.StatusUnauthorized, v1.ErrUnauthorized, nil)
 		return
 	}
 
 	user, err := h.userService.GetUser(ctx, userCode)
 	if err != nil {
-		v1.HandleError(ctx, http.StatusInternalServerError, err, nil)
+		v1.Err(ctx, http.StatusInternalServerError, err, nil)
 		return
 	}
 
-	v1.HandleSuccess(ctx, user)
+	v1.Ok(ctx, user)
 }
 
 // UpdateUser godoc
@@ -62,16 +62,16 @@ func (h *UserHandler) UpdateUser(ctx *gin.Context) {
 
 	var req = new(v1.UpdateUserReq)
 	if err := ctx.ShouldBindJSON(req); err != nil {
-		v1.HandleError(ctx, http.StatusBadRequest, v1.ErrBadRequest, nil)
+		v1.Err(ctx, http.StatusBadRequest, v1.ErrBadRequest, nil)
 		return
 	}
 
 	if err := h.userService.UpdateUser(ctx, userCode, req); err != nil {
-		v1.HandleError(ctx, http.StatusInternalServerError, v1.ErrInternalServerError, nil)
+		v1.Err(ctx, http.StatusInternalServerError, v1.ErrInternalServerError, nil)
 		return
 	}
 
-	v1.HandleSuccess(ctx, nil)
+	v1.Ok(ctx, nil)
 }
 
 // DeleteUser godoc
@@ -87,14 +87,14 @@ func (h *UserHandler) UpdateUser(ctx *gin.Context) {
 func (h *UserHandler) DeleteUser(ctx *gin.Context) {
 	userCode := GetUserCodeFromCtx(ctx)
 	if userCode == "" {
-		v1.HandleError(ctx, http.StatusUnauthorized, v1.ErrUnauthorized, nil)
+		v1.Err(ctx, http.StatusUnauthorized, v1.ErrUnauthorized, nil)
 		return
 	}
 
 	if err := h.userService.DeleteUser(ctx, userCode); err != nil {
-		v1.HandleError(ctx, http.StatusInternalServerError, v1.ErrInternalServerError, nil)
+		v1.Err(ctx, http.StatusInternalServerError, v1.ErrInternalServerError, nil)
 		return
 	}
 
-	v1.HandleSuccess(ctx, nil)
+	v1.Ok(ctx, nil)
 }

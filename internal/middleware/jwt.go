@@ -1,14 +1,15 @@
 package middleware
 
 import (
-	"aphrodite-go/api/v1"
+	v1 "aphrodite-go/api/v1"
 	"aphrodite-go/internal/constant"
 	"aphrodite-go/pkg/jwt"
 	"aphrodite-go/pkg/log"
+	"net/http"
+
 	"github.com/gin-gonic/gin"
 	"github.com/redis/go-redis/v9"
 	"go.uber.org/zap"
-	"net/http"
 )
 
 func StrictAuth(j *jwt.JWT, logger *log.Logger, redis *redis.Client) gin.HandlerFunc {
@@ -19,7 +20,7 @@ func StrictAuth(j *jwt.JWT, logger *log.Logger, redis *redis.Client) gin.Handler
 				"url":    ctx.Request.URL,
 				"params": ctx.Params,
 			}))
-			v1.HandleError(ctx, http.StatusUnauthorized, v1.ErrUnauthorized, nil)
+			v1.Err(ctx, http.StatusUnauthorized, v1.ErrUnauthorized, nil)
 			ctx.Abort()
 			return
 		}
@@ -30,7 +31,7 @@ func StrictAuth(j *jwt.JWT, logger *log.Logger, redis *redis.Client) gin.Handler
 				"url":    ctx.Request.URL,
 				"params": ctx.Params,
 			}), zap.Error(err))
-			v1.HandleError(ctx, http.StatusUnauthorized, v1.ErrUnauthorized, nil)
+			v1.Err(ctx, http.StatusUnauthorized, v1.ErrUnauthorized, nil)
 			ctx.Abort()
 			return
 		}
@@ -42,7 +43,7 @@ func StrictAuth(j *jwt.JWT, logger *log.Logger, redis *redis.Client) gin.Handler
 				"url":    ctx.Request.URL,
 				"params": ctx.Params,
 			}), zap.Error(err))
-			v1.HandleError(ctx, http.StatusUnauthorized, v1.ErrUnauthorized, nil)
+			v1.Err(ctx, http.StatusUnauthorized, v1.ErrUnauthorized, nil)
 			ctx.Abort()
 			return
 		}
@@ -52,7 +53,7 @@ func StrictAuth(j *jwt.JWT, logger *log.Logger, redis *redis.Client) gin.Handler
 				"url":    ctx.Request.URL,
 				"params": ctx.Params,
 			}))
-			v1.HandleError(ctx, http.StatusUnauthorized, v1.ErrUnauthorized, nil)
+			v1.Err(ctx, http.StatusUnauthorized, v1.ErrUnauthorized, nil)
 			ctx.Abort()
 			return
 		}
