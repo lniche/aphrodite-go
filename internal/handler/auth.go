@@ -22,10 +22,10 @@ func NewAuthHandler(handler *Handler, userService service.UserService) *AuthHand
 }
 
 // SendVerifyCode godoc
-// @Summary Send verification code
+// @Summary Send Verification Vode
 // @Schemes
 // @Description
-// @Tags Authentication Module
+// @Tags Auth Module
 // @Accept json
 // @Produce json
 // @Param request body v1.SendVerifyCodeReq true "params"
@@ -48,10 +48,10 @@ func (h *AuthHandler) SendVerifyCode(ctx *gin.Context) {
 }
 
 // Login godoc
-// @Summary Login or register
+// @Summary User Registration/Login
 // @Schemes
 // @Description
-// @Tags Authentication Module
+// @Tags Auth Module
 // @Accept json
 // @Produce json
 // @Param request body v1.LoginReq true "params"
@@ -80,7 +80,7 @@ func (h *AuthHandler) Login(ctx *gin.Context) {
 // @Summary Logout
 // @Schemes
 // @Description
-// @Tags Authentication Module
+// @Tags Auth Module
 // @Accept json
 // @Produce json
 // @Security Bearer

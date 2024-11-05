@@ -24,9 +24,9 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "Authentication Module"
+                    "Auth Module"
                 ],
-                "summary": "Login or register",
+                "summary": "User Registration/Login",
                 "parameters": [
                     {
                         "description": "params",
@@ -62,7 +62,7 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "Authentication Module"
+                    "Auth Module"
                 ],
                 "summary": "Logout",
                 "responses": {
@@ -84,9 +84,9 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "Authentication Module"
+                    "Auth Module"
                 ],
-                "summary": "Send verification code",
+                "summary": "Send Verification Vode",
                 "parameters": [
                     {
                         "description": "params",
@@ -124,7 +124,7 @@ const docTemplate = `{
                 "tags": [
                     "User Module"
                 ],
-                "summary": "Get user information",
+                "summary": "Get User",
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -149,7 +149,7 @@ const docTemplate = `{
                 "tags": [
                     "User Module"
                 ],
-                "summary": "Update user information",
+                "summary": "Update User",
                 "parameters": [
                     {
                         "description": "params",
@@ -185,7 +185,7 @@ const docTemplate = `{
                 "tags": [
                     "User Module"
                 ],
-                "summary": "Delete user information",
+                "summary": "Delete User",
                 "responses": {
                     "200": {
                         "description": "OK",

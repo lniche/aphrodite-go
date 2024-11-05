@@ -93,9 +93,9 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/aphrodite-go_api_v1.Response'
-      summary: Login or register
+      summary: User Registration/Login
       tags:
-      - Authentication Module
+      - Auth Module
   /v1/logout:
     post:
       consumes:
@@ -111,7 +111,7 @@ paths:
       - Bearer: []
       summary: Logout
       tags:
-      - Authentication Module
+      - Auth Module
   /v1/send-code:
     post:
       consumes:
@@ -130,9 +130,9 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/aphrodite-go_api_v1.Response'
-      summary: Send verification code
+      summary: Send Verification Vode
       tags:
-      - Authentication Module
+      - Auth Module
   /v1/user:
     delete:
       consumes:
@@ -146,7 +146,7 @@ paths:
             $ref: '#/definitions/aphrodite-go_api_v1.Response'
       security:
       - Bearer: []
-      summary: Delete user information
+      summary: Delete User
       tags:
       - User Module
     get:
@@ -161,7 +161,7 @@ paths:
             $ref: '#/definitions/aphrodite-go_api_v1.GetUserResp'
       security:
       - Bearer: []
-      summary: Get user information
+      summary: Get User
       tags:
       - User Module
     put:
@@ -183,7 +183,7 @@ paths:
             $ref: '#/definitions/aphrodite-go_api_v1.Response'
       security:
       - Bearer: []
-      summary: Update user information
+      summary: Update User
       tags:
       - User Module
 securityDefinitions:

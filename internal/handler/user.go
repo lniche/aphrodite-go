@@ -21,7 +21,7 @@ func NewUserHandler(handler *Handler, userService service.UserService) *UserHand
 }
 
 // GetUser godoc
-// @Summary Get user information
+// @Summary Get User
 // @Schemes
 // @Description
 // @Tags User Module
@@ -47,7 +47,7 @@ func (h *UserHandler) GetUser(ctx *gin.Context) {
 }
 
 // UpdateUser godoc
-// @Summary Update user information
+// @Summary Update User
 // @Schemes
 // @Description
 // @Tags User Module
@@ -75,7 +75,7 @@ func (h *UserHandler) UpdateUser(ctx *gin.Context) {
 }
 
 // DeleteUser godoc
-// @Summary Delete user information
+// @Summary Delete User
 // @Schemes
 // @Description
 // @Tags User Module
