@@ -66,7 +66,7 @@ cd config
 mv config.yml.example config.yml
 
 # 3. 处理依赖
-# 确保你已经安装了 Go
+# 确保你已经安装了 Go 环境
 go mod tidy
 
 # 4. 初始化数据库

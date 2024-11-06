@@ -40,6 +40,9 @@ Icon?
 
 # Log files
 *.log*
+logs/
+log/
+data/
 
 # Temporary files
 *.tmp
@@ -51,6 +54,4 @@ Icon?
 .env
 *.env
 
-deploy/docker-compose/data
-deploy/docker-compose/logs
 config.yml
