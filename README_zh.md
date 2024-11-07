@@ -72,7 +72,7 @@ mv config.yml.example config.yml
 go mod tidy
 
 # 4. 初始化数据库
-database/db.sql
+database/init.sql
 
 # 5. 启动服务
 # 确保你的环境中安装了 nunu

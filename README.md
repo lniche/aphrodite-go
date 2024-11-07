@@ -72,7 +72,7 @@ mv config.yml.example config.yml
 go mod tidy
 
 # 4. Initialize the database
-database/db.sql
+database/init.sql
 
 # 5. Start the service
 # Make sure nunu is installed in your environment
