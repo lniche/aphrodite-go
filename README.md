@@ -42,15 +42,15 @@ Aphrodite is a template project based on [Nunu](https://github.com/go-nunu/nunu)
 
 ```
 .
-├── api/ # Input and output parameter definitions, including all request and response structures
+├── api/ # Input and output parameter definitions
 ├── bin/ # Executable scripts
-├── cmd/ # Application entry, including different subcommands, such as startup, migration, etc.
-├── config/ # Configuration file, storing application configuration items (such as database, third-party services, etc.)
+├── cmd/ # Application entry
+├── config/ # Configuration files
 ├── database/ # Database related
 ├── deploy/ # Deployment related files
 ├── docs/ # Project documentation
 ├── internal/ # Application core code
-├── pkg/ # Public module
+├── pkg/ # Public modules
 ├── storage/ # File storage
 ├── tests/ # Test files
 └── README.md # Project description
