@@ -2,7 +2,7 @@
 
 Aphrodite is a template project based on [Nunu](https://github.com/go-nunu/nunu) to help developers get started quickly and gain a deep understanding of the framework's usage process. The project provides comprehensive sample code and configuration, covering common development scenarios for easy learning and practice. In addition, Aphrodite also includes container deployment templates, making the project easy to deploy and manage in a modern cloud environment, helping developers to efficiently build and release applications.
 
-## Technology stack
+## Tech Stack
 
 | Technology                                             | Description                                                                          |
 | ------------------------------------------------------ | ------------------------------------------------------------------------------------ |
@@ -79,6 +79,11 @@ database/db.sql
 go install github.com/go-nunu/nunu@latest
 nunu run
 ```
+
+## Repo Activity
+
+![Alt](https://repobeats.axiom.co/api/embed/75f6227f2c9b38043ecc5b2c0c5dfacd5cd373cb.svg "Repobeats analytics image")
+
 
 ## Contribution
 

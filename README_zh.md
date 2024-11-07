@@ -80,6 +80,10 @@ go install github.com/go-nunu/nunu@latest
 nunu run
 ```
 
+## Repo Activity
+
+![Alt](https://repobeats.axiom.co/api/embed/75f6227f2c9b38043ecc5b2c0c5dfacd5cd373cb.svg "Repobeats analytics image")
+
 ## 贡献
 
 如果你有任何建议或想法，欢迎创建 Issue 或直接提交 Pull Request。
