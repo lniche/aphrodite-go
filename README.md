@@ -38,7 +38,7 @@ Aphrodite is a template project based on [Nunu](https://github.com/go-nunu/nunu)
 - **API modular design**: Supports modular API design, which is easy to expand and maintain.
 - **Swagger document integration**: Automatically generates API documents for front-end development and testing.
 
-## Directory structure
+## Structure
 
 ```
 .
@@ -56,7 +56,7 @@ Aphrodite is a template project based on [Nunu](https://github.com/go-nunu/nunu)
 └── README.md # Project description
 ```
 
-## Local operation
+## Run Local
 
 ```bash
 # 1. Clone the project code base
