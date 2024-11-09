@@ -42,18 +42,18 @@ Aphrodite is a template project based on [Nunu](https://github.com/go-nunu/nunu)
 
 ```
 .
-├── api/ # Input and output parameter definitions
-├── bin/ # Executable scripts
-├── cmd/ # Application entry
-├── config/ # Configuration files
-├── database/ # Database related
-├── deploy/ # Deployment related files
-├── docs/ # Project documentation
-├── internal/ # Application core code
-├── pkg/ # Public modules
-├── storage/ # File storage
-├── tests/ # Test files
-└── README.md # Project description
+├── api/        # API input/output definitions
+├── bin/        # Executable scripts
+├── cmd/        # Application entry points
+├── config/     # Configuration files
+├── database/   # Database files
+├── deploy/     # Deployment files
+├── docs/       # Documentation
+├── internal/   # Core application code
+├── pkg/        # Shared modules
+├── storage/    # File storage
+├── tests/      # Tests
+└── README.md   # Project description
 ```
 
 ## Run Local
@@ -83,7 +83,6 @@ nunu run
 ## Repo Activity
 
 ![Alt](https://repobeats.axiom.co/api/embed/75f6227f2c9b38043ecc5b2c0c5dfacd5cd373cb.svg "Repobeats analytics image")
-
 
 ## Contribution
 
