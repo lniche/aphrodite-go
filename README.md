@@ -1,5 +1,7 @@
 # Aphrodite Gin API Scaffold
 
+[English](README.md) | [简体中文](README-zh.md)
+
 Aphrodite is a template project based on [Nunu](https://github.com/go-nunu/nunu) to help developers get started quickly and gain a deep understanding of the framework's usage process. The project provides comprehensive sample code and configuration, covering common development scenarios for easy learning and practice. In addition, Aphrodite also includes container deployment templates, making the project easy to deploy and manage in a modern cloud environment, helping developers to efficiently build and release applications.
 
 ## Tech Stack
