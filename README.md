@@ -44,18 +44,18 @@ Aphrodite is a template project based on [Nunu](https://github.com/go-nunu/nunu)
 
 ```
 .
-├── api/ # Input and output parameter definitions
-├── bin/ # Executable scripts
-├── cmd/ # Application entry
-├── config/ # Configuration files
-├── database/ # Database related
-├── deploy/ # Deployment related files
-├── docs/ # Project documentation
-├── internal/ # Application core code
-├── pkg/ # Public modules
-├── storage/ # File storage
-├── tests/ # Test files
-└── README.md # Project description
+├── api/        # API input/output definitions
+├── bin/        # Executable scripts
+├── cmd/        # Application entry points
+├── config/     # Configuration files
+├── database/   # Database files
+├── deploy/     # Deployment files
+├── docs/       # Documentation
+├── internal/   # Core application code
+├── pkg/        # Shared modules
+├── storage/    # File storage
+├── tests/      # Tests
+└── README.md   # Project description
 ```
 
 ## Run Local
@@ -86,16 +86,24 @@ nunu run
 
 ![Alt](https://repobeats.axiom.co/api/embed/75f6227f2c9b38043ecc5b2c0c5dfacd5cd373cb.svg "Repobeats analytics image")
 
-
 ## Contribution
 
 If you have any suggestions or ideas, please create an Issue or submit a Pull Request directly.
 
-1. Fork this repository.
-2. Create a new branch: git checkout -b feature/your-feature
-3. Commit your changes: git commit -m 'Add new feature'
-4. Push to your branch: git push origin feature/your-feature
-5. Submit a Pull Request.
+1. **Fork** this repository.
+2. **Create** a new branch: 
+```
+git checkout -b feature/your-feature
+```
+3. **Commit** your changes: 
+```
+git commit -m 'Add new feature'
+```
+4. **Push** to your branch: 
+```
+git push origin feature/your-feature
+```
+5. **Submit** a Pull Request.
 
 ## License
 
