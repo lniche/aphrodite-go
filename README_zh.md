@@ -80,6 +80,11 @@ database/init.sql
 # 确保你的环境中安装了 nunu
 go install github.com/go-nunu/nunu@latest
 nunu run
+
+# 生成 swagger
+make swag
+or use
+swag init  -g cmd/server/main.go -o ./docs --parseDependency
 ```
 
 ## Repo Activity

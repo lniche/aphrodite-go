@@ -80,6 +80,11 @@ database/init.sql
 # Make sure nunu is installed in your environment
 go install github.com/go-nunu/nunu@latest
 nunu run
+
+# generate swagger
+make swag
+or use
+swag init  -g cmd/server/main.go -o ./docs --parseDependency
 ```
 
 ## Repo Activity
@@ -91,18 +96,24 @@ nunu run
 If you have any suggestions or ideas, please create an Issue or submit a Pull Request directly.
 
 1. **Fork** this repository.
-2. **Create** a new branch: 
+2. **Create** a new branch:
+
 ```
 git checkout -b feature/your-feature
 ```
-3. **Commit** your changes: 
+
+3. **Commit** your changes:
+
 ```
 git commit -m 'Add new feature'
 ```
-4. **Push** to your branch: 
+
+4. **Push** to your branch:
+
 ```
 git push origin feature/your-feature
 ```
+
 5. **Submit** a Pull Request.
 
 ## License
