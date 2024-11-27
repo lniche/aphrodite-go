@@ -23,11 +23,18 @@ spec:
             - name: POSTGRES_USER
               value: postgres
             - name: POSTGRES_PASSWORD
-              value: 123123
+              value: "123123"
             - name: TZ
               value: UTC
             - name: LANG
               value: en_US.UTF-8
+          resources:
+            limits:
+              cpu: "1"
+              memory: "512Mi"
+            requests:
+              cpu: "0.5"
+              memory: "256Mi"
           livenessProbe:
             exec:
               command:
@@ -76,6 +83,13 @@ spec:
           image: redis:7-alpine
           ports:
             - containerPort: 6379
+          resources:
+            limits:
+              cpu: "1"
+              memory: "512Mi"
+            requests:
+              cpu: "0.5"
+              memory: "256Mi"
           livenessProbe:
             exec:
               command:
@@ -122,6 +136,13 @@ spec:
           env:
             - name: SPRING_PROFILES_ACTIVE
               value: prod
+          resources:
+            limits:
+              cpu: "1"
+              memory: "512Mi"
+            requests:
+              cpu: "0.5"
+              memory: "256Mi"
           livenessProbe:
             httpGet:
               path: /
