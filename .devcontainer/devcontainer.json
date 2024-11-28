@@ -1,22 +1,23 @@
 {
-    "name": "Maybe",
-    "dockerComposeFile": "docker-compose.yml",
-    "service": "app",
-    "workspaceFolder": "/workspace",
-    "containerEnv": {
-      "GITHUB_TOKEN": "${localEnv:GITHUB_TOKEN}",
-      "GITHUB_USER": "${localEnv:GITHUB_USER}"
-    },
-    "remoteEnv": {
-      "PATH": "/workspace/bin:${containerEnv:PATH}"
-    },
-    "postCreateCommand": "bundle install && npm install",
-    "customizations": {
-      "vscode": {
-        "extensions": [
-          "biomejs.biome",
-          "EditorConfig.EditorConfig"
-        ]
-      }
+  "name": "Go Dev Container",
+  "dockerComposeFile": "docker-compose.yml",
+  "service": "app",
+  "workspaceFolder": "/workspace",
+  "containerEnv": {
+    "GOPATH": "/workspace",
+    "GO111MODULE": "on"
+  },
+  "remoteEnv": {
+    "PATH": "/workspace/bin:${containerEnv:PATH}"
+  },
+  "postCreateCommand": "go get -v -t -d ./...",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "golang.go",
+        "streetsidesoftware.code-spell-checker",
+        "EditorConfig.EditorConfig"
+      ]
     }
   }
+}

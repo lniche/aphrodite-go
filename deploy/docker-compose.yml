@@ -1,4 +1,4 @@
-version: '3.8'
+version: "3.8"
 
 services:
   db:
@@ -16,7 +16,7 @@ services:
       - aphrodite-network
     restart: unless-stopped
     healthcheck:
-      test: [ "CMD", "pg_isready", "-U", "postgres", "-d", "test", "-h", "db" ]
+      test: ["CMD", "pg_isready", "-U", "postgres", "-d", "test", "-h", "db"]
       interval: 30s
       timeout: 10s
       retries: 5
@@ -30,7 +30,7 @@ services:
       - aphrodite-network
     restart: unless-stopped
     healthcheck:
-      test: [ "CMD", "redis-cli", "ping" ]
+      test: ["CMD", "redis-cli", "ping"]
       interval: 30s
       timeout: 10s
       retries: 5
@@ -50,7 +50,7 @@ services:
       - POSTGRES_HOST="jdbc:postgresql://db:5432/test"
       - REDIS_HOST="cache"
     healthcheck:
-      test: [ "CMD", "curl", "-f", "http://localhost:8000/" ]
+      test: ["CMD", "curl", "-f", "http://localhost:8000/"]
       interval: 30s
       timeout: 10s
       retries: 3
