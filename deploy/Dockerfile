@@ -1,13 +1,19 @@
-FROM golang:1.19-alpine
+FROM golang:1.19-alpine as builder
 
 WORKDIR /app
 
 COPY . .
 
-RUN if [ -f config.yml.example ]; then cp config.yml.example config.yml; fi
+ENV GOPROXY=https://goproxy.cn,direct
+RUN go mod tidy && go build -ldflags="-s -w" -o ./bin/server ./cmd/server/main.go
 
-RUN export GOPROXY=https://goproxy.cn,direct && go mod tidy && go build -ldflags="-s -w" -o ./bin/server ./cmd/server/main.go
+FROM debian:bookworm-slim
+
+WORKDIR /app
+
+COPY --from=builder /app/bin/server .
+COPY --from=builder /app/config.yml.example ./config.yml
 
 EXPOSE 8000
 
-CMD ["./bin/server"]
+CMD ["./server"]
