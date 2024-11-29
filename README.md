@@ -47,7 +47,6 @@ Aphrodite is a template project based on [Nunu](https://github.com/go-nunu/nunu)
 ├── api/        # API input/output definitions
 ├── bin/        # Executable scripts
 ├── cmd/        # Application entry points
-├── config/     # Configuration files
 ├── database/   # Database files
 ├── deploy/     # Deployment files
 ├── docs/       # Documentation

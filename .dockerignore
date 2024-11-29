@@ -36,3 +36,6 @@ tmp/
 # System-generated files
 Thumbs.db
 .DS_Store
+
+.devcontainer
+config.yml
